@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftClassCollections",
+        "repositoryURL": "https://github.com/TheAngryDarling/SwiftClassCollections.git",
+        "state": {
+          "branch": null,
+          "revision": "70f845bc1426ccddc7ac742c740d99a5da46f2c5",
+          "version": "1.0.2"
+        }
+      },
+      {
+        "package": "Nillable",
+        "repositoryURL": "https://github.com/TheAngryDarling/SwiftNillable.git",
+        "state": {
+          "branch": null,
+          "revision": "494303dcc7fb81ace922907fd814bbb0c57e3efd",
+          "version": "1.0.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
