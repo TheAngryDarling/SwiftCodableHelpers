@@ -135,11 +135,29 @@ open class BaseEncoder {
         
     }*/
     
+    open func box(_ value: Bool)   -> Any? { return nil }
+    open func box(_ value: Int)    -> Any? { return nil }
+    open func box(_ value: Int8)   -> Any? { return nil }
+    open func box(_ value: Int16)  -> Any? { return nil }
+    open func box(_ value: Int32)  -> Any? { return nil }
+    open func box(_ value: Int64)  -> Any? { return nil }
+    open func box(_ value: UInt)   -> Any? { return nil }
+    open func box(_ value: UInt8)  -> Any? { return nil }
+    open func box(_ value: UInt16) -> Any? { return nil }
+    open func box(_ value: UInt32) -> Any? { return nil }
+    open func box(_ value: UInt64) -> Any? { return nil }
+    open func box(_ value: String) -> Any? { return nil }
+    open func box(_ float: Float) throws -> Any? { return nil }
+    open func box(_ double: Double) throws -> Any? {return nil }
+    open func box(_ date: Date) throws -> Any? {return nil }
+    open func box(_ data: Data) throws -> Any? {return nil }
+    
     
     
     // MARK: - _BaseEncoder
     internal class _BaseEncoder : Encoder {
         // MARK: Properties
+        fileprivate let baseEncoder: BaseEncoder
         /// The encoder's storage.
         internal var storage: _BaseEncodingStorage
         
@@ -156,7 +174,8 @@ open class BaseEncoder {
         
         // MARK: - Initialization
         /// Initializes `self` with the given top-level encoder options.
-        internal init(options: BaseEncoder._Options, codingPath: [CodingKey] = []) {
+        internal init(_ baseEncoder: BaseEncoder, options: BaseEncoder._Options, codingPath: [CodingKey] = []) {
+            self.baseEncoder = baseEncoder
             self.options = options
             self.storage = _BaseEncodingStorage()
             self.codingPath = codingPath
@@ -468,19 +487,23 @@ open class BaseEncoder {
         
         // MARK: - Initialization
         /// Initializes `self` by referencing the given array container in the given encoder.
-        fileprivate init(referencing encoder: _BaseEncoder, at index: Int, wrapping array: SCArray<Any>) {
+        fileprivate init(referencing encoder: _BaseEncoder,
+                         at index: Int,
+                         wrapping array: SCArray<Any>) {
             self.encoder = encoder
             self.reference = .array(array, index)
-            super.init(options: encoder.options, codingPath: encoder.codingPath)
+            super.init(encoder.baseEncoder, options: encoder.options, codingPath: encoder.codingPath)
             
             self.codingPath.append(_BaseKey(index: index))
         }
         
         /// Initializes `self` by referencing the given dictionary container in the given encoder.
-        fileprivate init(referencing encoder: _BaseEncoder, at key: CodingKey, wrapping dictionary: SCArrayOrderedDictionary<String, Any>) {
+        fileprivate init(referencing encoder: _BaseEncoder,
+                         at key: CodingKey,
+                         wrapping dictionary: SCArrayOrderedDictionary<String, Any>) {
             self.encoder = encoder
             self.reference = .dictionary(dictionary, key.stringValue)
-            super.init(options: encoder.options, codingPath: encoder.codingPath)
+            super.init(encoder.baseEncoder, options: encoder.options, codingPath: encoder.codingPath)
             
             self.codingPath.append(key)
         }
@@ -605,18 +628,54 @@ extension BaseEncoder._BaseEncoder : SingleValueEncodingContainer {
 // MARK: - Concrete Value Representations
 extension BaseEncoder._BaseEncoder {
     /// Returns the given value boxed in a container appropriate for pushing onto the container stack.
-    fileprivate func box(_ value: Bool)   -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: Int)    -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: Int8)   -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: Int16)  -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: Int32)  -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: Int64)  -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: UInt)   -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: UInt8)  -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: UInt16) -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: UInt32) -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: UInt64) -> Any { return NSNumber(value: value) }
-    fileprivate func box(_ value: String) -> Any { return value }
+    fileprivate func box(_ value: Bool)   -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: Int)    -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: Int8)   -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: Int16)  -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: Int32)  -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: Int64)  -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: UInt)   -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: UInt8)  -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: UInt16) -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: UInt32) -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: UInt64) -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return NSNumber(value: value) }
+    }
+    fileprivate func box(_ value: String) -> Any {
+        if let v = self.baseEncoder.box(value) { return v }
+        else { return value }
+    }
     
     fileprivate func box(_ float: Float) throws -> Any {
         guard !float.isInfinite && !float.isNaN else {
@@ -843,6 +902,14 @@ extension BaseEncoder._BaseEncoder {
 }
 
 
+public protocol BaseDecodingStorage {
+    
+    var count: Int { get }
+    var topContainer: Any { get }
+    
+    mutating func push(container: Any)
+    mutating func popContainer()
+}
 
 //===----------------------------------------------------------------------===//
 // Base Decoder
@@ -954,9 +1021,31 @@ open class BaseDecoder {
     }*/
     
     
+    
+    /// Returns the given value unboxed from a container.
+    open func unbox(_ value: Any, as type: Bool.Type, atPath codingPath: [CodingKey]) throws -> Bool? { return nil }
+    open func unbox(_ value: Any, as type: Int.Type, atPath codingPath: [CodingKey]) throws -> Int? { return nil }
+    open func unbox(_ value: Any, as type: Int8.Type, atPath codingPath: [CodingKey]) throws -> Int8? { return nil }
+    open func unbox(_ value: Any, as type: Int16.Type, atPath codingPath: [CodingKey]) throws -> Int16? { return nil }
+    open func unbox(_ value: Any, as type: Int32.Type, atPath codingPath: [CodingKey]) throws -> Int32? { return nil }
+    open func unbox(_ value: Any, as type: Int64.Type, atPath codingPath: [CodingKey]) throws -> Int64? { return nil }
+    open func unbox(_ value: Any, as type: UInt.Type, atPath codingPath: [CodingKey]) throws -> UInt? { return nil }
+    open func unbox(_ value: Any, as type: UInt8.Type, atPath codingPath: [CodingKey]) throws -> UInt8? { return nil }
+    open func unbox(_ value: Any, as type: UInt16.Type, atPath codingPath: [CodingKey]) throws -> UInt16? { return nil }
+    open func unbox(_ value: Any, as type: UInt32.Type, atPath codingPath: [CodingKey]) throws -> UInt32? { return nil }
+    open func unbox(_ value: Any, as type: UInt64.Type, atPath codingPath: [CodingKey]) throws -> UInt64? { return nil }
+    open func unbox(_ value: Any, as type: Float.Type, atPath codingPath: [CodingKey]) throws -> Float? { return nil }
+    open func unbox(_ value: Any, as type: Double.Type, atPath codingPath: [CodingKey]) throws -> Double? { return nil }
+    open func unbox(_ value: Any, as type: String.Type, atPath codingPath: [CodingKey]) throws -> String? { return nil }
+    open func unbox(_ value: Any, as type: Date.Type, atPath codingPath: [CodingKey]) throws -> Date? { return nil }
+    open func unbox(_ value: Any, as type: Data.Type, atPath codingPath: [CodingKey]) throws -> Data? { return nil }
+    open func unbox(_ value: Any, as type: Decimal.Type, atPath codingPath: [CodingKey]) throws -> Decimal? { return nil }
+    
+    
     // MARK: - _BaseDecoder
     internal class _BaseDecoder : Decoder {
         // MARK: Properties
+        fileprivate let baseDecoder: BaseDecoder
         /// The decoder's storage.
         internal var storage: _BaseDecodingStorage
         
@@ -973,7 +1062,8 @@ open class BaseDecoder {
         
         // MARK: - Initialization
         /// Initializes `self` with the given top-level container and options.
-        internal init(referencing container: Any, at codingPath: [CodingKey] = [], options: BaseDecoder._Options) {
+        internal init(_ baseDecoder: BaseDecoder, referencing container: Any, at codingPath: [CodingKey] = [], options: BaseDecoder._Options) {
+            self.baseDecoder = baseDecoder
             self.storage = _BaseDecodingStorage()
             self.storage.push(container: container)
             self.codingPath = codingPath
@@ -1363,7 +1453,7 @@ open class BaseDecoder {
             
             //let value: Any = self.container[key.stringValue] ?? NSNull()
             let value: Any = self.container[key.stringValue] ?? AnyNil
-            return _BaseDecoder(referencing: value, at: self.decoder.codingPath, options: self.decoder.options)
+            return _BaseDecoder(self.decoder.baseDecoder, referencing: value, at: self.decoder.codingPath, options: self.decoder.options)
         }
         
         public func superDecoder() throws -> Decoder {
@@ -1726,7 +1816,7 @@ open class BaseDecoder {
             
             let value = self.container[self.currentIndex]
             self.currentIndex += 1
-            return _BaseDecoder(referencing: value, at: self.decoder.codingPath, options: self.decoder.options)
+            return _BaseDecoder(self.decoder.baseDecoder, referencing: value, at: self.decoder.codingPath, options: self.decoder.options)
         }
     }
 }
@@ -1842,6 +1932,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Bool.self, atPath: self.codingPath) { value = v }
+        
         #if DEPLOYMENT_RUNTIME_SWIFT
         // Bridging differences require us to split implementations here
         guard let number = store(value) as? NSNumber else {
@@ -1878,6 +1971,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Int.self, atPath: self.codingPath) { value = v }
+        
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -1894,6 +1990,9 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Int8.Type) throws -> Int8? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Int8.self, atPath: self.codingPath) { value = v }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -1912,6 +2011,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Int16.self, atPath: self.codingPath) { value = v }
+        
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -1928,6 +2030,9 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Int32.Type) throws -> Int32? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Int32.self, atPath: self.codingPath) { value = v }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -1946,6 +2051,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Int64.self, atPath: self.codingPath) { value = v }
+        
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -1962,6 +2070,9 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: UInt.Type) throws -> UInt? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: UInt.self, atPath: self.codingPath) { value = v }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -1980,6 +2091,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: UInt8.self, atPath: self.codingPath) { value = v }
+        
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -1996,6 +2110,9 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: UInt16.Type) throws -> UInt16? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: UInt16.self, atPath: self.codingPath) { value = v }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2014,6 +2131,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: UInt32.self, atPath: self.codingPath) { value = v }
+        
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -2031,6 +2151,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: UInt64.self, atPath: self.codingPath) { value = v }
+        
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -2047,6 +2170,9 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Float.Type) throws -> Float? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Float.self, atPath: self.codingPath) { value = v }
         
         if let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
             //if let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
@@ -2094,6 +2220,9 @@ extension BaseDecoder._BaseDecoder {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
         
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Double.self, atPath: self.codingPath) { value = v }
+        
         if let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
             //if let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
             // We are always willing to return the number as a Double:
@@ -2129,6 +2258,9 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: String.Type) throws -> String? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: String.self, atPath: self.codingPath) { value = v }
         
         guard let string = value as? String else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -2212,6 +2344,9 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Decimal.Type) throws -> Decimal? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        
+        var value = value
+        if let v = try self.baseDecoder.unbox(value, as: Decimal.self, atPath: self.codingPath) { value = v }
         
         #if DEPLOYMENT_RUNTIME_SWIFT
         // Bridging differences require us to split implementations here

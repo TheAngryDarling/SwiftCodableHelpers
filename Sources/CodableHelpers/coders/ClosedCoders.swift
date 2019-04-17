@@ -30,7 +30,7 @@ open class BasicClosedEncoder<EncodingType, EncodingResults>: BaseEncoder where 
     /// - throws: `EncodingError.invalidValue` if a non-conforming floating-point value is encountered during encoding, and the encoding strategy is `.throw`.
     /// - throws: An error if any value throws an error during encoding.
     open func encode(_ value: EncodingType) throws -> EncodingResults {
-        let encoder = BaseEncoder._BaseEncoder(options: self.options)
+        let encoder = BaseEncoder._BaseEncoder(self, options: self.options)
         
         guard let topLevel = try encoder.box_(value) else {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(EncodingType.self) did not encode any values."))
@@ -82,7 +82,7 @@ open class BasicClosedDecoder<DecodingType, DecodingInput>: BaseDecoder where De
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "The given data was not valid Basic.", underlyingError: error))
         }
         
-        let decoder = _BaseDecoder(referencing: topLevel, options: self.options)
+        let decoder = _BaseDecoder(self, referencing: topLevel, options: self.options)
         guard let value = try decoder.unbox(topLevel, as: type) else {
             throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value."))
         }
