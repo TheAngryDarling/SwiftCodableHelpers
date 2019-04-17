@@ -1148,14 +1148,15 @@ open class BaseDecoder {
         private let container: [String : Any]
         
         /// The path of coding keys taken to get to this point in decoding.
-        private(set) public var codingPath: [CodingKey]
+        //private(set) public var codingPath: [CodingKey]
+        public var codingPath: [CodingKey] { return self.decoder.codingPath }
         
         // MARK: - Initialization
         /// Initializes `self` by referencing the given decoder and container.
         fileprivate init(referencing decoder: _BaseDecoder, wrapping container: [String : Any]) {
             self.decoder = decoder
             self.container = container
-            self.codingPath = decoder.codingPath
+            //self.codingPath = decoder.codingPath
         }
         
         // MARK: - KeyedDecodingContainerProtocol Methods
