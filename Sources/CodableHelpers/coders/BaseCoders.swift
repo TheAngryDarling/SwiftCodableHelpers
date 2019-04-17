@@ -1454,7 +1454,7 @@ open class BaseDecoder {
             
             //let value: Any = self.container[key.stringValue] ?? NSNull()
             let value: Any = self.container[key.stringValue] ?? AnyNil
-            return _BaseDecoder(self.decoder.baseDecoder, referencing: value, at: self.decoder.codingPath, options: self.decoder.options)
+            return _BaseDecoder(self.decoder.baseDecoder, referencing: value, at: self.decoder.codingPath.appending(key), options: self.decoder.options)
         }
         
         public func superDecoder() throws -> Decoder {
