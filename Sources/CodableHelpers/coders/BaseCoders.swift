@@ -2453,7 +2453,17 @@ fileprivate struct _BaseKey : CodingKey {
     }
     
     fileprivate static let `super` = _BaseKey(stringValue: "super")!
+    
+    
 }
+
+#if !_runtime(_ObjC)
+extension _BaseKey: CustomStringConvertible {
+    public var description: String {
+        return "\(type(of: self)).\(self.stringValue)"
+    }
+}
+#endif
 
 
 //===----------------------------------------------------------------------===//
