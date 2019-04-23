@@ -224,7 +224,11 @@ public struct CodableHelpers {
                 // Must decode element here
                 let injectableContainer = WrappedInjectedKeyedDecodingContainer<CodableKey>(elementContainer,
                                                                                             injection: (key: elementKey, key.stringValue))
+                print("\t Sub2 Container Type: \(type(of: injectableContainer)), Sub Key: \(key), Sub coding path: \(injectableContainer.codingPath)")
                 let subDecoder = WrappedKeyedDecoder<CodableKey>(injectableContainer)
+                
+                print("\t Sub Decoder Type: \(type(of: subDecoder)), Sub Key: \(key), Sub Decoder coding path: \(subDecoder.codingPath)")
+                
                 let newElement = try decodingFunc(subDecoder)
                 list.append(newElement)
             }
