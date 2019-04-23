@@ -15,13 +15,16 @@ public class WrappedKeyedDecoder<K>: Decoder where K: CodingKey {
     
     public var userInfo: [CodingUserInfoKey : Any] = [:]
     internal var container: KeyedDecodingContainer<K>
-    public var codingPath: [CodingKey] { return self.container.codingPath }
+   // public var codingPath: [CodingKey] { return self.container.codingPath }
+    public let codingPath: [CodingKey]
     public init(_ container: KeyedDecodingContainer<K>) {
         self.container = container
+        self.codingPath = container.codingPath
     }
     
     public init<Container>(_ container: Container) where K == Container.Key, Container : KeyedDecodingContainerProtocol {
         self.container = KeyedDecodingContainer<K>(container)
+        self.codingPath = container.codingPath
     }
     
     public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key : CodingKey {

@@ -15,9 +15,11 @@ public class WrappedSingleValueEncoder: Encoder {
     
     public var userInfo: [CodingUserInfoKey : Any] = [:]
     internal var container: SingleValueEncodingContainer
-    public var codingPath: [CodingKey] { return self.container.codingPath }
+    //public var codingPath: [CodingKey] { return self.container.codingPath }
+    public let codingPath: [CodingKey]
     public init(_ container: SingleValueEncodingContainer) {
         self.container = container
+        self.codingPath = container.codingPath
     }
     
     public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key : CodingKey {

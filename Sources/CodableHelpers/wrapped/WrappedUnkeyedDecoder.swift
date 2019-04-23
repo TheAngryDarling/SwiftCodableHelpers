@@ -15,9 +15,11 @@ public class WrappedUnkeyedDecoder: Decoder, SingleValueDecodingContainer {
     
     public var userInfo: [CodingUserInfoKey : Any] = [:]
     internal var container: UnkeyedDecodingContainer
-    public var codingPath: [CodingKey] { return self.container.codingPath }
+    //public var codingPath: [CodingKey] { return self.container.codingPath }
+    public let codingPath: [CodingKey]
     public init(_ container: UnkeyedDecodingContainer) {
         self.container = container
+        self.codingPath = container.codingPath
     }
     
     public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key : CodingKey {

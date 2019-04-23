@@ -15,9 +15,14 @@ public class WrappedUnKeyedEncoder: Encoder, SingleValueEncodingContainer {
     
     public var userInfo: [CodingUserInfoKey : Any] = [:]
     private var container: UnkeyedEncodingContainer
-    public init(_ container: UnkeyedEncodingContainer) { self.container = container }
+    //public var codingPath: [CodingKey] { return self.container.codingPath }
+    public let codingPath: [CodingKey]
+    public init(_ container: UnkeyedEncodingContainer) {
+        self.container = container
+        self.codingPath = container.codingPath
+    }
     
-    public var codingPath: [CodingKey] { return self.container.codingPath }
+    
     
     public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key : CodingKey {
         //return self.container.nestedContainer(keyedBy: type)

@@ -19,11 +19,16 @@ public class BridgedKeyedEncodingContainer<FromKey, ToKey>: KeyedEncodingContain
     
     private var container: KeyedEncodingContainer<FromKey>
     
-    public var codingPath: [CodingKey] { return container.codingPath }
+    //public var codingPath: [CodingKey] { return container.codingPath }
+    public let codingPath: [CodingKey]
     
-    public init(_ container: KeyedEncodingContainer<FromKey>) { self.container = container }
+    public init(_ container: KeyedEncodingContainer<FromKey>) {
+        self.container = container
+        self.codingPath = container.codingPath
+    }
     public init<Container>(_ container: Container) where FromKey == Container.Key, Container : KeyedEncodingContainerProtocol {
         self.container = KeyedEncodingContainer(container)
+        self.codingPath = container.codingPath
     }
     
     

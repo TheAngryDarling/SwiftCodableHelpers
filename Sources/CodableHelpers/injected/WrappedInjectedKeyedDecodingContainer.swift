@@ -40,7 +40,9 @@ public class WrappedInjectedKeyedDecodingContainer<K>: KeyedDecodingContainerPro
     private var injectionValues: [Any] = []
     
     private var container: KeyedDecodingContainer<Key>
-    public var codingPath: [CodingKey] { return self.container.codingPath }
+    
+    //public var codingPath: [CodingKey] { return self.container.codingPath }
+    public var codingPath: [CodingKey]
     public var allKeys: [K] {
         var rtn: [K] = self.container.allKeys
         for k in self.injectionKeys {
@@ -53,6 +55,7 @@ public class WrappedInjectedKeyedDecodingContainer<K>: KeyedDecodingContainerPro
     
     public init<Container>(_ container: Container, injections: [(key: Key, value: Any)]) where K == Container.Key, Container : KeyedDecodingContainerProtocol {
         self.container = KeyedDecodingContainer<Key>(container)
+        self.codingPath = container.codingPath
         for kv in injections {
             self.injectionKeys.append(kv.key)
             self.injectionValues.append(kv.value)

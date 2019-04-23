@@ -15,7 +15,8 @@ public class BridgedKeyedDecodingContainer<FromKey, ToKey>: KeyedDecodingContain
     
     private var container: KeyedDecodingContainer<FromKey>
     
-    public var codingPath: [CodingKey] { return container.codingPath }
+    // public var codingPath: [CodingKey] { return container.codingPath }
+    public let codingPath: [CodingKey]
     public var allKeys: [Key] {
         var rtn: [Key] = []
         for k in self.container.allKeys {
@@ -26,9 +27,13 @@ public class BridgedKeyedDecodingContainer<FromKey, ToKey>: KeyedDecodingContain
         return rtn
     }
     
-    public init(_ container: KeyedDecodingContainer<FromKey>) { self.container = container }
+    public init(_ container: KeyedDecodingContainer<FromKey>) {
+        self.container = container
+        self.codingPath = container.codingPath
+    }
     public init<Container>(_ container: Container) where FromKey == Container.Key, Container : KeyedDecodingContainerProtocol {
         self.container = KeyedDecodingContainer(container)
+        self.codingPath = container.codingPath
     }
     
     
