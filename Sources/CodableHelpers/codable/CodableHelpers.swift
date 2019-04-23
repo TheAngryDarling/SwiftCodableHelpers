@@ -572,7 +572,7 @@ extension CodableHelpers {
         private static func decode(_ container: inout UnkeyedDecodingContainer) throws -> Array<Any>  {
             var rtn: Array<Any> = Array<Any>()
             while !container.isAtEnd {
-                if let v = try? container.decodeNil(), v {
+                if let _ = try? container.decodeNil() {
                     rtn.append(AnyNil) //If array was an optional array.  We should add the nil in.
                 } else if let v = try? container.decode(Int.self) {
                     rtn.append(v)
@@ -607,7 +607,7 @@ extension CodableHelpers {
                 let rtn = SCArrayOrderedDictionary<Int, Any>()
                 
                 for key in keys {
-                    if let v = try? container.decodeNil(forKey: key), v {
+                    if let _ = try? container.decodeNil(forKey: key) {
                         rtn[key.intValue!] = AnyNil //(nil as Any)
                     } else if let v = try? container.decode(Int.self, forKey: key) {
                         rtn[key.intValue!] = v
@@ -639,7 +639,7 @@ extension CodableHelpers {
                 let rtn = SCArrayOrderedDictionary<String, Any>()
                 
                 for key in keys {
-                    if let v = try? container.decodeNil(forKey: key), v {
+                    if let _ = try? container.decodeNil(forKey: key) {
                         rtn[key.stringValue] = AnyNil //(nil as Any)
                     } else if let v = try? container.decode(Float.self, forKey: key) {
                         rtn[key.stringValue] = v
