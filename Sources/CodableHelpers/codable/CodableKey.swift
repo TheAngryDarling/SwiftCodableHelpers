@@ -47,8 +47,10 @@ public struct CodableKey: CodingKey {
     
 }
 
+#if !_runtime(_ObjC)
 extension CodableKey: CustomStringConvertible {
     public var description: String {
         return "\(type(of: self)).\(self.stringValue)"
     }
 }
+#endif
