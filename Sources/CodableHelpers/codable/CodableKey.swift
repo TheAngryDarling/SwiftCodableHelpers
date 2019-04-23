@@ -46,3 +46,9 @@ public struct CodableKey: CodingKey {
     }
     
 }
+
+extension CodableKey: CustomStringConvertible {
+    public var description: String {
+        return "\(type(of: self)).\(self.stringValue)"
+    }
+}
