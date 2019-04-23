@@ -217,9 +217,10 @@ public struct CodableHelpers {
                                                            decodingFunc: (_ decoder: Decoder) throws -> Element) throws -> Array<Element> {
             var list: [Element] = []
             let container = try decoder.container(keyedBy: CodableKey.self)
+            print("Current Container Type: \(type(of: container)), Current coding path: \(container.codingPath)")
             for key in container.allKeys {
                 let elementContainer = try container.nestedContainer(keyedBy: CodableKey.self, forKey: key)
-                
+                print("\t Sub Container Type: \(type(of: elementContainer)), Sub Key: \(key), Sub coding path: \(elementContainer.codingPath)")
                 // Must decode element here
                 let injectableContainer = WrappedInjectedKeyedDecodingContainer<CodableKey>(elementContainer,
                                                                                             injection: (key: elementKey, key.stringValue))
