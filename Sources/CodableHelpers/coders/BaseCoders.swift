@@ -2457,6 +2457,12 @@ fileprivate struct _BaseKey : CodingKey {
     
 }
 
+extension _BaseKey: CustomPlaygroundDisplayConvertible {
+    public var playgroundDescription: Any {
+        return "\(type(of: self)) (\(self.stringValue))"
+    }
+}
+
 #if !_runtime(_ObjC)
 extension _BaseKey: CustomStringConvertible {
     public var description: String {
