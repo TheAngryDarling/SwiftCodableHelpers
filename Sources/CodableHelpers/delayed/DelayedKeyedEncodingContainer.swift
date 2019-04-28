@@ -19,6 +19,10 @@ public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEn
     
     private var cache: [CacheCall] = []
     
+    public func toKeyedContainer() -> KeyedEncodingContainer<Key> {
+        return KeyedEncodingContainer<Key>(self)
+    }
+    
     fileprivate func processCache() throws {
         while self.cache.count > 0 {
             let c = self.cache.remove(at: 0)
@@ -28,13 +32,17 @@ public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEn
     public override func initializeContainer(fromParent parent: inout UnkeyedEncodingContainer) throws  {
         try super.initializeContainer(fromParent: &parent)
         self.container = parent.nestedContainer(keyedBy: Key.self)
+        self.container = WrappedKeyedEncodingContainer<Key>(parent.nestedContainer(keyedBy: Key.self),
+                                                           customCodingPath: self.codingPath).toKeyedContainer()
         try self.processCache()
     }
     
     public override func initializeContainer<ParentKey>(fromParent parent: inout KeyedEncodingContainer<ParentKey>,
                                                         forKey key: ParentKey) throws /* where ParentKey : CodingKey */ {
         try super.initializeContainer(fromParent: &parent, forKey: key)
-        self.container = parent.nestedContainer(keyedBy: Key.self, forKey: key)
+        //self.container = parent.nestedContainer(keyedBy: Key.self, forKey: key)
+        self.container = WrappedKeyedEncodingContainer(parent.nestedContainer(keyedBy: Key.self, forKey: key),
+                                                       customCodingPath: self.codingPath).toKeyedContainer()
         try self.processCache()
     }
     
