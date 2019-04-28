@@ -295,7 +295,7 @@ public struct CodableHelpers {
                                                      usingKey elementKey: String) throws where S: Sequence, S.Element: Encodable {
             var container = encoder.container(keyedBy: CodableKey.self)
             
-            for (i, element) in s.enumerated() { // Loop through each element in the sequrence
+            for (_, element) in s.enumerated() { // Loop through each element in the sequrence
                 // Create a new encoding container for the element.
                 // This container is a filetered delayed container, meaining
                 // 1. Filtered, calls filter method to filter out specific objects based on filter method
