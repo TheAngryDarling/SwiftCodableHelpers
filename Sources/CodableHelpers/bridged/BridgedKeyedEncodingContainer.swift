@@ -31,6 +31,10 @@ public class BridgedKeyedEncodingContainer<FromKey, ToKey>: KeyedEncodingContain
         self.codingPath = container.codingPath
     }
     
+    public func toKeyedContainer() -> KeyedEncodingContainer<Key> {
+        return KeyedEncodingContainer<Key>(self)
+    }
+    
     
     private func convertKey(_ from: Key) throws -> FromKey {
         guard let rtn = FromKey(stringValue: from.stringValue) else {
