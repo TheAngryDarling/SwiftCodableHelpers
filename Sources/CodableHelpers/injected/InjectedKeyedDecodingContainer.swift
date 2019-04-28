@@ -62,6 +62,10 @@ public class InjectedKeyedDecodingContainer<K>: KeyedDecodingContainerProtocol w
         self.init(codingPath, injections: [injection.key: injection.value])
     }
     
+    public func toKeyedContainer() -> KeyedDecodingContainer<Key> {
+        return KeyedDecodingContainer<Key>(self)
+    }
+    
     
     
     public func contains(_ key: K) -> Bool {
