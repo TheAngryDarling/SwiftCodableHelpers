@@ -27,13 +27,17 @@ public class BridgedKeyedDecodingContainer<FromKey, ToKey>: KeyedDecodingContain
         return rtn
     }
     
-    public init(_ container: KeyedDecodingContainer<FromKey>) {
+    public init(_ container: KeyedDecodingContainer<FromKey>, customCodingPath: [CodingKey]? = nil) {
         self.container = container
-        self.codingPath = container.codingPath
+        self.codingPath = customCodingPath ?? container.codingPath
     }
-    public init<Container>(_ container: Container) where FromKey == Container.Key, Container : KeyedDecodingContainerProtocol {
+    public init<Container>(_ container: Container, customCodingPath: [CodingKey]? = nil) where FromKey == Container.Key, Container : KeyedDecodingContainerProtocol {
         self.container = KeyedDecodingContainer(container)
-        self.codingPath = container.codingPath
+        self.codingPath = customCodingPath ?? container.codingPath
+    }
+    
+    public func toKeyedContainer() -> KeyedDecodingContainer<Key> {
+        return KeyedDecodingContainer<Key>(self)
     }
     
     
