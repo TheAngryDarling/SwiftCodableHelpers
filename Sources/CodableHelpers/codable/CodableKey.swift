@@ -47,12 +47,6 @@ public struct CodableKey: CodingKey {
     
 }
 
-extension CodableKey: CustomPlaygroundDisplayConvertible {
-    public var playgroundDescription: Any {
-        return "\(type(of: self)) (\(self.stringValue))"
-    }
-}
-
 #if !_runtime(_ObjC)
 extension CodableKey: CustomStringConvertible {
     public var description: String {
