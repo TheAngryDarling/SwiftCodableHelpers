@@ -21,6 +21,10 @@ public class FilteredKeyedEncodingContainer<K>: FilteredEncodingContainer, Keyed
         super.init(codingPath: container.codingPath, rootContainer: rootContainer, filter: filter)
     }
     
+    public func toKeyedContainer() -> KeyedEncodingContainer<Key> {
+        return KeyedEncodingContainer<Key>(self)
+    }
+    
     public func encodeNil(forKey key: K) throws {
         if try self.canEncode(method: "encodeNil", childKey: key, value: nil) {
             try container.encodeNil(forKey: key)
