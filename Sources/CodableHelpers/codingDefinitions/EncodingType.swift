@@ -11,9 +11,10 @@ import Foundation
 /*
  Basic protocol that defines an Encoder like JSONEncoder and PropertyListEncoder
 */
-public protocol EncodingType {
+public protocol EncodingType: class {
     associatedtype EncodedData
     
+    var userInfo: [CodingUserInfoKey : Any] { get set}
     func encode<T>(_ value: T) throws -> EncodedData where T : Encodable
 }
 

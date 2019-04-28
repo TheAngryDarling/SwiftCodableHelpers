@@ -11,9 +11,10 @@ import Foundation
 /*
  Basic protocol that defines a Decoder like JSONDecoder and PropertyListDecoder
  */
-public protocol DecodingType {
-     associatedtype EncodedData
+public protocol DecodingType: class {
+    associatedtype EncodedData
     
+    var userInfo: [CodingUserInfoKey : Any] { get set}
     
     func decode<T>(_ type: T.Type, from data: EncodedData) throws -> T where T : Decodable
 }
