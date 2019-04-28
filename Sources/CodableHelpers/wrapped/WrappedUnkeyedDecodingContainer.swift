@@ -135,7 +135,9 @@ open class WrappedUnkeyedDecodingContainer: UnkeyedDecodingContainer {
                                                  disableRepackagingErrors) {
             // TODO: -  Will need to figure out how to properly wrap
             // return try container.decode(type)
-            let d = try self.superDecoder()
+                                                    
+            let d =  WrappedDecoder(try self.container.superDecoder(),
+                                    customCodingPath: self.codingPath.appending(index: self.currentIndex))
             return try T(from: d)
         }
     }

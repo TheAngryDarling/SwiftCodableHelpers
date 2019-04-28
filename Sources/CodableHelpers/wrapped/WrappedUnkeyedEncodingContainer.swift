@@ -134,7 +134,9 @@ open class WrappedUnkeyedEncodingContainer: UnkeyedEncodingContainer {
                                           disableRepackagingErrors) {
             // TODO: -  Will need to figure out how to properly wrap
             // try self.container.encode(value)
-            let e = self.superEncoder()
+            //let e = self.superEncoder()
+            let e =  WrappedEncoder(self.container.superEncoder(),
+                                    customCodingPath: self.codingPath.appending(index: self.count))
             try value.encode(to: e)
         }
     }
