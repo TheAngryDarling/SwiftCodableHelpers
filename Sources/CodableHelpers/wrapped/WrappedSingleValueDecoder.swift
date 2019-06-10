@@ -7,10 +7,9 @@
 
 import Foundation
 
-/*
- A decoder that wrapps a single value decoding container.
- Unsupported functions: container, unkeyedContainer
-*/
+/// A decoder that wraps a single value decoding container.
+///
+/// Unsupported functions: container, unkeyedContainer
 public class WrappedSingleValueDecoder: Decoder {
     
     public var userInfo: [CodingUserInfoKey : Any] = [:]

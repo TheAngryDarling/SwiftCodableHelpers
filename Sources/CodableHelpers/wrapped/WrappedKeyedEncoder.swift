@@ -7,10 +7,9 @@
 
 import Foundation
 
-/*
- An encoder that wrapps a keyed encoding container.
- Unsupported functions: unkeyedContainer, singleValueContainer
-*/
+/// An encoder that wrapps a keyed encoding container.
+///
+/// Unsupported functions: unkeyedContainer, singleValueContainer
 public class WrappedKeyedEncoder<K>: Encoder where K: CodingKey {
     
     public var userInfo: [CodingUserInfoKey : Any] = [:]
