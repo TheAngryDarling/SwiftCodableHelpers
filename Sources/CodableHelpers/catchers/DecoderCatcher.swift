@@ -7,9 +7,8 @@
 
 import Foundation
 
-/*
- A class that catches the decoder for use outside the decoding process
- */
+
+/// A class that catches the decoder for use outside the normal decoding process
 public final class DecoderCatcher: Decodable {
     public var decoder: Decoder
     public init(from decoder: Decoder) throws {

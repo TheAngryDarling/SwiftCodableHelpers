@@ -8,9 +8,7 @@
 import Foundation
 import Nillable
 
-/*
- A wrapped Keyed Decoding Container that allows you to inject or replace key/value pair within the decoding process
- */
+/// A wrapped Keyed Decoding Container that allows you to inject or replace key/value pair within the decoding process
 public class WrappedInjectedKeyedDecodingContainer<Key>: WrappedKeyedDecodingContainer<Key> where Key: CodingKey {
     
     /*private struct HashedKey: Hashable {

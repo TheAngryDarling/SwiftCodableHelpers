@@ -8,9 +8,9 @@
 import Foundation
 
 
-/*
- Filtered unkeyed encoding container.  Allows coder to fileter out specific keyed objecs when encoding
- */
+/// Filtered unkeyed encoding container.
+///
+/// Allows coder to fileter out specific keyed objecs when encoding
 public class FilteredUnkeyedEncodingContainer: FilteredEncodingContainer, UnkeyedEncodingContainer {
     
     private var container: UnkeyedEncodingContainer
@@ -23,97 +23,97 @@ public class FilteredUnkeyedEncodingContainer: FilteredEncodingContainer, Unkeye
     }
     
     public func encodeNil() throws {
-        if try self.canEncode(method: "encodeNil", value: nil) {
+        if try self.canEncode(method: #function, value: nil) {
             try self.container.encodeNil()
         }
     }
     
     public func encode(_ value: Bool) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: String) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: Double) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: Float) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: Int) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: Int8) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: Int16) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: Int32) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: Int64) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: UInt) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: UInt8) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: UInt16) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: UInt32) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode(_ value: UInt64) throws {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }
     
     public func encode<T>(_ value: T) throws where T : Encodable {
-        if try self.canEncode(method: "encode", value: value) {
+        if try self.canEncode(method: #function, value: value) {
             try self.container.encode(value)
         }
     }

@@ -8,10 +8,9 @@
 import Foundation
 import Nillable
 
-/*
- A single value decoding container that allows the coder to inject an extra value into the decoding process
- Unsupported functions: superDecoder(), nestedContainer(keyedBy:)
-*/
+/// A single value decoding container that allows the coder to inject an extra value into the decoding process
+///
+/// Unsupported functions: superDecoder(), nestedContainer(keyedBy:)
 public class InjectedSingleValueDecodingContainer: SingleValueDecodingContainer {
     public let codingPath: [CodingKey]
     

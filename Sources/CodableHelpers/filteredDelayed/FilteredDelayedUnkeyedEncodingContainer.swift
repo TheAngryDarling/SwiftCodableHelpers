@@ -7,28 +7,57 @@
 
 import Foundation
 
-/*
- An Unkeyed encoding container that allows for fitering and delayed processing
- */
+/// An Unkeyed encoding container that allows for fitering and delayed processing
 public class FilteredDelayedUnkeyedEncodingContainer: FilteredUnkeyedEncodingContainer {
+    /// Delayed container to call encodings on
     private var delayedContainer: DelayedUnkeyedEncodingContainer
     
+    /// Creates a new instance of FilteredDelayedUnkeyedEncodingContainer
+    ///
+    /// Note: this should not be called directly, please use one of the inherited classes
+    ///
+    /// - Parameters:
+    ///   - container: The delayed container to work on
+    ///   - rootContainer: Reference to a root filetered container if there is one
+    ///   - filter: The filter method used to filter out specific encoding calls
     public init(_ container: DelayedUnkeyedEncodingContainer,
                 rootContainer: FilteredEncodingContainer? = nil,
                 filter: @escaping FilterEncoding) {
         self.delayedContainer = container
         super.init(container, rootContainer: rootContainer, filter: filter)
     }
+    /// Creates a new instance of FilteredDelayedUnkeyedEncodingContainer
+    ///
+    /// Note: this should not be called directly, please use one of the inherited classes
+    ///
+    /// - Parameters:
+    ///   - codingPath: The current coding path
+    ///   - rootContainer: Reference to a root filetered container if there is one
+    ///   - filter: The filter method used to filter out specific encoding calls
     public convenience init(codingPath: [CodingKey],
                             rootContainer: FilteredEncodingContainer? = nil,
                             filter: @escaping FilterEncoding) {
         self.init(DelayedUnkeyedEncodingContainer(codingPath: codingPath), rootContainer: rootContainer, filter: filter)
     }
     
+    /// Initialize using an UnkeyedEncodingContainer.
+    /// Once called, any pending encoding actions will be called upon the real container
+    ///
+    /// Note: initializeContainer should only be called once on any instance
+    ///
+    /// - Parameter parent: Initialize using an UnkeyedEncodingContainer parent
     public func initializeContainer(fromParent parent: inout UnkeyedEncodingContainer) throws  {
         try self.delayedContainer.initializeContainer(fromParent: &parent)
     }
     
+    /// Initialize using an KeyedEncodingContainer
+    /// Once called, any pending encoding actions will be called upon the real container
+    ///
+    /// Note: initializeContainer should only be called once on any instance
+    ///
+    /// - Parameters:
+    ///   - parent: Initialize using an KeyedEncodingContainer parent
+    ///   - key: Key to initialize with
     public func initializeContainer<ParentKey>(fromParent parent: inout KeyedEncodingContainer<ParentKey>,
                                                forKey key: ParentKey) throws /* where ParentKey : CodingKey */ {
         try self.delayedContainer.initializeContainer(fromParent: &parent,

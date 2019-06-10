@@ -4,7 +4,7 @@
 //
 //  Created by Tyler Anger on 2019-04-10.
 //
-// Internal coded used to re-encapsulate specific collections from one type to another.
+// Internal code used to re-encapsulate specific collections from one type to another.
 // This will allow transforming SCArrayOrderedDictionary to Dictionary
 
 
@@ -18,18 +18,18 @@ internal enum ReEncapsulatableDictionaries {
     case arrayOrderedDictionary
 }
 
-// Enum used to tell the reencapsulate function what array type to use
+/// Enum used to tell the reencapsulate function what array type to use
 internal enum ReEncapsulatableArrays {
     case array
     case classArray
 }
 
-// Protocol used to identify what objects can be re-encapsulated
+/// Protocol used to identify what objects can be re-encapsulated
 internal protocol ReEncapsulatableCollecton {
     func reencapsulatable(dictionariesTo: ReEncapsulatableDictionaries, arraysTo: ReEncapsulatableArrays) -> Any
 }
 
-// Add a default method for easily switching to swift only structures
+/// Add a default method for easily switching to swift only structures
 extension ReEncapsulatableCollecton {
     internal func reencapsulateToSwift() -> Any {
         return reencapsulatable(dictionariesTo: .dictionary, arraysTo: .array)

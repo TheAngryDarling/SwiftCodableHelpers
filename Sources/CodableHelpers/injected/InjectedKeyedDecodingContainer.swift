@@ -7,10 +7,9 @@
 
 import Foundation
 
-/*
- A keyed decoding container that allows the coder to inject extra keyed values into the decoding process
- Unsupported functions: superDecoder(), superDecoder(forKey:)
-*/
+/// A keyed decoding container that allows the coder to inject extra keyed values into the decoding process
+///
+/// Unsupported functions: superDecoder(), superDecoder(forKey:)
 public class InjectedKeyedDecodingContainer<K>: KeyedDecodingContainerProtocol where K: CodingKey {
     public typealias Key = K
     

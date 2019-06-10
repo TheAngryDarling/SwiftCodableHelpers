@@ -7,9 +7,9 @@
 
 import Foundation
 
-/*
- Filtered keyed encoding container.  Allows coder to fileter out specific keyed objecs when encoding
-*/
+/// Filtered keyed encoding container.
+///
+/// Allows coder to fileter out specific keyed objecs when encoding
 public class FilteredKeyedEncodingContainer<K>: FilteredEncodingContainer, KeyedEncodingContainerProtocol where K: CodingKey {
     
     public typealias Key = K
@@ -21,102 +21,105 @@ public class FilteredKeyedEncodingContainer<K>: FilteredEncodingContainer, Keyed
         super.init(codingPath: container.codingPath, rootContainer: rootContainer, filter: filter)
     }
     
+    /// Helpful method of creating a KeyedEncodingContainer out of the current container
+    ///
+    /// - Returns: Returns a KeyedEncodingContainer wrapped around this instance
     public func toKeyedContainer() -> KeyedEncodingContainer<Key> {
         return KeyedEncodingContainer<Key>(self)
     }
     
     public func encodeNil(forKey key: K) throws {
-        if try self.canEncode(method: "encodeNil", childKey: key, value: nil) {
+        if try self.canEncode(method: #function, childKey: key, value: nil) {
             try container.encodeNil(forKey: key)
         }
     }
     
     public func encode(_ value: Bool, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: String, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: Double, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: Float, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: Int, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: Int8, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: Int16, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: Int32, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: Int64, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: UInt, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: UInt8, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: UInt16, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: UInt32, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode(_ value: UInt64, forKey key: K) throws {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }
     
     public func encode<T>(_ value: T, forKey key: K) throws where T : Encodable {
-        if try self.canEncode(method: "encode", childKey: key, value: value) {
+        if try self.canEncode(method: #function, childKey: key, value: value) {
             try container.encode(value, forKey: key)
         }
     }

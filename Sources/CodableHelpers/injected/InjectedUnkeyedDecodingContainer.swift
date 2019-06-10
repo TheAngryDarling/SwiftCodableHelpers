@@ -8,10 +8,9 @@
 import Foundation
 import Nillable
 
-/*
- An unkeyed decoding container that allows the coder to inject extra values into the decoding process
- Unsupported functions: superDecoder(), nestedContainer(keyedBy:)
- */
+/// An unkeyed decoding container that allows the coder to inject extra values into the decoding process
+///
+/// Unsupported functions: superDecoder(), nestedContainer(keyedBy:)
 public class InjectedUnkeyedDecodingContainer: UnkeyedDecodingContainer {
     
     

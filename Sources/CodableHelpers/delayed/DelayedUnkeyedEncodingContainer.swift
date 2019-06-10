@@ -7,36 +7,53 @@
 
 import Foundation
 
-/*
- Delayed unkeyed encoding container used to encode elements in memory until initializeContainer is called
- */
+/// Delayed unkeyed encoding container used to encode elements in memory until initializeContainer is called
 public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedEncodingContainer {
     
     private typealias CacheCall = (_ container: inout UnkeyedEncodingContainer) throws -> Void
     
+    /// Real container used for encoding
     private var container: UnkeyedEncodingContainer? = nil
     
+    /// Stores any encoding actions pending before initializeContainer has been called
     private var cache: [CacheCall] = []
-    
+    /// The number of elements encoded into the container.
     public var count: Int {
         if let c = self.container { return c.count }
         else { return self.cache.count }
     }
     
+    /// Executes all pending encoding calls on real container
     fileprivate func processCache() throws {
         while self.cache.count > 0 {
             let c = self.cache.remove(at: 0)
             try c(&self.container!)
         }
     }
+    /// Initialize using an UnkeyedEncodingContainer.
+    /// Once called, any pending encoding actions will be called upon the real container
+    ///
+    /// Note: initializeContainer should only be called once on any instance
+    ///
+    /// - Parameter parent: Initialize using an UnkeyedEncodingContainer parent
     public override func initializeContainer(fromParent parent: inout UnkeyedEncodingContainer) throws {
+        guard container == nil else { return }
         try super.initializeContainer(fromParent: &parent)
         self.container = parent//parent.nestedUnkeyedContainer()
         try self.processCache()
     }
     
+    /// Initialize using an KeyedEncodingContainer
+    /// Once called, any pending encoding actions will be called upon the real container
+    ///
+    /// Note: initializeContainer should only be called once on any instance
+    ///
+    /// - Parameters:
+    ///   - parent: Initialize using an KeyedEncodingContainer parent
+    ///   - key: Key to initialize with
     public override func initializeContainer<ParentKey>(fromParent parent: inout KeyedEncodingContainer<ParentKey>,
                                                         forKey key: ParentKey) throws /* where ParentKey : CodingKey */ {
+        guard container == nil else { return }
         try super.initializeContainer(fromParent: &parent, forKey: key)
         self.container = parent.nestedUnkeyedContainer(forKey: key)
         try self.processCache()
@@ -215,6 +232,10 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedE
         return c.nestedContainer(keyedBy: keyType)
     }
     
+    /// Encodes a nested delayed container keyed by the given type and returns it.
+    ///
+    /// - Parameter keyType: The key type to use for the container.
+    /// - Returns: A new delayed keyed encoding container.
     public func nestedDelayedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> DelayedKeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
         var subPath: [CodingKey] = []
         subPath.append(contentsOf: self.codingPath)

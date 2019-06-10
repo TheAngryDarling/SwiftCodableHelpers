@@ -7,9 +7,7 @@
 
 import Foundation
 
-/*
- A class that catches the ebcider for use outside the encoding process
- */
+/// A class that catches the encoder for use outside the encoding process
 public final class EncoderCatcher: Encodable {
     public var encoder: Encoder?
     public init() { self.encoder = nil }
