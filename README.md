@@ -107,9 +107,9 @@ Catches either the Encoder or Decoder for use outside the normal coding process
 
 ### Protocols
 
-* **EncodingType** - A protocol used when defining functions that can take any type of encoding system like JSONEncoder, PropertyListEncoder or one inherited from BasicEncoder
+* **EncodingType** - A protocol used when defining functions that can take any type of encoding system like JSONEncoder, PropertyListEncoder or one inherited from BasicOpenEncoder
     * **EncodingToDataType** - A protocol that inherits EncodingType that requires the resulting type to be of Data.  JSONEncoder, PropertyListEncoder implement this.
-* **DecodingType** - A protocol used when defining functions that can take any type of decoding system like JSONDecoder, PropertyListDecoder or one inherited from BasicDecoder
+* **DecodingType** - A protocol used when defining functions that can take any type of decoding system like JSONDecoder, PropertyListDecoder or one inherited from BasicOpenDecoder
     * **DecodingToDataType** - A protocol that inherits DecodingType that requires the resulting type to be of Data.  JSONDecoder, PropertyListDecoder implement this.
 * **CodableSequenceDynamicKeyHelper** - A protocol used on types that implement Sequence that provide the necessary logic to encode into dictionaries based on a specific property name and decode back into an sequence.  This protocol relies on the dynamicElementEncoding and dynamicElementDecoding methods
 * **BaseEncoderTypeBoxing** - A protocol for defining the type boxing methods used by the encoders.  Allows for overriding the value being encoding
