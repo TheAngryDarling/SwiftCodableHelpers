@@ -101,7 +101,8 @@ Catches either the Encoder or Decoder for use outside the normal coding process
             * **Notes**
                 * Array order is not guaranteed
                 * CodingPath when decoding will be malformed.  The Dynamic Key will be missing
-    * **arrays** - Where array related helper methods are located
+    * **arrays** - Where array related encode/decode helper methods are located
+    * **dictionaries** - Where dictionary related encode/decode helper methods are located
 
 
 ### Protocols
