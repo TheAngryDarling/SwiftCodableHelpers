@@ -11,95 +11,231 @@ import Nillable
 
 
 
-
+/// Strcture namespace that contains all helper methods for working with Encodable/Decodable
 public struct CodableHelpers {
     
     private init() { }
     
-    /*
-     Simple encoding to capture an encoded value
-     */
+    /// Simple encoding to capture an encoded value
     fileprivate class _SimpleEncoder: Encoder, SingleValueEncodingContainer {
         
         
+        /// The path of coding keys taken to get to this point in encoding.
         var codingPath: [CodingKey] = []
         
         var userInfo: [CodingUserInfoKey : Any] = [:]
         
         var value: Any? = nil
         
+        /// Returns an encoding container appropriate for holding multiple values
+        /// keyed by the given key type.
+        ///
+        /// You must use only one kind of top-level encoding container. This method
+        /// must not be called after a call to `unkeyedContainer()` or after
+        /// encoding a value through a call to `singleValueContainer()`
+        ///
+        /// - parameter type: The key type to use for the container.
+        /// - returns: A new keyed encoding container.
         func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key : CodingKey {
             fatalError("Unsupported Method")
         }
         
+        /// Returns an encoding container appropriate for holding multiple unkeyed
+        /// values.
+        ///
+        /// You must use only one kind of top-level encoding container. This method
+        /// must not be called after a call to `container(keyedBy:)` or after
+        /// encoding a value through a call to `singleValueContainer()`
+        ///
+        /// - returns: A new empty unkeyed container.
         func unkeyedContainer() -> UnkeyedEncodingContainer {
             fatalError("Unsupported Method")
         }
         
+        /// Returns an encoding container appropriate for holding a single primitive
+        /// value.
+        ///
+        /// You must use only one kind of top-level encoding container. This method
+        /// must not be called after a call to `unkeyedContainer()` or
+        /// `container(keyedBy:)`, or after encoding a value through a call to
+        /// `singleValueContainer()`
+        ///
+        /// - returns: A new empty single value container.
         func singleValueContainer() -> SingleValueEncodingContainer {
             return self
         }
         
+        /// Encodes a null value.
+        ///
+        /// - throws: `EncodingError.invalidValue` if a null value is invalid in the
+        ///   current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encodeNil() throws {
             self.value = nil
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Bool) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: String) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Double) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Float) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Int) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Int8) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Int16) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Int32) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: Int64) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: UInt) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: UInt8) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: UInt16) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: UInt32) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode(_ value: UInt64) throws {
             self.value = value
         }
         
+        /// Encodes a single value of the given type.
+        ///
+        /// - parameter value: The value to encode.
+        /// - throws: `EncodingError.invalidValue` if the given value is invalid in
+        ///   the current context for this format.
+        /// - precondition: May not be called after a previous `self.encode(_:)`
+        ///   call.
         func encode<T>(_ value: T) throws where T : Encodable {
             self.value = value
         }
@@ -107,7 +243,12 @@ public struct CodableHelpers {
         
     }
     
-    // Tests to see if two CodingKey arrays match
+    /// Tests to see if two CodingKey arrays match
+    ///
+    /// - Parameters:
+    ///   - lhs: CodingPath A
+    ///   - rhs: CodingPath B
+    /// - Returns: Returns true of the two arrays equal, otherwise false
     private static func codingKeysMatch(_ lhs: [CodingKey], _ rhs: [CodingKey]) -> Bool {
         guard lhs.count == rhs.count else { return false }
         for i in 0..<lhs.count {
@@ -116,6 +257,12 @@ public struct CodableHelpers {
         return true
     }
     
+    /// Decodes a KeyedDecodingContainer into a SCArrayOrderedDictionary
+    ///
+    /// - Parameters:
+    ///   - container: The decoding container to decode from
+    ///   - customDecoding: Custom decoder function for custom decoding of complex objects
+    /// - Returns: Returns either SCArrayOrderedDictionary<String, Any> or SCArrayOrderedDictionary<Int, Any> depending on the CodableKey type
     private static func _decode(_ container: inout KeyedDecodingContainer<CodableKey>,
                                 customDecoding: (_ decoder: Decoder) throws -> Any?) throws -> Any {
         
@@ -212,84 +359,35 @@ public struct CodableHelpers {
             return rtn
         }
     }
-    /*private static func _decode(_ container: inout KeyedDecodingContainer<CodableKey>) throws -> Any {
-        
-        let keys = container.allKeys
-        if keys.count > 0 && keys[0].intValue != nil {
-            let rtn = SCArrayOrderedDictionary<Int, Any>()
-            
-            for key in keys {
-                if let _ = try? container.decodeNil(forKey: key) {
-                    rtn[key.intValue!] = AnyNil //(nil as Any)
-                } else if let v = try? container.decode(Int.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if let v = try? container.decode(UInt.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if let v = try? container.decode(Float.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if let v = try? container.decode(String.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if let v = try? container.decode(Double.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if let v = try? container.decode(Bool.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if let v = try? container.decode(Date.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if let v = try? container.decode(Data.self, forKey: key) {
-                    rtn[key.intValue!] = v
-                } else if var v = try? container.nestedContainer(keyedBy: CodableKey.self, forKey: key) {
-                    rtn[key.intValue!] = try _decode(&v)
-                } else if var v = try? container.nestedUnkeyedContainer(forKey: key) {
-                    rtn[key.intValue!] = try CodableHelpers.arrays.decode(&v)
-                } else {
-                    throw DecodingError.typeMismatch(Any.self, DecodingError.Context(codingPath: container.codingPath.appending(key),
-                                                                                     debugDescription: "Unsupported type"))
-                }
-            }
-            
-            return rtn
-        } else {
-            let rtn = SCArrayOrderedDictionary<String, Any>()
-            
-            for key in keys {
-                if let _ = try? container.decodeNil(forKey: key) {
-                    rtn[key.stringValue] = AnyNil //(nil as Any)
-                } else if let v = try? container.decode(Float.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(String.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(Double.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(Bool.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(Int.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(UInt.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(Date.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(Data.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if var v = try? container.nestedContainer(keyedBy: CodableKey.self, forKey: key) {
-                    rtn[key.stringValue] = try _decode(&v)
-                } else if var v = try? container.nestedUnkeyedContainer(forKey: key) {
-                    rtn[key.stringValue] = try CodableHelpers.arrays.decode(&v)
-                } else {
-                    throw DecodingError.typeMismatch(Any.self, DecodingError.Context(codingPath: container.codingPath.appending(key), debugDescription: "Unsupported type"))
-                }
-            }
-            
-            return rtn
-        }
-        
-    }*/
     
+    /// A collection of helper methods for working with Sequence's
     public struct sequences {
         
-        /*
-         Provides an easy way of encoding an array of objects like a dictionary using one of the object properties as the key.
-         Note: Array order is not guarenteed.  This is dependant on how the the EncodingType handles Dictionaries
-        */
+        
+        /// Provides an easy way of encoding an array of objects like a dictionary using one of the object properties as the key.
+        ///
+        /// Note: Array order is not guarenteed.  This is dependant on how the the EncodingType handles Dictionaries
+        ///
+        ///     struct EncodingElement: Encodable {
+        ///         let id: String
+        ///         let variableA: Int
+        ///         let variableB: Bool
+        ///     }
+        ///
+        ///     let objects: [EncodingElement] = [...]
+        ///
+        ///     try CodableHelpers.sequences.dynamicElementEncoding(objects, to: encoder, elementKey: "id")
+        ///
+        ///     // This converts the encoded objects to (in JSON)
+        ///     {
+        ///         "{id}": { variableA: 3, variableB: false },
+        ///         ...
+        ///     }
+        ///
+        /// - Parameters:
+        ///   - s: Sequence of Encodable elements to dynamically encode
+        ///   - encoder: The encoder to encode the objects to
+        ///   - elementKey: The CodingKey within the Element to encode to
         public static func dynamicElementEncoding<S>(_ s: S,
                                                      to encoder: Encoder,
                                                      usingKey elementKey: String) throws where S: Sequence, S.Element: Encodable {
@@ -349,7 +447,7 @@ public struct CodableHelpers {
             }
         }
         
-        // Private helper object for encoding dynamic keyed arrays
+        /// Private helper object for encoding dynamic keyed arrays
         fileprivate struct EncodableObject<Objects>: Encodable where Objects: Sequence, Objects.Element: Encodable {
             private let objects: Objects
             private let elementKey: String
@@ -365,10 +463,30 @@ public struct CodableHelpers {
             
         }
         
-        /*
-         Provides an easy way of encoding an array of objects like a dictionary using one of the object properties as the key.
-         Note: Array order is not guarenteed.  This is dependant on how the the EncodingType handles Dictionaries
-         */
+        /// Provides an easy way of encoding an array of objects like a dictionary using one of the object properties as the key.
+        ///
+        /// Note: Array order is not guarenteed.  This is dependant on how the the EncodingType handles Dictionaries
+        ///
+        ///     struct EncodingElement: Encodable {
+        ///         let id: String
+        ///         let variableA: Int
+        ///         let variableB: Bool
+        ///     }
+        ///
+        ///     let objects: [EncodingElement] = [...]
+        ///
+        ///     try CodableHelpers.sequences.dynamicElementEncoding(objects, to: encoder, usingKey: "id")
+        ///
+        ///     // This converts the encoded objects to (in JSON)
+        ///     {
+        ///         "{id}": { variableA: 3, variableB: false },
+        ///         ...
+        ///     }
+        ///
+        /// - Parameters:
+        ///   - s: Sequence of Encodable elements to dynamically encode
+        ///   - encoder: The encoder to encode the objects to
+        ///   - elementKey: The CodingKey within the Element to encode to
         public static func dynamicElementEncoding<S, E>(_ s: S,
                                                      to encoder: E,
                                                      usingKey elementKey: String) throws -> E.EncodedData where S: Sequence, S.Element: Encodable, E: EncodingType {
@@ -377,10 +495,32 @@ public struct CodableHelpers {
             return try encoder.encode(EncodableObject(objects: s, elementKey: elementKey))
         }
         
-        /*
-         Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
-         Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
-         */
+        
+        /// Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
+        ///
+        /// Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
+        ///
+        ///     struct EncodingElement: Decodable {
+        ///         let id: String
+        ///         let variableA: Int
+        ///         let variableB: Bool
+        ///     }
+        ///
+        ///     // JSON data that is in the decoder
+        ///     {
+        ///         "{id}": { variableA: 3, variableB: false },
+        ///         ...
+        ///     }
+        ///
+        ///     let objects = try dynamicElementDecoding(from: decoder, usingKey: "id") {
+        ///         return try EncodingElement(from: $0)
+        ///     }
+        ///
+        /// - Parameters:
+        ///   - decoder: The decoder to decode the objects from
+        ///   - elementKey: The coding key
+        ///   - decodingFunc: Function used for decoding data into specific object type.  This helps when the array is a base type/protocol while the instances could be different inherited types
+        /// - Returns: Returns an array of decoded objects
         public static func dynamicElementDecoding<Element>(from decoder: Decoder,
                                                            usingKey elementKey: String,
                                                            decodingFunc: (_ decoder: Decoder) throws -> Element) throws -> Array<Element> {
@@ -407,10 +547,29 @@ public struct CodableHelpers {
         
         
         
-        /*
-         Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
-         Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
-         */
+        /// Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
+        ///
+        /// Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
+        ///
+        ///     struct EncodingElement: Decodable {
+        ///         let id: String
+        ///         let variableA: Int
+        ///         let variableB: Bool
+        ///     }
+        ///
+        ///     // JSON data that is in the decoder
+        ///     {
+        ///         "{id}": { variableA: 3, variableB: false },
+        ///         ...
+        ///     }
+        ///
+        ///     let objects = try dynamicElementDecoding(from: decoder, usingKey: "id", ofType: EncodingElement.self)
+        ///
+        /// - Parameters:
+        ///   - decoder: The decoder to decode the objects from
+        ///   - elementKey: The coding key
+        ///   - ofType: The decodable type to decode to
+        /// - Returns: Returns an array of decoded objects
         public static func dynamicElementDecoding<Element>(from decoder: Decoder,
                                                            usingKey elementKey: String,
                                                            ofType: Element.Type) throws -> Array<Element> where Element: Decodable {
@@ -420,10 +579,32 @@ public struct CodableHelpers {
         }
         
         
-        /*
-         Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
-         Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
-         */
+        /// Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
+        ///
+        /// Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
+        ///
+        ///     struct EncodingElement: Decodable {
+        ///         let id: String
+        ///         let variableA: Int
+        ///         let variableB: Bool
+        ///     }
+        ///
+        ///     // JSON data that is in the decoder
+        ///     {
+        ///         "{id}": { variableA: 3, variableB: false },
+        ///         ...
+        ///     }
+        ///
+        ///     let objects = try dynamicElementDecoding(decoder: decoder, withData: data, usingKey: "id") {
+        ///         return try EncodingElement(from: $0)
+        ///     }
+        ///
+        /// - Parameters:
+        ///   - decoder: The decoder to decode the data from
+        ///   - data: The data to decode from
+        ///   - elementKey: The coding key
+        ///   - decodingFunc: Function used for decoding data into specific object type.  This helps when the array is a base type/protocol while the instances could be different inherited types
+        /// - Returns: Returns an array of decoded objects
         public static func dynamicElementDecoding<D, Element>(from decoder: D,
                                                               withData data: D.EncodedData,
                                                               usingKey elementKey: String,
@@ -436,10 +617,30 @@ public struct CodableHelpers {
             
         }
         
-        /*
-         Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
-         Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
-         */
+        /// Provides an easy way of decoding dictionaries of objects like an array using the key as one of the object property values.
+        ///
+        /// Note: Array order is not guarenteed.  This is dependant on how the the DecodingType handles Dictionaries
+        ///
+        ///     struct EncodingElement: Decodable {
+        ///         let id: String
+        ///         let variableA: Int
+        ///         let variableB: Bool
+        ///     }
+        ///
+        ///     // JSON data that is in the decoder
+        ///     {
+        ///         "{id}": { variableA: 3, variableB: false },
+        ///         ...
+        ///     }
+        ///
+        ///     let objects = try dynamicElementDecoding(decoder: decoder, withData: data, usingKey: "id", ofType: EncodingElement.self)
+        ///
+        /// - Parameters:
+        ///   - decoder: The decoder to decode the data from
+        ///   - data: The data to decode from
+        ///   - elementKey: The coding key
+        ///   - ofType: The decodable type to decode to
+        /// - Returns: Returns an array of decoded objects
         public static func dynamicElementDecoding<D, Element>(from decoder: D,
                                                               withData data: D.EncodedData,
                                                               usingKey elementKey: String,
@@ -460,6 +661,14 @@ extension CodableHelpers {
     public struct arrays {
         private init() { }
         
+        /// Encodes an array of Any to an UnkeyedEncodingContainer if possible
+        ///
+        /// Note: All objects within the array must implement the Encodable protocol
+        ///
+        /// - Parameters:
+        ///   - array: The array of objects to encode
+        ///   - container: The container to encode the objects to
+        /// - Throws: EncodingError.invalidValue if the object can not encoded
         public static func encode<S>(_ array: S,
                                       to container: inout UnkeyedEncodingContainer) throws where S: Sequence, S.Element == Any {
             //let path = container.codingPath.last?.stringValue ?? ""
@@ -502,6 +711,16 @@ extension CodableHelpers {
             }
         }
         
+        /// Encodes an array of Any to a KeyedEncodingContainer if possible
+        ///
+        /// Note: All objects within the array must implement the Encodable protocol
+        /// This will create an UnkeyedEncodingContainer with the key 'key' and call the
+        /// encode(_: Sequence, to: UnkeyedEncodingContainer)
+        ///
+        /// - Parameters:
+        ///   - array: The array of objects to encode
+        ///   - container: The container to encode the objects to
+        /// - Throws: EncodingError.invalidValue if the object can not encoded
         public static func encode<K, S>(_ array: S,
                                         in container: inout KeyedEncodingContainer<K>,
                                         forKey key: K) throws where S: SArray, S.Element == Any {
@@ -509,12 +728,23 @@ extension CodableHelpers {
             try self.encode(array, to: &childContainer)
         }
         
+        /// Encodes an array of Any to a Encoder if possible
+        ///
+        /// Note: All objects within the array must implement the Encodable protocol
+        /// This will create an UnkeyedEncodingContainer from the encoder then call
+        /// encode(_: Sequence, to: UnkeyedEncodingContainer)
+        ///
+        /// - Parameters:
+        ///   - array: The array of objects to encode
+        ///   - encoder: The encoder to encode the array to
+        /// - Throws: EncodingError.invalidValue if the object can not encoded
         public static func encode<S>(_ array: S,
                                      to encoder: Encoder) throws where S: SArray, S.Element == Any {
             var container = encoder.unkeyedContainer()
             try encode(array, to: &container)
         }
         
+        /// A wrpper around a sequence of elements to encode
         private struct ContainedCodableArray<S>: Codable where S: SArray, S.Element == Any {
             fileprivate let array: S
             public init(_ s: S) { self.array = s }
@@ -537,6 +767,16 @@ extension CodableHelpers {
             
         }
         
+        /// Encodes an array of Any to a Encoder if possible
+        ///
+        /// Note: All objects within the array must implement the Encodable protocol
+        /// This will create an UnkeyedEncodingContainer from the encoder then call
+        /// encode(_: Sequence, to: UnkeyedEncodingContainer)
+        ///
+        /// - Parameters:
+        ///   - array: The array of objects to encode
+        ///   - encoder: The encoder to encode the array to
+        /// - Throws: EncodingError.invalidValue if the object can not encoded
         public static func encode<S, E>(_ array: S, to encoder: E) throws -> E.EncodedData  where E: EncodingType, S: SArray, S.Element == Any {
             let c = ContainedCodableArray(array)
             return try encoder.encode(c)
@@ -545,6 +785,15 @@ extension CodableHelpers {
         
         
         
+        /// Decodes an Array<Any> from an UnkeyedDecodingContainer
+        ///
+        /// Decoding sequence tries as follows:
+        ///    Int, UInt, Float, String, Double, Bool, Date, Data, Complex Object, Array
+        ///
+        /// - Parameters:
+        ///   - container: The container to decode from
+        ///   - customDecoding: a method for custom decoding of complex objects
+        /// - Returns: Returns an array of decoded objects
         public static func decode(_ container: inout UnkeyedDecodingContainer,
                                   customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> Array<Any>  {
             var rtn: Array<Any> = Array<Any>()
@@ -587,6 +836,16 @@ extension CodableHelpers {
             return rtn
         }
         
+        /// Decodes an Array<Any> from an UnkeyedDecodingContainer
+        ///
+        /// Decoding sequence tries as follows:
+        ///    Int, UInt, Float, String, Double, Bool, Date, Data, Complex Object, Array
+        ///
+        /// - Parameters:
+        ///   - container: The keyed container to decode from
+        ///   - key: The keyed object to decode from
+        ///   - customDecoding: a method for custom decoding of complex objects
+        /// - Returns: Returns an array of decoded objects
         public static func decode<K>(in container: inout KeyedDecodingContainer<K>,
                                      forKey key: K,
                                      customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> [Any] {
@@ -594,12 +853,31 @@ extension CodableHelpers {
             return try decode(&childContainer, customDecoding: customDecoding)
         }
         
+        /// Decodes an Array<Any> from an UnkeyedDecodingContainer
+        ///
+        /// Decoding sequence tries as follows:
+        ///    Int, UInt, Float, String, Double, Bool, Date, Data, Complex Object, Array
+        ///
+        /// - Parameters:
+        ///   - decoder: The Decoder to decode from
+        ///   - customDecoding: a method for custom decoding of complex objects
+        /// - Returns: Returns an array of decoded objects
         public static func decode(from decoder: Decoder,
                                   customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> [Any]  {
             var container = try decoder.unkeyedContainer()
             return try decode(&container, customDecoding: customDecoding)
         }
         
+        /// Decodes an Array<Any> from an UnkeyedDecodingContainer
+        ///
+        /// Decoding sequence tries as follows:
+        ///    Int, UInt, Float, String, Double, Bool, Date, Data, Complex Object, Array
+        ///
+        /// - Parameters:
+        ///   - data: The data to decode from
+        ///   - decoder: The Decoder to decode from
+        ///   - customDecoding: a method for custom decoding of complex objects
+        /// - Returns: Returns an array of decoded objects
         public static func decode<D>(_ data: D.EncodedData,
                                      from decoder: D,
                                      customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> [Any]  where D: DecodingType {
@@ -615,13 +893,17 @@ extension CodableHelpers {
         
         
         
-        /*
-         Provides an easy method to encode an array of encodable objects by the following rules
-         1. If collection is nil, nothing gets encoded
-         2. If collection count is 0, nothing gets encoded
-         3. If collection count is 1, encodes the object as a single value and not an array
-         4. Encodes as a regular array
-        */
+        /// Provides an easy method to encode an array of encodable objects in a dynamic way
+        ///
+        /// The following rules apply when encoding:
+        /// 1. If collection is nil, nothing gets encoded
+        /// 2. If collection count is 0, nothing gets encoded
+        /// 3. If collection count is 1, encodes the object as a single value and not an array
+        /// 4. Encodes as a regular array
+        ///
+        /// - Parameters:
+        ///   - collection: The collection to encode
+        ///   - encoder: The encoder to encode the objects to
         public static func encodeToSingleOrArrayIfPresent<C>(_ collection: C?,
                                                              to encoder: Encoder) throws where C: Collection, C.Element: Encodable {
             guard let array = collection else { return }
@@ -637,13 +919,18 @@ extension CodableHelpers {
             }
         }
         
-        /*
-         Provides an easy method to encode an array of encodable objects by the following rules
-         1. If collection is nil, nothing gets encoded
-         2. If collection count is 0, nothing gets encoded
-         3. If collection count is 1, encodes the object as a single value and not an array
-         4. Encodes as a regular array
-         */
+        /// Provides an easy method to encode an array of encodable objects in a dynamic way
+        ///
+        /// The following rules apply when encoding:
+        /// 1. If collection is nil, nothing gets encoded
+        /// 2. If collection count is 0, nothing gets encoded
+        /// 3. If collection count is 1, encodes the object as a single value and not an array
+        /// 4. Encodes as a regular array
+        ///
+        /// - Parameters:
+        ///   - collection: The collection to encode
+        ///   - container: The container to encode the collection to
+        ///   - key: The coding key to encode the collection to
         public static func encodeToSingleOrArrayIfPresent<C, K>(_ collection: C?,
                                                                 to container: inout KeyedEncodingContainer<K>,
                                                                 forKey key: K) throws where C: Collection, C.Element: Encodable {
@@ -659,20 +946,30 @@ extension CodableHelpers {
             }
         }
         
-        /*
-         Provides an easy method of decoding an optional/single value/array object into an array
-         1. Tries to decode as a single value object and reutrns as a 1 element array
-         2. Tries to decode as an array of objects and returns it
-         3. returns nil
-        */
+        /// Provides an easy method of decoding an optional/single value/array object into an array
+        ///
+        /// the following rules apply when decoding:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns nil
+        ///
+        /// - Parameters:
+        ///   - decoder: Decoder to decode from
+        ///   - customDecoding: Custom decoding of object type
+        /// - Returns: Returns an array of elements that decoded
         public static func decodeFromSingleOrArrayIfPresent<Element>(from decoder: Decoder,
-                                                                     ofType type: Element.Type) throws -> [Element]? where Element: Decodable {
+                                                                     customDecoding: (_ decoder: Decoder) throws -> Element) throws -> [Element]? where Element: Decodable {
             
-            if let v = try? decoder.singleValueContainer().decode(Element.self) { return [v] }
-            else if var container = try? decoder.unkeyedContainer() {
+            
+            if let singleEncoder = try? decoder.singleValueContainer(),
+               let v = try? customDecoding(WrappedSingleValueDecoder(singleEncoder)) { return [v] }
+            //if let v = try? decoder.singleValueContainer().decode(Element.self) { return [v] }
+            else if let container = try? decoder.unkeyedContainer() {
+                let decoder = WrappedUnkeyedDecoder(container)
                 var rtn: [Element] = []
                 while !container.isAtEnd {
-                    let v = try container.decode(Element.self)
+                    //let v = try container.decode(Element.self)
+                    let v = try customDecoding(decoder)
                     rtn.append(v)
                 }
                 return rtn
@@ -680,24 +977,114 @@ extension CodableHelpers {
             
         }
         
-        /*
-         Provides an easy method of decoding an optional/single value/array object into an array
-         1. Tries to decode as a single value object and reutrns as a 1 element array
-         2. Tries to decode as an array of objects and returns it
-         3. returns empty array
-         */
+        /// Provides an easy method of decoding an optional/single value/array object into an array
+        ///
+        /// The following rules apply when trying to decode:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns nil
+        ///
+        /// - Parameters:
+        ///   - decoder: Decoder to decode from
+        ///   - type: The object type to decode
+        /// - Returns: Returns an array of elements that decoded
+        public static func decodeFromSingleOrArrayIfPresent<Element>(from decoder: Decoder,
+                                                                     ofType type: Element.Type) throws -> [Element]? where Element: Decodable {
+            
+            return try decodeFromSingleOrArrayIfPresent(from: decoder) {
+                return try Element(from: $0)
+            }
+            
+            /*if let v = try? decoder.singleValueContainer().decode(Element.self) { return [v] }
+            else if var container = try? decoder.unkeyedContainer() {
+                var rtn: [Element] = []
+                while !container.isAtEnd {
+                    let v = try container.decode(Element.self)
+                    rtn.append(v)
+                }
+                return rtn
+            } else { return nil }*/
+            
+        }
+        
+        
+        /// Provides an easy method of decoding an optional/single value/array object into an array, or an empty array if no decoding options were available
+        ///
+        /// The following rules apply when decoding:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns empty array
+        ///
+        /// - Parameters:
+        ///   - decoder: Decoder to decode from
+        ///   - customDecoding: Custom decoding of object type
+        /// - Returns: Returns an array of elements that decoded
+        public static func decodeFromSingleOrArrayIfPresentWithEmptyDefault<Element>(from decoder: Decoder,
+                                                                                     customDecoding: (_ decoder: Decoder) throws -> Element) throws -> [Element] where Element: Decodable {
+            let rtn: [Element]? = try decodeFromSingleOrArrayIfPresent(from: decoder, customDecoding: customDecoding)
+            return (rtn ?? [])
+        }
+        
+        /// Provides an easy method of decoding an optional/single value/array object into an array, or an empty array if no decoding options were available
+        ///
+        /// The following rules apply when decoding:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns empty array
+        ///
+        /// - Parameters:
+        ///   - decoder: Decoder to decode from
+        ///   - type: The object type to decode
+        /// - Returns: Returns an array of elements that decoded
         public static func decodeFromSingleOrArrayIfPresentWithEmptyDefault<Element>(from decoder: Decoder,
                                                                                      ofType type: Element.Type) throws -> [Element] where Element: Decodable {
             let rtn: [Element]? = try decodeFromSingleOrArrayIfPresent(from: decoder, ofType: type)
             return (rtn ?? [])
         }
         
-        /*
-         Provides an easy method of decoding an optional/single value/array object into an array
-         1. Tries to decode as a single value object and reutrns as a 1 element array
-         2. Tries to decode as an array of objects and returns it
-         3. returns nil
-         */
+        /// Provides an easy method of decoding an optional/single value/array object into an array, or nil if no decoding options were available
+        ///
+        /// The following rules apply when decoding:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns empty array
+        ///
+        /// - Parameters:
+        ///   - decoder: Container to decode from
+        ///   - key: Key to decode for
+        ///   - customDecoding: Custom decoding of object type
+        /// - Returns: Returns an array of elements that decoded or nil if no key found
+        public static func decodeFromSingleOrArrayIfPresent<Element, K>(from container: KeyedDecodingContainer<K>,
+                                                                        forKey key: K,
+                                                                        customDecoding: (_ decoder: Decoder) throws -> Element) throws -> [Element]? where Element: Decodable {
+            
+            if let v = try? customDecoding(WrappedPreKeyedDecoder(container, preKey: key)) { return [v] }
+            else if let container = try? container.nestedUnkeyedContainer(forKey: key) {
+                let decoder = WrappedUnkeyedDecoder(container)
+                var rtn: [Element] = []
+                while !container.isAtEnd {
+                    //let v = try container.decode(Element.self)
+                    let v = try customDecoding(decoder)
+                    rtn.append(v)
+                }
+                return rtn
+            } else {
+                return nil
+            }
+        }
+        
+        /// Provides an easy method of decoding an optional/single value/array object into an array, or nil if no decoding options were available
+        ///
+        /// The following rules apply when trying to decode:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns nil
+        ///
+        /// - Parameters:
+        ///   - decoder: Decoder to decode from
+        ///   - type: The object type to decode
+        ///   - key: Key to decode for
+        /// - Returns: Returns an array of elements that decoded or nil if no key found
         public static func decodeFromSingleOrArrayIfPresent<Element, K>(from container: KeyedDecodingContainer<K>,
                                                                         ofType: Element.Type,
                                                                         forKey key: K) throws -> [Element]? where Element: Decodable {
@@ -707,12 +1094,38 @@ extension CodableHelpers {
             else { return nil }
         }
         
-        /*
-         Provides an easy method of decoding an optional/single value/array object into an array
-         1. Tries to decode as a single value object and reutrns as a 1 element array
-         2. Tries to decode as an array of objects and returns it
-         3. returns empty array
-         */
+        /// Provides an easy method of decoding an optional/single value/array object into an array, or an empty array if no decoding options were available
+        ///
+        /// The following rules apply when decoding:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns empty array
+        ///
+        /// - Parameters:
+        ///   - decoder: Container to decode from
+        ///   - key: Key to decode for
+        ///   - customDecoding: Custom decoding of object type
+        /// - Returns: Returns an array of elements that decoded or an empty array if no key found
+        public static func decodeFromSingleOrArrayIfPresentWithEmptyDefault<Element, K>(from container: KeyedDecodingContainer<K>,
+                                                                                        forKey key: K,
+                                                                                        customDecoding: (_ decoder: Decoder) throws -> Element) throws -> [Element] where Element: Decodable {
+            
+            let rtn: [Element]? = try decodeFromSingleOrArrayIfPresent(from: container, forKey: key, customDecoding: customDecoding)
+            return (rtn ?? [])
+        }
+        
+        /// Provides an easy method of decoding an optional/single value/array object into an array, or an empty array if no decoding options were available
+        ///
+        /// The following rules apply when trying to decode:
+        /// 1. Tries to decode as a single value object and reutrns as a 1 element array
+        /// 2. Tries to decode as an array of objects and returns it
+        /// 3. returns nil
+        ///
+        /// - Parameters:
+        ///   - decoder: Decoder to decode from
+        ///   - type: The object type to decode
+        ///   - key: Key to decode for
+        /// - Returns: Returns an array of elements that decoded or an empty array if no key found
         public static func decodeFromSingleOrArrayIfPresentWithEmptyDefault<Element, K>(from container: KeyedDecodingContainer<K>,
                                                                                         ofType type: Element.Type,
                                                                                         forKey key: K) throws -> [Element] where Element: Decodable {
@@ -733,6 +1146,11 @@ extension CodableHelpers {
         
        
             
+        /// Encode a dictionary to a container
+        ///
+        /// - Parameters:
+        ///   - dictionary: Any dictionary type where the Key is DictionaryKeyCodable and Value is Any where can cast to Encodable
+        ///   - container: The container to encode to
         public static func encode<D>(_ dictionary: D,
                                          to container: inout KeyedEncodingContainer<CodableKey>) throws where D: SDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             for (key, v) in dictionary {
@@ -778,6 +1196,12 @@ extension CodableHelpers {
             
         }
         
+        /// Encode a dictionary to a container
+        ///
+        /// - Parameters:
+        ///   - dictionary: Any dictionary type where the Key is DictionaryKeyCodable and Value is Any where can cast to Encodable
+        ///   - container: The container to encode to
+        ///   - key: The key in the container to encode the dictionary to
         public static func encode<K, D>(_ dictionary: D,
                                         in container: inout KeyedEncodingContainer<K>,
                                         forKey key: K) throws where D: SDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
@@ -785,6 +1209,12 @@ extension CodableHelpers {
             try self.encode(dictionary, to: &childContainer)
         }
         
+        /// Encode an optional dictionary to a container
+        ///
+        /// - Parameters:
+        ///   - dictionary: Any dictionary type where the Key is DictionaryKeyCodable and Value is Any where can cast to Encodable
+        ///   - container: The container to encode to
+        ///   - key: The key in the container to encode the dictionary to
         public static func encodeIfPresent<K, D>(_ dictionary: D?,
                                                  in container: inout KeyedEncodingContainer<K>,
                                                  forKey key: K) throws where D: SDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
@@ -792,6 +1222,11 @@ extension CodableHelpers {
             try encode(d, in: &container, forKey: key)
         }
         
+        /// Encode a dictionary to a container
+        ///
+        /// - Parameters:
+        ///   - dictionary: Any dictionary type where the Key is DictionaryKeyCodable and Value is Any where can cast to Encodable
+        ///   - encoder: The encoder to encode the dictionary to
         public static func encode<D>(_ dictionary: D,
                                      to encoder: Encoder) throws where D: SDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             var container = encoder.container(keyedBy: CodableKey.self)
@@ -820,12 +1255,23 @@ extension CodableHelpers {
             
         }
         
+        /// Encode a dictionary to a container
+        ///
+        /// - Parameters:
+        ///   - dictionary: Any dictionary type where the Key is DictionaryKeyCodable and Value is Any where can cast to Encodable
+        ///   - encoder: The encoder to encode the dictionary to
         public static func encode<D, E>(_ dictionary: D, to encoder: E) throws -> E.EncodedData  where E: EncodingType, D: SDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             let c = ContainedCodableDictionary(dictionary)
             return try encoder.encode(c)
             
         }
         
+        /// Decode a Dictionary type based on return from the given container
+        ///
+        /// - Parameters:
+        ///   - container: The container to decode the dictionary from
+        ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
+        /// - Returns: Return a dictionary type based on return from the given container
         public static func decode<D>(_ container: inout KeyedDecodingContainer<CodableKey>,
                                      customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             
@@ -859,12 +1305,27 @@ extension CodableHelpers {
             }
         }
         
+        /// Decode a Dictionary type based on return from the given container
+        ///
+        /// - Parameters:
+        ///   - container: The container to decode the dictionary from
+        ///   - key: The key from the container to decode
+        ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
+        /// - Returns: Return a dictionary type based on return from the given container
         public static func decode<K, D>(from container: inout KeyedDecodingContainer<K>,
                                         forKey key: K,
                                         customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key == String, D.Value == Any {
             var subContainer = try container.nestedContainer(keyedBy: CodableKey.self, forKey: key)
             return try decode(&subContainer, customDecoding: customDecoding)
         }
+        
+        /// Decode a Dictionary type based on return from the given container or nil if key not found
+        ///
+        /// - Parameters:
+        ///   - container: The container to decode the dictionary from
+        ///   - key: The key from the container to decode
+        ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
+        /// - Returns: Return a dictionary type based on return from the given container and key, or nil if key is not found
         public static func decodeIfPresent<K, D>(from container: inout KeyedDecodingContainer<K>,
                                                  forKey key: K,
                                                  customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D? where D: SMutableDictionary, D.Key == String, D.Value == Any {
@@ -873,12 +1334,27 @@ extension CodableHelpers {
             return try decode(&subContainer, customDecoding: customDecoding)
         }
         
+        /// Decode a Dictionary type based on return from the given container
+        ///
+        /// - Parameters:
+        ///   - decoder: The decoder to decode dictionary from
+        ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
+        ///
+        /// - Returns: Return a dictionary type based on return
         public static func decode<D>(from decoder: Decoder,
                                      customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key == String, D.Value == Any {
             var container = try decoder.container(keyedBy: CodableKey.self)
             return try decode(&container, customDecoding: customDecoding)
         }
         
+        /// Decode a Dictionary type based on return from the given container
+        ///
+        /// - Parameters:
+        ///   - data: The data to decode from
+        ///   - decoder: The decoder to use with the data to decode the dictionary from
+        ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
+        ///
+        /// - Returns: Return a dictionary type based on return
         public static func decode<D, DC>(_ data: DC.EncodedData,
                                          from decoder: DC,
                                          customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key == String, D.Value == Any, DC: DecodingType {
