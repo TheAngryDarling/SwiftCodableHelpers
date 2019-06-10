@@ -11,9 +11,7 @@ import CoreFoundation
 import SwiftClassCollections
 import Nillable
 
-/*
- Open Encoder base used for creating custom encoders that return specific results
- */
+/// Open Encoder base used for creating custom encoders that return specific results
 open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
     public typealias TranformationMethod = (BasicOpenEncoder<EncodingResults>, Any) throws -> EncodingResults
     
@@ -21,9 +19,9 @@ open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
     
     // MARK: - Constructing a Basic Encoder
     /// Initializes `self` with default strategies.
-    public init(_ transformation: @escaping TranformationMethod) {
+    public init(boxing: BaseEncoderTypeBoxing?, _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
-        super.init()
+        super.init(boxing: boxing)
     }
     
     // MARK: - Encoding Values
@@ -43,13 +41,7 @@ open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
         //if topLevel is NSNull {
         if isNil(topLevel) {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as null \(type(of: self)) fragment."))
-        } /*else if topLevel is NSNumber {
-         throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as number \(type(of: self)) fragment."))
-         } else if topLevel is NSString {
-         throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as string \(type(of: self)) fragment."))
-         } else if topLevel is [Any] {
-         throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as array \(type(of: self)) fragment."))
-         }*/
+        }
         
         if let box = topLevel as? SCArrayOrderedDictionary<String, Any> { topLevel = encoder.excapeMutableObjects(box) }
         else if let box = topLevel as? SCArray<Any> { topLevel = encoder.excapeMutableObjects(box) }
@@ -63,9 +55,7 @@ open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
 extension BasicOpenEncoder: EncodingToDataType where EncodingResults == Data { }
 #endif
 
-/*
- Open Decoder base used for creating custom encoders that use specific input
- */
+/// Open Decoder base used for creating custom encoders that use specific input
 open class BasicOpenDecoder<DecodingInput>: BaseDecoder, DecodingType {
     public typealias TranformationMethod = (BasicOpenDecoder<DecodingInput>, DecodingInput) throws -> Any
     
@@ -73,9 +63,9 @@ open class BasicOpenDecoder<DecodingInput>: BaseDecoder, DecodingType {
     
     // MARK: - Constructing a Basic Encoder
     /// Initializes `self` with default strategies.
-    public init(_ transformation: @escaping TranformationMethod) {
+    public init(unboxer: BaseDecoderTypeUnboxing?, transformation: @escaping TranformationMethod) {
         self._transformation = transformation
-        super.init()
+        super.init(unboxer: unboxer)
     }
     
     // MARK: - Decoding Values
