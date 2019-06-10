@@ -161,7 +161,7 @@ print(r)
 
 Custom Sequence Coding:
 ```swift
-import CallableHelpers
+import CodableHelpers
 // Setup sequence
 let p1 = Person(name: "Person A", age: 36)
 let p2 = Person(name: "Person B", age: 30)
