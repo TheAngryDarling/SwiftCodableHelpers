@@ -2,6 +2,7 @@ import XCTest
 import Nillable
 @testable import CodableHelpers
 
+extension String: Error { }
 final class CodableHelpersTests: XCTestCase {
     struct Name {
         let firstName: String
@@ -13,9 +14,40 @@ final class CodableHelpersTests: XCTestCase {
         case other = "o"
     }
     struct SubPersonObject: Codable {
+        private enum CodingKeys: CodingKey {
+            case valA
+            case valB
+            case valC
+        }
         let valA: Bool
         let valB: String?
         let valC: Int
+        
+        public init(valA: Bool, valB: String?, valC: Int) {
+            self.valA = valA
+            self.valB = valB
+            self.valC = valC
+        }
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.valA = try container.decode(Bool.self, forKey: .valA)
+            self.valB = try container.decodeIfPresent(String.self, forKey: .valB)
+            //self.valB = try container.decode(String.self, forKey: .valB)
+            self.valC = try container.decode(Int.self, forKey: .valC)
+            //print("SubPersonObject.init(from:) - \(container.codingPath.stringPath)")
+            let _ = true
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.valA, forKey: .valA)
+            try container.encodeIfPresent(self.valB, forKey: .valB)
+            try container.encode(self.valC, forKey: .valC)
+            //print("SubPersonObject.encode(to:) - \(container.codingPath.stringPath)")
+            let _ = true
+        }
+        
     }
     struct Person: Codable {
         let name: Name
