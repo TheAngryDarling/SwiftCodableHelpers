@@ -16,7 +16,7 @@ open class BasicClosedEncoder<EncodingType, EncodingResults>: BaseEncoder where 
     private let _transformation: TranformationMethod
     // MARK: - Constructing a Basic Encoder
     /// Initializes `self` with default strategies.
-    public init(boxing: BaseEncoderTypeBoxing?, _ transformation: @escaping TranformationMethod) {
+    public init(boxing: BaseEncoderTypeBoxing? = nil, _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
         super.init(boxing: boxing)
     }
@@ -59,7 +59,7 @@ open class BasicClosedDecoder<DecodingType, DecodingInput>: BaseDecoder where De
     
     // MARK: - Constructing a Basic Decoder
     /// Initializes `self` with default strategies.
-    public init(unboxer: BaseDecoderTypeUnboxing?, _ transformation: @escaping TranformationMethod) {
+    public init(unboxer: BaseDecoderTypeUnboxing? = nil, _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
         super.init(unboxer: unboxer)
     }
