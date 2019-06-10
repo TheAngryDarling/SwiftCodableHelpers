@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A container that wraps a WrappedSingleValueDecodingContainer allowing to override the coding path
 open class WrappedSingleValueDecodingContainer: SingleValueDecodingContainer {
     private var container: SingleValueDecodingContainer
     public let codingPath: [CodingKey]
@@ -16,7 +17,7 @@ open class WrappedSingleValueDecodingContainer: SingleValueDecodingContainer {
     public init(_ container: SingleValueDecodingContainer, customCodingPath: [CodingKey]? = nil) {
         self.container = container
         self.codingPath = customCodingPath ?? container.codingPath
-        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringPath == container.codingPath.stringPath))
+        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringCodingPath == container.codingPath.stringCodingPath))
     }
     
     open func decodeNil() -> Bool {

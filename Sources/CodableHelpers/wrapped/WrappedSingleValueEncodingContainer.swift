@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A container that wraps a WrappedSingleValueEncodingContainer allowing to override the coding path
 open class WrappedSingleValueEncodingContainer: SingleValueEncodingContainer {
     private var container: SingleValueEncodingContainer
     public let codingPath: [CodingKey]
@@ -16,7 +17,7 @@ open class WrappedSingleValueEncodingContainer: SingleValueEncodingContainer {
     public init(_ container: SingleValueEncodingContainer, customCodingPath: [CodingKey]? = nil) {
         self.container = container
         self.codingPath = customCodingPath ?? container.codingPath
-        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringPath == container.codingPath.stringPath))
+        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringCodingPath == container.codingPath.stringCodingPath))
     }
     
     

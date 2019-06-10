@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A container that wraps a WrappedUnkeyedEncodingContainer allowing to override the coding path
 open class WrappedUnkeyedEncodingContainer: UnkeyedEncodingContainer {
     
     private var container: UnkeyedEncodingContainer
@@ -20,7 +21,7 @@ open class WrappedUnkeyedEncodingContainer: UnkeyedEncodingContainer {
     public init(_ container: UnkeyedEncodingContainer, customCodingPath: [CodingKey]? = nil) {
         self.container = container
         self.codingPath = customCodingPath ?? container.codingPath
-        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringPath == container.codingPath.stringPath))
+        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringCodingPath == container.codingPath.stringCodingPath))
     }
     
     

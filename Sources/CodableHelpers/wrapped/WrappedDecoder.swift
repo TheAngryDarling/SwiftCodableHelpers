@@ -7,20 +7,29 @@
 
 import Foundation
 
+/// A Wrapped decoder with the ability of overriding the codingPath
+///
+/// The methods container, unkeyedContainer, singleValueContainer all return wrapped instances of containers
 open class WrappedDecoder: Decoder {
     
+    /// The real decoder
     private let decoder: Decoder
     public let codingPath: [CodingKey]
-    
+    /// Indicator to tell the WrappedCodingErrors if it should fix coding paths in the errors
     private let disableRepackagingErrors: Bool
     
     open var userInfo: [CodingUserInfoKey : Any] { return self.decoder.userInfo }
     
     
+    /// Creates a new instance of WrappedDecoder
+    ///
+    /// - Parameters:
+    ///   - encoder: The decoder to wrap
+    ///   - customCodingPath: The optional custom coding path
     public init(_ decoder: Decoder, customCodingPath: [CodingKey]? = nil) {
         self.decoder = decoder
         self.codingPath = customCodingPath ?? decoder.codingPath
-        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringPath == decoder.codingPath.stringPath))
+        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringCodingPath == decoder.codingPath.stringCodingPath))
     }
     
     

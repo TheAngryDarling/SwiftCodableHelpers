@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+/// A container that wraps a KeyedDecodingContainer allowing to override the coding path
 open class WrappedKeyedDecodingContainer<Key>: KeyedDecodingContainerProtocol where Key: CodingKey {
     
     private var container: KeyedDecodingContainer<Key>
@@ -23,7 +23,7 @@ open class WrappedKeyedDecodingContainer<Key>: KeyedDecodingContainerProtocol wh
         if let c = container as? KeyedDecodingContainer<Key> { self.container = c }
         else { self.container = KeyedDecodingContainer(container) }
         self.codingPath = customCodingPath ?? container.codingPath
-        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringPath == container.codingPath.stringPath))
+        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringCodingPath == container.codingPath.stringCodingPath))
     }
     
     

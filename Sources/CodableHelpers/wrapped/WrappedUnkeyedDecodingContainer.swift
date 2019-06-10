@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A container that wraps a WrappedUnkeyedDecodingContainer allowing to override the coding path
 open class WrappedUnkeyedDecodingContainer: UnkeyedDecodingContainer {
     
     
@@ -22,7 +23,7 @@ open class WrappedUnkeyedDecodingContainer: UnkeyedDecodingContainer {
     public init(_ container: UnkeyedDecodingContainer, customCodingPath: [CodingKey]? = nil) {
         self.container = container
         self.codingPath = customCodingPath ?? container.codingPath
-        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringPath == container.codingPath.stringPath))
+        self.disableRepackagingErrors = (customCodingPath == nil || (customCodingPath!.stringCodingPath == container.codingPath.stringCodingPath))
     }
     
     open func decodeNil() throws -> Bool {

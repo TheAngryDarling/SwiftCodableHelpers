@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Class that wraps around methods to catch Encoding/Decoding errors and fix any adjusted coding paths
 class WrappedCodingErrors {
     
     @discardableResult
@@ -27,7 +28,7 @@ class WrappedCodingErrors {
         switch error {
             case .invalidValue(let a, let c):
                 // If coding paths match, then lets not wrap the error
-                guard c.codingPath.stringPath != codingPath.stringPath else { return error }
+                guard c.codingPath.stringCodingPath != codingPath.stringCodingPath else { return error }
                 return EncodingError.invalidValue(a,
                                                  EncodingError.Context(codingPath: codingPath,
                                                                        debugDescription: c.debugDescription,
@@ -42,25 +43,25 @@ class WrappedCodingErrors {
         switch error {
             case .dataCorrupted(let c):
                 // If coding paths match, then lets not wrap the error
-                guard c.codingPath.stringPath != codingPath.stringPath else { return error }
+                guard c.codingPath.stringCodingPath != codingPath.stringCodingPath else { return error }
                 return DecodingError.dataCorrupted(DecodingError.Context(codingPath: codingPath,
                                                                         debugDescription: c.debugDescription,
                                                                         underlyingError: error))
             case .keyNotFound(let k, let c):
                 // If coding paths match, then lets not wrap the error
-                guard c.codingPath.stringPath != codingPath.stringPath else { return error }
+                guard c.codingPath.stringCodingPath != codingPath.stringCodingPath else { return error }
                 return DecodingError.keyNotFound(k, DecodingError.Context(codingPath: codingPath,
                                                                          debugDescription: c.debugDescription,
                                                                          underlyingError: error))
             case .typeMismatch(let a, let c):
                 // If coding paths match, then lets not wrap the error
-                guard c.codingPath.stringPath != codingPath.stringPath else { return error }
+                guard c.codingPath.stringCodingPath != codingPath.stringCodingPath else { return error }
                 return DecodingError.typeMismatch(a, DecodingError.Context(codingPath: codingPath,
                                                                           debugDescription: c.debugDescription,
                                                                           underlyingError: error))
             case .valueNotFound(let a, let c):
                 // If coding paths match, then lets not wrap the error
-                guard c.codingPath.stringPath != codingPath.stringPath else { return error }
+                guard c.codingPath.stringCodingPath != codingPath.stringCodingPath else { return error }
                 return DecodingError.valueNotFound(a, DecodingError.Context(codingPath: codingPath,
                                                                            debugDescription: c.debugDescription,
                                                                            underlyingError: error))
