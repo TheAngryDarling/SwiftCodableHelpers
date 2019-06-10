@@ -16,10 +16,286 @@ import SwiftClassCollections
 private let kCFBooleanTrue = NSNumber(booleanLiteral: true)
 private let kCFBooleanFalse = NSNumber(booleanLiteral: false)
 #endif
-/*
- The base class for encoders
-*/
+
+public protocol BaseEncoderTypeBoxing {
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Bool, atPath codingPath: [CodingKey])   -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int, atPath codingPath: [CodingKey])    -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int8, atPath codingPath: [CodingKey])   -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int16, atPath codingPath: [CodingKey])  -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int32, atPath codingPath: [CodingKey])  -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int64, atPath codingPath: [CodingKey])  -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt, atPath codingPath: [CodingKey])   -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt8, atPath codingPath: [CodingKey])  -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt16, atPath codingPath: [CodingKey]) -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt32, atPath codingPath: [CodingKey]) -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt64, atPath codingPath: [CodingKey]) -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: String, atPath codingPath: [CodingKey]) -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ float: Float, atPath codingPath: [CodingKey]) throws -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ double: Double, atPath codingPath: [CodingKey]) throws -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ date: Date, atPath codingPath: [CodingKey]) throws -> Any?
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ data: Data, atPath codingPath: [CodingKey]) throws -> Any?
+}
+
+public extension BaseEncoderTypeBoxing {
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Bool, atPath codingPath: [CodingKey])   -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int, atPath codingPath: [CodingKey])    -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int8, atPath codingPath: [CodingKey])   -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int16, atPath codingPath: [CodingKey])  -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int32, atPath codingPath: [CodingKey])  -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: Int64, atPath codingPath: [CodingKey])  -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt, atPath codingPath: [CodingKey])   -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt8, atPath codingPath: [CodingKey])  -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt16, atPath codingPath: [CodingKey]) -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt32, atPath codingPath: [CodingKey]) -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: UInt64, atPath codingPath: [CodingKey]) -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ value: String, atPath codingPath: [CodingKey]) -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ float: Float, atPath codingPath: [CodingKey]) throws -> Any? { return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ double: Double, atPath codingPath: [CodingKey]) throws -> Any? {return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ date: Date, atPath codingPath: [CodingKey]) throws -> Any? {return nil }
+    /// A way of boxing a specific type into a different specific type
+    ///
+    /// - Parameter value: The value to box if needed
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: Returns the new boxed value or nil if no boxing was required
+    func box(_ data: Data, atPath codingPath: [CodingKey]) throws -> Any? {return nil }
+    
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: Bool, atPath codingPath: [CodingKey])   -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: Int, atPath codingPath: [CodingKey])    -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: Int8, atPath codingPath: [CodingKey])   -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: Int16, atPath codingPath: [CodingKey])  -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: Int32, atPath codingPath: [CodingKey])  -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: Int64, atPath codingPath: [CodingKey])  -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: UInt, atPath codingPath: [CodingKey])   -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: UInt8, atPath codingPath: [CodingKey])  -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: UInt16, atPath codingPath: [CodingKey]) -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: UInt32, atPath codingPath: [CodingKey]) -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: UInt64, atPath codingPath: [CodingKey]) -> Any { return NSNumber(value: value) }
+    /// A way of boxing a value into the default boxed type or its original value if no boxing was required
+    ///
+    /// - Parameter value: The value to box
+    /// - Parameter codingPath: The current coding path
+    /// - Returns: A new boxed value or the origional value depending if it needed boxing
+    func defaultBox(_ value: String, atPath codingPath: [CodingKey]) -> Any { return value }
+}
+
+/// The base class for all encoders in CodableHelper
+///
+/// Alot of the code here has been copied/modified from [Swift/Codable](https://github.com/apple/swift/blob/master/stdlib/public/core/Codable.swift.gyb)
 open class BaseEncoder {
+    
+    /// Default Boxer for boxing value types.
+    /// This relies on the default implementation of methos
+    private struct DefaultBoxing: BaseEncoderTypeBoxing { }
     
     /// The strategy to use for encoding `Date` values.
     public enum DateEncodingStrategy {
@@ -68,6 +344,8 @@ open class BaseEncoder {
         case convertToString(positiveInfinity: String, negativeInfinity: String, nan: String)
     }
     
+    private let boxing: BaseEncoderTypeBoxing
+    
     /// The strategy to use in encoding dates. Defaults to `.deferredToDate`.
     open var dateEncodingStrategy: DateEncodingStrategy = .deferredToDate
     
@@ -97,45 +375,13 @@ open class BaseEncoder {
     }
     
     // MARK: - Constructing a Base Encoder
-    /// Initializes `self` with default strategies.
-    /*public init(_ transformation: @escaping TranformationMethod) {
-        self._transformation = transformation
-    }*/
-    public init() { }
     
-    // MARK: - Encoding Values
-    /// Encodes the given top-level value and returns its Base representation.
-    ///
-    /// - parameter value: The value to encode.
-    /// - returns: A new `Data` value containing the encoded Base data.
-    /// - throws: `EncodingError.invalidValue` if a non-conforming floating-point value is encountered during encoding, and the encoding strategy is `.throw`.
-    /// - throws: An error if any value throws an error during encoding.
-    /*open func encode<T : Encodable>(_ value: T) throws -> EncodingResults {
-        let encoder = _BaseEncoder(options: self.options)
-        
-        guard var topLevel = try encoder.box_(value) else {
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) did not encode any values."))
-        }
-        
-        //if topLevel is NSNull {
-        if isNil(topLevel) {
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as null \(type(of: self)) fragment."))
-        } /*else if topLevel is NSNumber {
-         throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as number \(type(of: self)) fragment."))
-         } else if topLevel is NSString {
-         throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as string \(type(of: self)) fragment."))
-         } else if topLevel is [Any] {
-         throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as array \(type(of: self)) fragment."))
-         }*/
-        
-        if let box = topLevel as? SCArrayOrderedDictionary<String, Any> { topLevel = encoder.excapeMutableObjects(box) }
-        else if let box = topLevel as? SCArray<Any> { topLevel = encoder.excapeMutableObjects(box) }
-        
-        return try self._transformation(self, topLevel)
-        
-    }*/
     
-    open func box(_ value: Bool)   -> Any? { return nil }
+    public init(boxing: BaseEncoderTypeBoxing?) {
+        self.boxing = boxing ?? DefaultBoxing()
+    }
+    
+    /*open func box(_ value: Bool)   -> Any? { return nil }
     open func box(_ value: Int)    -> Any? { return nil }
     open func box(_ value: Int8)   -> Any? { return nil }
     open func box(_ value: Int16)  -> Any? { return nil }
@@ -150,7 +396,7 @@ open class BaseEncoder {
     open func box(_ float: Float) throws -> Any? { return nil }
     open func box(_ double: Double) throws -> Any? {return nil }
     open func box(_ date: Date) throws -> Any? {return nil }
-    open func box(_ data: Data) throws -> Any? {return nil }
+    open func box(_ data: Data) throws -> Any? {return nil }*/
     
     
     
@@ -629,51 +875,51 @@ extension BaseEncoder._BaseEncoder : SingleValueEncodingContainer {
 extension BaseEncoder._BaseEncoder {
     /// Returns the given value boxed in a container appropriate for pushing onto the container stack.
     fileprivate func box(_ value: Bool)   -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: Int)    -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: Int8)   -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: Int16)  -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: Int32)  -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: Int64)  -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: UInt)   -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: UInt8)  -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: UInt16) -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: UInt32) -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: UInt64) -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return NSNumber(value: value) }
     }
     fileprivate func box(_ value: String) -> Any {
-        if let v = self.baseEncoder.box(value) { return v }
+        if let v = self.baseEncoder.boxing.box(value, atPath: self.codingPath) { return v }
         else { return value }
     }
     
@@ -911,11 +1157,56 @@ public protocol BaseDecodingStorage {
     mutating func popContainer()
 }
 
+
+public protocol BaseDecoderTypeUnboxing {
+    func unbox(_ value: Any, as type: Bool.Type, atPath codingPath: [CodingKey]) throws -> Bool?
+    func unbox(_ value: Any, as type: Int.Type, atPath codingPath: [CodingKey]) throws -> Int?
+    func unbox(_ value: Any, as type: Int8.Type, atPath codingPath: [CodingKey]) throws -> Int8?
+    func unbox(_ value: Any, as type: Int16.Type, atPath codingPath: [CodingKey]) throws -> Int16?
+    func unbox(_ value: Any, as type: Int32.Type, atPath codingPath: [CodingKey]) throws -> Int32?
+    func unbox(_ value: Any, as type: Int64.Type, atPath codingPath: [CodingKey]) throws -> Int64?
+    func unbox(_ value: Any, as type: UInt.Type, atPath codingPath: [CodingKey]) throws -> UInt?
+    func unbox(_ value: Any, as type: UInt8.Type, atPath codingPath: [CodingKey]) throws -> UInt8?
+    func unbox(_ value: Any, as type: UInt16.Type, atPath codingPath: [CodingKey]) throws -> UInt16?
+    func unbox(_ value: Any, as type: UInt32.Type, atPath codingPath: [CodingKey]) throws -> UInt32?
+    func unbox(_ value: Any, as type: UInt64.Type, atPath codingPath: [CodingKey]) throws -> UInt64?
+    func unbox(_ value: Any, as type: Float.Type, atPath codingPath: [CodingKey]) throws -> Float?
+    func unbox(_ value: Any, as type: Double.Type, atPath codingPath: [CodingKey]) throws -> Double?
+    func unbox(_ value: Any, as type: String.Type, atPath codingPath: [CodingKey]) throws -> String?
+    func unbox(_ value: Any, as type: Date.Type, atPath codingPath: [CodingKey]) throws -> Date?
+    func unbox(_ value: Any, as type: Data.Type, atPath codingPath: [CodingKey]) throws -> Data?
+    func unbox(_ value: Any, as type: Decimal.Type, atPath codingPath: [CodingKey]) throws -> Decimal?
+}
+
+public extension BaseDecoderTypeUnboxing {
+    func unbox(_ value: Any, as type: Bool.Type, atPath codingPath: [CodingKey]) throws -> Bool? { return nil }
+    func unbox(_ value: Any, as type: Int.Type, atPath codingPath: [CodingKey]) throws -> Int? { return nil }
+    func unbox(_ value: Any, as type: Int8.Type, atPath codingPath: [CodingKey]) throws -> Int8? { return nil }
+    func unbox(_ value: Any, as type: Int16.Type, atPath codingPath: [CodingKey]) throws -> Int16? { return nil }
+    func unbox(_ value: Any, as type: Int32.Type, atPath codingPath: [CodingKey]) throws -> Int32? { return nil }
+    func unbox(_ value: Any, as type: Int64.Type, atPath codingPath: [CodingKey]) throws -> Int64? { return nil }
+    func unbox(_ value: Any, as type: UInt.Type, atPath codingPath: [CodingKey]) throws -> UInt? { return nil }
+    func unbox(_ value: Any, as type: UInt8.Type, atPath codingPath: [CodingKey]) throws -> UInt8? { return nil }
+    func unbox(_ value: Any, as type: UInt16.Type, atPath codingPath: [CodingKey]) throws -> UInt16? { return nil }
+    func unbox(_ value: Any, as type: UInt32.Type, atPath codingPath: [CodingKey]) throws -> UInt32? { return nil }
+    func unbox(_ value: Any, as type: UInt64.Type, atPath codingPath: [CodingKey]) throws -> UInt64? { return nil }
+    func unbox(_ value: Any, as type: Float.Type, atPath codingPath: [CodingKey]) throws -> Float? { return nil }
+    func unbox(_ value: Any, as type: Double.Type, atPath codingPath: [CodingKey]) throws -> Double? { return nil }
+    func unbox(_ value: Any, as type: String.Type, atPath codingPath: [CodingKey]) throws -> String? { return nil }
+    func unbox(_ value: Any, as type: Date.Type, atPath codingPath: [CodingKey]) throws -> Date? { return nil }
+    func unbox(_ value: Any, as type: Data.Type, atPath codingPath: [CodingKey]) throws -> Data? { return nil }
+    func unbox(_ value: Any, as type: Decimal.Type, atPath codingPath: [CodingKey]) throws -> Decimal? { return nil }
+}
 //===----------------------------------------------------------------------===//
 // Base Decoder
 //===----------------------------------------------------------------------===//
 /// `BaseDecoder` facilitates the decoding of Base into semantic `Decodable` types.
 open class BaseDecoder {
+    
+    
+    /// Default Boxer for boxing value types.
+    /// This relies on the default implementation of methos
+    private struct DefaultUnboxing: BaseDecoderTypeUnboxing { }
     
     // MARK: Options
     /// The strategy to use for decoding `Date` values.
@@ -961,6 +1252,8 @@ open class BaseDecoder {
         case convertFromString(positiveInfinity: String, negativeInfinity: String, nan: String)
     }
     
+    fileprivate let unboxer: BaseDecoderTypeUnboxing
+    
     /// The strategy to use in decoding dates. Defaults to `.deferredToDate`.
     open var dateDecodingStrategy: DateDecodingStrategy = .deferredToDate
     
@@ -994,7 +1287,9 @@ open class BaseDecoder {
     /*public init(_ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
     }*/
-    public init() { }
+    public init(unboxer: BaseDecoderTypeUnboxing?) {
+        self.unboxer = unboxer ?? DefaultUnboxing()
+    }
     
     // MARK: - Decoding Values
     /// Decodes a top-level value of the given type from the given Base representation.
@@ -1023,7 +1318,7 @@ open class BaseDecoder {
     
     
     /// Returns the given value unboxed from a container.
-    open func unbox(_ value: Any, as type: Bool.Type, atPath codingPath: [CodingKey]) throws -> Bool? { return nil }
+    /*open func unbox(_ value: Any, as type: Bool.Type, atPath codingPath: [CodingKey]) throws -> Bool? { return nil }
     open func unbox(_ value: Any, as type: Int.Type, atPath codingPath: [CodingKey]) throws -> Int? { return nil }
     open func unbox(_ value: Any, as type: Int8.Type, atPath codingPath: [CodingKey]) throws -> Int8? { return nil }
     open func unbox(_ value: Any, as type: Int16.Type, atPath codingPath: [CodingKey]) throws -> Int16? { return nil }
@@ -1040,7 +1335,7 @@ open class BaseDecoder {
     open func unbox(_ value: Any, as type: Date.Type, atPath codingPath: [CodingKey]) throws -> Date? { return nil }
     open func unbox(_ value: Any, as type: Data.Type, atPath codingPath: [CodingKey]) throws -> Data? { return nil }
     open func unbox(_ value: Any, as type: Decimal.Type, atPath codingPath: [CodingKey]) throws -> Decimal? { return nil }
-    
+    */
     
     // MARK: - _BaseDecoder
     internal class _BaseDecoder : Decoder {
@@ -1933,7 +2228,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Bool.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Bool.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         #if DEPLOYMENT_RUNTIME_SWIFT
         // Bridging differences require us to split implementations here
@@ -1972,7 +2267,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Int.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -1992,7 +2287,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Int8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2012,7 +2307,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Int16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2032,7 +2327,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Int32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2052,7 +2347,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Int64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2072,7 +2367,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: UInt.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2092,7 +2387,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: UInt8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2112,7 +2407,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: UInt16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2132,7 +2427,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: UInt32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2152,7 +2447,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: UInt64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2172,7 +2467,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Float.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Float.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         if let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
             //if let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
@@ -2221,7 +2516,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Double.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Double.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         if let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
             //if let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
@@ -2260,7 +2555,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: String.self, atPath: self.codingPath) { value = v }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: String.self, atPath: self.codingPath) { value = v }
         
         guard let string = value as? String else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -2346,7 +2641,7 @@ extension BaseDecoder._BaseDecoder {
         guard !isNil(value) else { return nil }
         
         var value = value
-        if let v = try self.baseDecoder.unbox(value, as: Decimal.self, atPath: self.codingPath) { value = v }
+        if let v = try self.baseDecoder.unboxer.unbox(value, as: Decimal.self, atPath: self.codingPath) { value = v }
         
         #if DEPLOYMENT_RUNTIME_SWIFT
         // Bridging differences require us to split implementations here
