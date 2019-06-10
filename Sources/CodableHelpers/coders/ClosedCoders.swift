@@ -9,17 +9,16 @@ import Foundation
 import Nillable
 
 
-/*
- Closed Encoder base used for creating encoders that only work with one type
-*/
+/// Closed Encoder base used for creating encoders that only work with one type
 open class BasicClosedEncoder<EncodingType, EncodingResults>: BaseEncoder where EncodingType: Encodable {
     public typealias TranformationMethod = (BasicClosedEncoder<EncodingType, EncodingResults>, Any) throws -> EncodingResults
     
     private let _transformation: TranformationMethod
     // MARK: - Constructing a Basic Encoder
     /// Initializes `self` with default strategies.
-    public init(_ transformation: @escaping TranformationMethod) {
+    public init(boxing: BaseEncoderTypeBoxing?, _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
+        super.init(boxing: boxing)
     }
     
     // MARK: - Encoding Values
@@ -51,9 +50,7 @@ open class BasicClosedEncoder<EncodingType, EncodingResults>: BaseEncoder where 
     }
 }
 
-/*
- Closed decoder base used for creating decoders that only work with one type
-*/
+/// Closed decoder base used for creating decoders that only work with one type
 open class BasicClosedDecoder<DecodingType, DecodingInput>: BaseDecoder where DecodingType: Decodable {
     
     public typealias TranformationMethod = (BasicClosedDecoder<DecodingType, DecodingInput>, DecodingInput) throws -> Any
@@ -62,19 +59,19 @@ open class BasicClosedDecoder<DecodingType, DecodingInput>: BaseDecoder where De
     
     // MARK: - Constructing a Basic Decoder
     /// Initializes `self` with default strategies.
-    public init(_ transformation: @escaping TranformationMethod) {
+    public init(unboxer: BaseDecoderTypeUnboxing?, _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
+        super.init(unboxer: unboxer)
     }
     
     // MARK: - Decoding Values
     /// Decodes a top-level value of the given type from the given Basic representation.
     ///
-    /// - parameter type: The type of the value to decode.
     /// - parameter data: The data to decode from.
     /// - returns: A value of the requested type.
     /// - throws: `DecodingError.dataCorrupted` if values requested from the payload are corrupted, or if the given data is not valid Basic.
     /// - throws: An error if any value throws an error during decoding.
-    open func decode(_ type: DecodingType.Type, from data: DecodingInput) throws -> DecodingType {
+    open func decode(from data: DecodingInput) throws -> DecodingType {
         let topLevel: Any
         do {
             topLevel = try self._transformation(self, data)
@@ -83,8 +80,8 @@ open class BasicClosedDecoder<DecodingType, DecodingInput>: BaseDecoder where De
         }
         
         let decoder = _BaseDecoder(self, referencing: topLevel, options: self.options)
-        guard let value = try decoder.unbox(topLevel, as: type) else {
-            throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value."))
+        guard let value = try decoder.unbox(topLevel, as: DecodingType.self) else {
+            throw DecodingError.valueNotFound(DecodingType.self, DecodingError.Context(codingPath: [], debugDescription: "The given data did not contain a top-level value."))
         }
         
         return value
