@@ -58,6 +58,19 @@ Used to calling new coder processing withing an already coding process.  They wr
 * **WrappedUnkeyedDecoder**
 * **WrappedUnKeyedEncoder**
 
+#### Custom CodingPath Wrappers
+
+Used to change the outward looking codingPath on objects.  This is helpful when manipulating the coding path on the fly
+
+* **WrappedKeyedDecodingContainer**
+* **WrappedUnkeyedDecodingContainer**
+* **WrappedKeyedEncodingContainer**
+* **WrappedUnkeyedEncodingContainer**
+* **WrappedSingleValueDecodingContainer**
+* **WrappedSingleValueEncodingContainer**
+* **WrappedDecoder**
+* **WrappedEncoder**
+
 ### Helper Catchers
 
 Catches either the Encoder or Decoder for use outside the normal coding process
@@ -78,8 +91,16 @@ Catches either the Encoder or Decoder for use outside the normal coding process
 * **CodableKey** - A basic CodingKey that takes in any value.  Its good for using dynamic keys.
 * **CodableHelper** - Where helper methods are located
     * **sequences** - Where sequence related helper methods are located
-        * **dynamicElementEncoding** - Encodes an array like a dictionary based on a property in the object type (Note: Array order is not guaranteed)
-        * **dynamicElementDecoding** - Decodes a dictionary into an array moving the key to a specific property named value (Note: Array order is not guaranteed)
+        * **dynamicElementEncoding** - Encodes an array like a dictionary based on a property in the object type
+            * **Notes**
+                * Array order is not guaranteed
+                * CodingPath when encoding will be malformed.  The Dynamic Key will be missing
+        * **dynamicElementDecoding** - Decodes a dictionary into an array moving the key to a specific property named value 
+            * **Notes**
+                * Array order is not guaranteed
+                * CodingPath when decoding will be malformed.  The Dynamic Key will be missing
+    * **arrays** - Where array related helper methods are located
+
 
 ### Protocols
 
