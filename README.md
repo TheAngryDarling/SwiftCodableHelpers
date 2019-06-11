@@ -6,7 +6,7 @@
 
 Helper classes, protocols and functions designed to make more complex encoding/decoding easier.
 
-Note: Unsupported on Swift 4.1.  There is a bug in the compiler that won't allow this project to build. [SR-7924](https://bugs.swift.org/browse/SR-7924?page=com.atlassian.jira.plugin.system.issuetabpanels%3Aall-tabpanel)
+Note: Unsupported on Swift 4.1, 4.1.3.  There is a bug in the compiler that won't allow this project to build. [SR-7924](https://bugs.swift.org/browse/SR-7924?page=com.atlassian.jira.plugin.system.issuetabpanels%3Aall-tabpanel)
 
 ### Helper Containers
 
