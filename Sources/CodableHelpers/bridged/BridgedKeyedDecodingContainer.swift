@@ -22,14 +22,14 @@ public class BridgedKeyedDecodingContainer<FromKey, ToKey>: KeyedDecodingContain
     /// not convertible to one another. This should report all keys present
     /// which are convertible to the requested type.
     public var allKeys: [Key] {
-        return self.container.allKeys.compactMap({return Key(stringValue: $0.stringValue)})
-        /*var rtn: [Key] = []
+        //return self.container.allKeys.compactMap({return Key(stringValue: $0.stringValue)})
+        var rtn: [Key] = []
         for k in self.container.allKeys {
             if let key = Key(stringValue: k.stringValue) {
                 rtn.append(key)
             }
         }
-        return rtn*/
+        return rtn
     }
     
     /// Creates a new Bridged Decoding Container
