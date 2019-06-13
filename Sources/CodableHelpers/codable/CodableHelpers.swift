@@ -271,7 +271,7 @@ public struct CodableHelpers {
             let rtn = SCArrayOrderedDictionary<Int, Any>()
             
             for key in keys {
-                if let _ = try? container.decodeNil(forKey: key) {
+                if let v = try? container.decodeNil(forKey: key), v {
                     rtn[key.intValue!] = AnyNil //(nil as Any)
                 } else if let v = try? container.decode(Int.self, forKey: key) {
                     rtn[key.intValue!] = v
@@ -318,7 +318,7 @@ public struct CodableHelpers {
             let rtn = SCArrayOrderedDictionary<String, Any>()
             
             for key in keys {
-                if let _ = try? container.decodeNil(forKey: key) {
+                if let v = try? container.decodeNil(forKey: key), v {
                     rtn[key.stringValue] = AnyNil //(nil as Any)
                 } else if let v = try? container.decode(Float.self, forKey: key) {
                     rtn[key.stringValue] = v
@@ -798,7 +798,7 @@ extension CodableHelpers {
                                   customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> Array<Any>  {
             var rtn: Array<Any> = Array<Any>()
             while !container.isAtEnd {
-                if let _ = try? container.decodeNil() {
+                if let v = try? container.decodeNil(), v {
                     rtn.append(AnyNil) //If array was an optional array.  We should add the nil in.
                 } else if let v = try? container.decode(Int.self) {
                     rtn.append(v)
