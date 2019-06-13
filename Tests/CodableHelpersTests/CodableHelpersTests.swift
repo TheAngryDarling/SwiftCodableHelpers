@@ -209,6 +209,8 @@ final class CodableHelpersTests: XCTestCase {
             print(decodedDict)
             #endif
             
+            XCTAssert(!origionalDictionary.equals(decodedDict), "Dictionaries don't match")
+            
         } catch {
              XCTFail("\(error)")
         }
@@ -243,6 +245,8 @@ final class CodableHelpersTests: XCTestCase {
             #if verbose
             print(decodedDict)
             #endif
+            
+            XCTAssert(!origionalDictionary.equals(decodedDict), "Dictionaries don't match")
             
             
         } catch {
