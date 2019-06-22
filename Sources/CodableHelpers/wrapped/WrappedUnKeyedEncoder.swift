@@ -10,7 +10,7 @@ import Foundation
 /// An encoder that wraps an unkeyed encoding container.
 ///
 /// Unsupported functions: container
-public class WrappedUnKeyedEncoder: Encoder, SingleValueEncodingContainer {
+public class WrappedUnkeyedEncoder: Encoder, SingleValueEncodingContainer {
     
     public var userInfo: [CodingUserInfoKey : Any] = [:]
     private var container: UnkeyedEncodingContainer
@@ -102,3 +102,5 @@ public class WrappedUnKeyedEncoder: Encoder, SingleValueEncodingContainer {
     }
 }
 
+@available(*, deprecated, renamed: "WrappedUnkeyedEncoder")
+public typealias WrappedUnKeyedEncoder=WrappedUnkeyedEncoder
