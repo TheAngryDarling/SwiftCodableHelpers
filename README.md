@@ -56,7 +56,7 @@ Used to calling new coder processing withing an already coding process.  They wr
 * **WrappedSingleValueDecoder**
 * **WrappedSingleValueEncoder**
 * **WrappedUnkeyedDecoder**
-* **WrappedUnKeyedEncoder**
+* **WrappedUnkeyedEncoder**
 
 #### Custom CodingPath Wrappers
 
