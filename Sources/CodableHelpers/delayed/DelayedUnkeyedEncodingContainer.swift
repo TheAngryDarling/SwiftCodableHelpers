@@ -35,11 +35,11 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedE
     ///
     /// Note: initializeContainer should only be called once on any instance
     ///
-    /// - Parameter parent: Initialize using an UnkeyedEncodingContainer parent
-    public override func initializeContainer(fromParent parent: inout UnkeyedEncodingContainer) throws {
+    /// - Parameter realContainer: Initialize using an UnkeyedEncodingContainer
+    public override func initializeContainer(from realContainer: inout UnkeyedEncodingContainer) throws {
         guard container == nil else { return }
-        try super.initializeContainer(fromParent: &parent)
-        self.container = parent//parent.nestedUnkeyedContainer()
+        try super.initializeContainer(from: &realContainer)
+        self.container = realContainer//parent.nestedUnkeyedContainer()
         try self.processCache()
     }
     
@@ -259,7 +259,7 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedE
             subPath.append(contentsOf: self.codingPath)
             let rtn = DelayedUnkeyedEncodingContainer(codingPath: subPath)
             cache.append({ (container: inout UnkeyedEncodingContainer) throws -> Void in
-                try rtn.initializeContainer(fromParent: &container)
+                try rtn.initializeContainer(from: &container)
             })
             return rtn
         }
@@ -267,7 +267,13 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedE
     }
     
     public func superEncoder() -> Encoder {
-        if var c = self.container { return c.superEncoder() }
-        else { fatalError("Container currently not set") }
+        guard var c = self.container else {
+            let rtn = DelayedEncoder(codingPath: self.codingPath)
+            cache.append({ (container: inout UnkeyedEncodingContainer) throws -> Void in
+                try rtn.initializeEncoder(from: container.superEncoder())
+            })
+            return rtn
+        }
+        return c.superEncoder()
     }
 }
