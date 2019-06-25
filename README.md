@@ -21,8 +21,10 @@ Allows for bridging between different CodingKeys
 
 Allows the developer to delay the real encoding process until they decide to
 
+* **DelayedEncoder**
 * **DelayedKeyedEncodingContainer**
 * **DelayedUnkeyedEncodingContainer**
+* **DelayedSingleValueEncodingContainer**
 
 #### Filtered
 
@@ -35,8 +37,10 @@ Allows the developer to filter objects out from being writting to the encoder
 
 Is a combination of filtered and delayed.  These are good for moving properties around
 
+* **FilteredDelayedEncoder**
 * **FilteredDelayedKeyedEncodingContainer**
 * **FilteredDelayedUnkeyedEncodingContainer**
+* **FilteredDelayedSingleValueEncodingContainer**
 
 #### Injected
 
@@ -102,7 +106,9 @@ Catches either the Encoder or Decoder for use outside the normal coding process
                 * Array order is not guaranteed
                 * CodingPath when decoding will be malformed.  The Dynamic Key will be missing
     * **arrays** - Where array related encode/decode helper methods are located
+        * **Notes** When working with Bools stored in Any, on Linux Swift versions 4.0-4.0.3 when decoding they convert to Int.  This is an issue with the JSONDecoder.  It works correctly in 4.2.
     * **dictionaries** - Where dictionary related encode/decode helper methods are located
+    * **Notes** When working with Bools stored in Any, on Linux Swift versions 4.0-4.0.3 when decoding they convert to Int.  This is an issue with the JSONDecoder.  It works correctly in 4.2.
 
 
 ### Protocols
