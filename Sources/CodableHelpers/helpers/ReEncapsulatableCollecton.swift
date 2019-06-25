@@ -11,15 +11,15 @@
 import Foundation
 import SwiftClassCollections
 
-// Enum used to tell the reencapsulate function what dictionary type to use
-internal enum ReEncapsulatableDictionaries {
+/// Enum used to tell the reencapsulate function what dictionary type to use
+public enum ReEncapsulatableDictionaries {
     case dictionary
     case classDictionary
     case arrayOrderedDictionary
 }
 
-/// Enum used to tell the reencapsulate function what array type to use
-internal enum ReEncapsulatableArrays {
+//// Enum used to tell the reencapsulate function what array type to use
+public enum ReEncapsulatableArrays {
     case array
     case classArray
 }
