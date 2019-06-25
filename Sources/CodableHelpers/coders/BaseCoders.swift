@@ -212,7 +212,7 @@ public extension BaseEncoderTypeBoxing {
     /// - Parameter value: The value to box if needed
     /// - Parameter codingPath: The current coding path
     /// - Returns: Returns the new boxed value or nil if no boxing was required
-    func box(_ data: Data, atPath codingPath: [CodingKey]) throws -> Any? {return nil }
+    func box(_ data: Data, atPath codingPath: [CodingKey]) throws -> Any? { return nil }
     
     /// A way of boxing a value into the default boxed type or its original value if no boxing was required
     ///
@@ -1111,39 +1111,6 @@ extension BaseEncoder._BaseEncoder {
         }
         
         return self.storage.popContainer()
-    }
-    
-    internal func excapeMutableObjects(_ value: Any) -> Any {
-        if let ary = value as? SCArray<Any> { return excapeMutableObjects(ary) }
-        else if let dict = value as? SCArrayOrderedDictionary<String, Any> { return excapeMutableObjects(dict) }
-        else if let v = value as? NSString { return v.substring(from: 0) } //Cheating way to cast from NSString to String
-        else if let v = value as? NSDate { return Date(timeIntervalSince1970: v.timeIntervalSince1970) } //Cheating way to cast from NSDate to Date
-        else if let v = value as? NSData { return Data(referencing: v) } // Cheating way ot cast from NSData to Data
-        else { return value }
-    }
-    
-    internal func excapeMutableObjects(_ value: SCArrayOrderedDictionary<String, Any>) -> Any {
-        var rtn: [String: Any] = [:]
-        for (k,v) in value {
-            var newValue = v
-            if let ary = newValue as? SCArray<Any> { newValue = excapeMutableObjects(ary) }
-            else if let dict = newValue as? SCArrayOrderedDictionary<String, Any> { newValue = excapeMutableObjects(dict) }
-            else { newValue = excapeMutableObjects(newValue) }
-            rtn[k] = newValue
-        }
-        return rtn
-    }
-    
-    internal func excapeMutableObjects(_ value: SCArray<Any>) -> Any {
-        var rtn: [Any] = []
-        for v in value {
-            var newValue = v
-            if let ary = newValue as? SCArray<Any> { newValue = excapeMutableObjects(ary) }
-            else if let dict = newValue as? SCArrayOrderedDictionary<String, Any> { newValue = excapeMutableObjects(dict) }
-            else { newValue = excapeMutableObjects(newValue) }
-            rtn.append(newValue)
-        }
-        return rtn
     }
 }
 
