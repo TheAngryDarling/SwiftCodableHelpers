@@ -14,8 +14,6 @@ public class FilteredDelayedUnkeyedEncodingContainer: FilteredUnkeyedEncodingCon
     
     /// Creates a new instance of FilteredDelayedUnkeyedEncodingContainer
     ///
-    /// Note: this should not be called directly, please use one of the inherited classes
-    ///
     /// - Parameters:
     ///   - container: The delayed container to work on
     ///   - rootContainer: Reference to a root filetered container if there is one
@@ -28,7 +26,6 @@ public class FilteredDelayedUnkeyedEncodingContainer: FilteredUnkeyedEncodingCon
     }
     /// Creates a new instance of FilteredDelayedUnkeyedEncodingContainer
     ///
-    /// Note: this should not be called directly, please use one of the inherited classes
     ///
     /// - Parameters:
     ///   - codingPath: The current coding path
@@ -45,9 +42,9 @@ public class FilteredDelayedUnkeyedEncodingContainer: FilteredUnkeyedEncodingCon
     ///
     /// Note: initializeContainer should only be called once on any instance
     ///
-    /// - Parameter parent: Initialize using an UnkeyedEncodingContainer parent
-    public func initializeContainer(fromParent parent: inout UnkeyedEncodingContainer) throws  {
-        try self.delayedContainer.initializeContainer(fromParent: &parent)
+    /// - Parameter realContainer: Initialize using an UnkeyedEncodingContainer parent
+    public func initializeContainer(from realContainer: inout UnkeyedEncodingContainer) throws  {
+        try self.delayedContainer.initializeContainer(from: &realContainer)
     }
     
     /// Initialize using an KeyedEncodingContainer
