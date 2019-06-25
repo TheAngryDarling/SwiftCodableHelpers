@@ -7,9 +7,7 @@
 
 import Foundation
 
-/*
- Delayed keyed encoding container used to encode elements in memory until initializeContainer is called
-*/
+/// Delayed keyed encoding container used to encode elements in memory until initializeContainer is called
 public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEncodingContainerProtocol where K: CodingKey {
     
     public typealias Key = K
@@ -41,12 +39,12 @@ public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEn
     /// Note: initializeContainer should only be called once on any instance
     ///
     /// - Parameter parent: Initialize using an UnkeyedEncodingContainer parent
-    public override func initializeContainer(fromParent parent: inout UnkeyedEncodingContainer) throws  {
+    internal func initializeContainer(fromParent parent: inout UnkeyedEncodingContainer) throws  {
         guard container == nil else { return }
-        try super.initializeContainer(fromParent: &parent)
+        try super.initializeContainer(from: &parent)
         self.container = parent.nestedContainer(keyedBy: Key.self)
         self.container = WrappedKeyedEncodingContainer<Key>(parent.nestedContainer(keyedBy: Key.self),
-                                                           customCodingPath: self.codingPath).toKeyedContainer()
+                                                            customCodingPath: self.codingPath).toKeyedContainer()
         try self.processCache()
     }
     
@@ -58,13 +56,27 @@ public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEn
     /// - Parameters:
     ///   - parent: Initialize using an KeyedEncodingContainer parent
     ///   - key: Key to initialize with
-    public override func initializeContainer<ParentKey>(fromParent parent: inout KeyedEncodingContainer<ParentKey>,
-                                                        forKey key: ParentKey) throws /* where ParentKey : CodingKey */ {
+    internal override func initializeContainer<ParentKey>(fromParent parent: inout KeyedEncodingContainer<ParentKey>,
+                                                          forKey key: ParentKey) throws /* where ParentKey : CodingKey */ {
         guard container == nil else { return }
         try super.initializeContainer(fromParent: &parent, forKey: key)
         //self.container = parent.nestedContainer(keyedBy: Key.self, forKey: key)
         self.container = WrappedKeyedEncodingContainer(parent.nestedContainer(keyedBy: Key.self, forKey: key),
                                                        customCodingPath: self.codingPath).toKeyedContainer()
+        try self.processCache()
+    }
+    /// Initialize using an KeyedEncodingContainer
+    /// Once called, any pending encoding actions will be called upon the real container
+    ///
+    /// Note: initializeContainer should only be called once on any instance
+    ///
+    /// - Parameters:
+    ///   - realContainer: Initialize using an KeyedEncodingContainer
+    internal func initializeContainer(from realContainer: inout KeyedEncodingContainer<Key>) throws /* where ParentKey : CodingKey */ {
+        guard container == nil else { return }
+        super.initializeContainer()
+        //self.container = parent.nestedContainer(keyedBy: Key.self, forKey: key)
+        self.container = realContainer
         try self.processCache()
     }
     
@@ -278,13 +290,25 @@ public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEn
     }
     
     public func superEncoder() -> Encoder {
-        if var c = self.container { return c.superEncoder() }
-        else { fatalError("Container currently not set") }
+        guard var c = self.container else {
+            let rtn = DelayedEncoder(codingPath: self.codingPath)
+            cache.append({ (container: inout KeyedEncodingContainer<Key>) throws -> Void in
+                try rtn.initializeEncoder(from: container.superEncoder())
+            })
+            return rtn
+        }
+        return c.superEncoder()
     }
     
     public func superEncoder(forKey key: K) -> Encoder {
-        if var c = self.container { return c.superEncoder(forKey: key) }
-        else { fatalError("Container currently not set") }
+        guard var c = self.container else {
+            let rtn = DelayedEncoder(codingPath: self.codingPath)
+            cache.append({ (container: inout KeyedEncodingContainer<Key>) throws -> Void in
+                try rtn.initializeEncoder(from: container.superEncoder(forKey: key))
+            })
+            return rtn
+        }
+        return c.superEncoder()
     }
     
 }
