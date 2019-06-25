@@ -8,8 +8,6 @@
 import Foundation
 
 /// A Keyed encoding container that allows for fitering and delayed processing
-///
-/// This is a base class and should not be instanciated directly
 public class FilteredDelayedKeyedEncodingContainer<K>: FilteredKeyedEncodingContainer<K> where K: CodingKey {
     /// Delayed container to call encodings on
     private var delayedContainer: DelayedKeyedEncodingContainer<K>
@@ -17,8 +15,6 @@ public class FilteredDelayedKeyedEncodingContainer<K>: FilteredKeyedEncodingCont
     public var wasContainerSet: Bool { return self.delayedContainer.wasContainerSet }
     
     /// Creates a new instance of FilteredDelayedKeyedEncodingContainer
-    ///
-    /// Note: this should not be called directly, please use one of the inherited classes
     ///
     /// - Parameters:
     ///   - container: The delayed container to work on
@@ -31,8 +27,6 @@ public class FilteredDelayedKeyedEncodingContainer<K>: FilteredKeyedEncodingCont
         super.init(KeyedEncodingContainer<K>(container), rootContainer: rootContainer, filter: filter)
     }
     /// Creates a new instance of FilteredDelayedKeyedEncodingContainer
-    ///
-    /// Note: this should not be called directly, please use one of the inherited classes
     ///
     /// - Parameters:
     ///   - codingPath: The current coding path
