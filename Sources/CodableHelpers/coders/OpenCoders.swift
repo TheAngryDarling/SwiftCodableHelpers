@@ -16,11 +16,18 @@ open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
     public typealias TranformationMethod = (BasicOpenEncoder<EncodingResults>, Any) throws -> EncodingResults
     
     private var _transformation: TranformationMethod
+    private let dictionaryReEncapsulation: ReEncapsulatableDictionaries
+    private let arrayReEncapsulation: ReEncapsulatableArrays
     
     // MARK: - Constructing a Basic Encoder
     /// Initializes `self` with default strategies.
-    public init(boxing: BaseEncoderTypeBoxing? = nil, _ transformation: @escaping TranformationMethod) {
+    public init(boxing: BaseEncoderTypeBoxing? = nil,
+                dictionaryReEncapsulation: ReEncapsulatableDictionaries = .dictionary,
+                arrayReEncapsulation: ReEncapsulatableArrays = .array,
+                _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
+        self.dictionaryReEncapsulation = dictionaryReEncapsulation
+        self.arrayReEncapsulation = arrayReEncapsulation
         super.init(boxing: boxing)
     }
     
@@ -43,8 +50,23 @@ open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) encoded as null \(type(of: self)) fragment."))
         }
         
-        if let box = topLevel as? SCArrayOrderedDictionary<String, Any> { topLevel = encoder.excapeMutableObjects(box) }
-        else if let box = topLevel as? SCArray<Any> { topLevel = encoder.excapeMutableObjects(box) }
+        if let d = topLevel as? SCArrayOrderedDictionary<String, Any> {
+            topLevel = d.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+            
+        } else if let d = topLevel as? SCDictionary<String, Any> {
+            topLevel = d.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        } else if let d = topLevel as? Dictionary<String, Any> {
+            topLevel = d.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        } else if let a = topLevel as? SCArray<Any> {
+            topLevel = a.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        } else if let a = topLevel as? Array<Any> {
+            topLevel = a.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        }
         
         return try self._transformation(self, topLevel)
         

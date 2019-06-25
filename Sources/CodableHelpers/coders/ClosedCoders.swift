@@ -7,6 +7,7 @@
 
 import Foundation
 import Nillable
+import SwiftClassCollections
 
 
 /// Closed Encoder base used for creating encoders that only work with one type
@@ -14,10 +15,17 @@ open class BasicClosedEncoder<EncodingType, EncodingResults>: BaseEncoder where 
     public typealias TranformationMethod = (BasicClosedEncoder<EncodingType, EncodingResults>, Any) throws -> EncodingResults
     
     private let _transformation: TranformationMethod
+    private let dictionaryReEncapsulation: ReEncapsulatableDictionaries
+    private let arrayReEncapsulation: ReEncapsulatableArrays
     // MARK: - Constructing a Basic Encoder
     /// Initializes `self` with default strategies.
-    public init(boxing: BaseEncoderTypeBoxing? = nil, _ transformation: @escaping TranformationMethod) {
+    public init(boxing: BaseEncoderTypeBoxing? = nil,
+                dictionaryReEncapsulation: ReEncapsulatableDictionaries = .dictionary,
+                arrayReEncapsulation: ReEncapsulatableArrays = .array,
+                _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
+        self.dictionaryReEncapsulation = dictionaryReEncapsulation
+        self.arrayReEncapsulation = arrayReEncapsulation
         super.init(boxing: boxing)
     }
     
@@ -31,7 +39,7 @@ open class BasicClosedEncoder<EncodingType, EncodingResults>: BaseEncoder where 
     open func encode(_ value: EncodingType) throws -> EncodingResults {
         let encoder = BaseEncoder._BaseEncoder(self, options: self.options)
         
-        guard let topLevel = try encoder.box_(value) else {
+        guard var topLevel = try encoder.box_(value) else {
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(EncodingType.self) did not encode any values."))
         }
         
@@ -41,9 +49,23 @@ open class BasicClosedEncoder<EncodingType, EncodingResults>: BaseEncoder where 
             throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(EncodingType.self) encoded as null \(type(of: self)) fragment."))
         }
         
-        /*if let box = topLevel as? MutableDictionary<String, Any> { topLevel = encoder.excapeMutableObjects(box) }
-        else if let box = topLevel as? MutableArray<Any> { topLevel = encoder.excapeMutableObjects(box) }
-        else { topLevel = encoder.excapeMutableObjects(topLevel) }*/
+        if let d = topLevel as? SCArrayOrderedDictionary<String, Any> {
+            topLevel = d.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+    
+        } else if let d = topLevel as? SCDictionary<String, Any> {
+            topLevel = d.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        } else if let d = topLevel as? Dictionary<String, Any> {
+            topLevel = d.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        } else if let a = topLevel as? SCArray<Any> {
+            topLevel = a.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        } else if let a = topLevel as? Array<Any> {
+            topLevel = a.reencapsulatable(dictionariesTo: self.dictionaryReEncapsulation,
+                                          arraysTo: self.arrayReEncapsulation)
+        }
         
         return try self._transformation(self, topLevel)
         
