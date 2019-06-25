@@ -320,6 +320,10 @@ public struct CodableHelpers {
             for key in keys {
                 if let v = try? container.decodeNil(forKey: key), v {
                     rtn[key.stringValue] = AnyNil //(nil as Any)
+                } else if let v = try? container.decode(Int.self, forKey: key) {
+                    rtn[key.stringValue] = v
+                } else if let v = try? container.decode(UInt.self, forKey: key) {
+                    rtn[key.stringValue] = v
                 } else if let v = try? container.decode(Float.self, forKey: key) {
                     rtn[key.stringValue] = v
                 } else if let v = try? container.decode(String.self, forKey: key) {
@@ -327,10 +331,6 @@ public struct CodableHelpers {
                 } else if let v = try? container.decode(Double.self, forKey: key) {
                     rtn[key.stringValue] = v
                 } else if let v = try? container.decode(Bool.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(Int.self, forKey: key) {
-                    rtn[key.stringValue] = v
-                } else if let v = try? container.decode(UInt.self, forKey: key) {
                     rtn[key.stringValue] = v
                 } else if let v = try? container.decode(Date.self, forKey: key) {
                     rtn[key.stringValue] = v
@@ -1245,7 +1245,7 @@ extension CodableHelpers {
                     customDecoding = cF
                 }
                 
-                let d: SCArrayOrderedDictionary = try CodableHelpers.dictionaries.decode(from: decoder, customDecoding: customDecoding)
+                let d: SCArrayOrderedDictionary<D.Key, D.Value> = try CodableHelpers.dictionaries.decode(from: decoder, customDecoding: customDecoding)
                 self.dictionary = d.reencapsulatable(dictionariesTo: D.ReEncapsulatableType, arraysTo: .array) as! D
             }
             
@@ -1300,6 +1300,24 @@ extension CodableHelpers {
                     rtn[k] = v
                 }
                 return rtn //D.init() //D.init(uniqueKeysWithValues: cRtn)*/
+            } else if let cRtn = rtnD as? SCArrayOrderedDictionary<String, Any>,
+                let numericType: DictionaryKeyCodableStringInit.Type = D.Key.self as? DictionaryKeyCodableStringInit.Type {
+                
+                let converted = SCArrayOrderedDictionary<D.Key, Any>()
+                
+                for (k, v) in cRtn {
+                    if let nV = numericType.init(k) as? D.Key {
+                        converted[nV] = v
+                    } else {
+                        throw DecodingError.typeMismatch(Any.self, DecodingError.Context(codingPath: container.codingPath, debugDescription: "Unsupported key type \(D.Key.self)"))
+                    }
+                }
+                
+                guard D.self != SCArrayOrderedDictionary<D.Key, Any>.self else {
+                    return converted as! D
+                }
+                return converted.reencapsulatable(dictionariesTo: D.ReEncapsulatableType, arraysTo: .array) as! D
+                
             } else {
                 throw DecodingError.typeMismatch(Any.self, DecodingError.Context(codingPath: container.codingPath, debugDescription: "Unsupported key type \(D.Key.self)"))
             }
@@ -1342,7 +1360,7 @@ extension CodableHelpers {
         ///
         /// - Returns: Return a dictionary type based on return
         public static func decode<D>(from decoder: Decoder,
-                                     customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key == String, D.Value == Any {
+                                     customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             var container = try decoder.container(keyedBy: CodableKey.self)
             return try decode(&container, customDecoding: customDecoding)
         }
@@ -1357,7 +1375,7 @@ extension CodableHelpers {
         /// - Returns: Return a dictionary type based on return
         public static func decode<D, DC>(_ data: DC.EncodedData,
                                          from decoder: DC,
-                                         customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key == String, D.Value == Any, DC: DecodingType {
+                                         customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any, DC: DecodingType {
             
             let key = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
             decoder.userInfo[key] = customDecoding
