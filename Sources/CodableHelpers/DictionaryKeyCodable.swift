@@ -11,6 +11,11 @@ public struct _DictionaryKeyCodableLock {
     fileprivate init() { }
 }
 
+/// Protocol used to define init on DictionaryKeyCodable
+internal protocol DictionaryKeyCodableStringInit {
+    init?(_ description: String)
+}
+
 
 /// Dictionary Codable Keys
 /// Used to define available coding keys.
@@ -50,35 +55,35 @@ extension String: DictionaryKeyCodable {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension Int: DictionaryKeyCodable {
+extension Int: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension Int8: DictionaryKeyCodable {
+extension Int8: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension UInt8: DictionaryKeyCodable {
+extension UInt8: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension Int16: DictionaryKeyCodable {
+extension Int16: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension UInt16: DictionaryKeyCodable {
+extension UInt16: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension Int32: DictionaryKeyCodable {
+extension Int32: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension UInt32: DictionaryKeyCodable {
+extension UInt32: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
-extension Int64: DictionaryKeyCodable {
+extension Int64: DictionaryKeyCodable, DictionaryKeyCodableStringInit {
     public static var _dictionaryKeyCodableProtoLock: _DictionaryKeyCodableLock { return _DictionaryKeyCodableLock() }
 }
 
