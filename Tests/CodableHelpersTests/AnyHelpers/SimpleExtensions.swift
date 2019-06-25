@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Nillable
 
 extension Bool: AnyEquatableFromEquatable {}
 
@@ -26,3 +27,25 @@ extension Float: AnyEquatableFromEquatable {}
 
 extension Character: AnyEquatableFromEquatable {}
 extension String: AnyEquatableFromEquatable {}
+
+
+private func valNil<V>(_ value: V, treatNSNullAsNil: Bool = true) -> Bool {
+    // If value is NSNull and not treatNSNullAsNil then we shouuld return false
+    guard !(!treatNSNullAsNil && value is NSNull) else { return false }
+    guard let v = value as? Nillable else { return false }
+    return v.isNil
+}
+
+extension Optional: AnyEquatable {
+    public func equals(_ value: Any) -> Bool {
+        let isValNil = valNil(value)
+        if self.isNil && isValNil { return true }
+        guard !self.isNil && !isValNil else { return false }
+        if let v = value as? Wrapped, let aE = v as? AnyEquatable {
+            return aE.equals(self.unsafelyUnwrapped)
+        } else {
+            return false
+        }
+        
+    }
+}
