@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array: AnyEquatable where Element == Any {
+extension Array: AnyEquatable/* where Element == Any*/ {
     public func equals(_ value: Any) -> Bool {
         guard let ary = value as? Array<Element> else { return false }
         guard self.count == ary.count else { return false }
