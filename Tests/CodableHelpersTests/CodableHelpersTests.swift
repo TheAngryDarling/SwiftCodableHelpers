@@ -172,18 +172,9 @@ final class CodableHelpersTests: XCTestCase {
     
     func testSwiftDictionaryCoding() {
         
-        
-        do {
-            
-            var origionalDictionary = Dictionary<String, Any>()
-            origionalDictionary["Person A"] = "Name A"
-            origionalDictionary["Person B"] = "Name B"
-            origionalDictionary["Person C"] = ["First Name", "Last Name"]
-            origionalDictionary["Person D"] = Optional<Float>(3.0)
-            origionalDictionary["Person D"] = true
-            
+        func testDictionaryCoding<K>(_ originalDictionary:  Dictionary<K, Any>) throws -> Bool where K: DictionaryKeyCodable {
             #if verbose
-            print(origionalDictionary)
+            print(originalDictionary)
             #endif
             
             let encoder = JSONEncoder()
@@ -191,25 +182,37 @@ final class CodableHelpersTests: XCTestCase {
             
             
             
-            let d = try CodableHelpers.dictionaries.encode(origionalDictionary, to: encoder)  //try encoder.encode(origionalStringDictionary)
+            let d = try CodableHelpers.dictionaries.encode(originalDictionary, to: encoder)  //try encoder.encode(origionalStringDictionary)
             
             #if verbose
             let s = String(data: d, encoding: .utf8)!
             print(s)
             #endif
             
-            
-            
-            
             let decoder = JSONDecoder()
             
-            let decodedDict: Dictionary<String, Any> = try CodableHelpers.dictionaries.decode(d, from: decoder)
+            let decodedDict: Dictionary<K, Any> = try CodableHelpers.dictionaries.decode(d, from: decoder)
             
             #if verbose
             print(decodedDict)
             #endif
             
-            XCTAssert(!origionalDictionary.equals(decodedDict), "Dictionaries don't match")
+            return originalDictionary.equals(decodedDict)
+            
+        }
+        
+        do {
+            
+            var originalDictionary = Dictionary<String, Any>()
+            originalDictionary["Person A"] = "Name A"
+            originalDictionary["Person B"] = "Name B"
+            originalDictionary["Person C"] = ["First Name", "Last Name"]
+            originalDictionary["Person D"] = Optional<Float>(3.0)
+            originalDictionary["Person D"] = 1
+            
+            let eq = try testDictionaryCoding(originalDictionary)
+            
+            XCTAssert(eq, "\(type(of: originalDictionary)) Dictionaries don't match")
             
         } catch {
              XCTFail("\(error)")
@@ -218,40 +221,35 @@ final class CodableHelpersTests: XCTestCase {
         
         do {
             
-            var origionalDictionary = Dictionary<Int, Any>()
-            origionalDictionary[1] = "Name A"
-            origionalDictionary[2] = AnyNil
-            origionalDictionary[3] = "Name B"
+            var originalDictionary = Dictionary<Int, Any>()
+            originalDictionary[1] = "Name A"
+            originalDictionary[2] = AnyNil
+            originalDictionary[3] = "Name B"
             
-            #if verbose
-            print(origionalDictionary)
-            #endif
+            let eq = try testDictionaryCoding(originalDictionary)
             
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            
-            let d = try CodableHelpers.dictionaries.encode(origionalDictionary, to: encoder)  //try encoder.encode(origionalIntDictionary)
-            
-            #if verbose
-            let s = String(data: d, encoding: .utf8)!
-            print(s)
-            #endif
-            
-            
-            let decoder = JSONDecoder()
-            
-            let decodedDict: Dictionary<String, Any> = try CodableHelpers.dictionaries.decode(d, from: decoder)
-            
-            #if verbose
-            print(decodedDict)
-            #endif
-            
-            XCTAssert(!origionalDictionary.equals(decodedDict), "Dictionaries don't match")
+            XCTAssert(eq, "\(type(of: originalDictionary)) Dictionaries don't match")
             
             
         } catch {
             XCTFail("\(error)")
         }
+        
+        /*do {
+            
+            var originalDictionary = Dictionary<Bool, Any>()
+            originalDictionary[true] = "Name A"
+            originalDictionary[false] = AnyNil
+            
+            let eq = try testDictionaryCoding(originalDictionary)
+            
+            XCTAssert(eq, "\(type(of: originalDictionary)) Dictionaries don't match")
+            
+            
+        } catch {
+            XCTFail("\(error)")
+        }*/
+ 
     }
 
 
