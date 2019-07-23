@@ -106,9 +106,13 @@ Catches either the Encoder or Decoder for use outside the normal coding process
                 * Array order is not guaranteed
                 * CodingPath when decoding will be malformed.  The Dynamic Key will be missing
     * **arrays** - Where array related encode/decode helper methods are located
-        * **Notes** When working with Bools stored in Any, on Linux Swift versions 4.0-4.0.3 when decoding they convert to Int.  This is an issue with the JSONDecoder.  It works correctly in 4.2.
+        * **Notes**
+            * When working with numeric values with, if the decimal portion is Zero, the encoder will cut it down to an Int, and the decoder will then read it as an Int
+            *  When working with Bools stored in Any, on Linux Swift versions 4.0-4.0.3 when decoding they convert to Int.  This is an issue with the JSONDecoder.  It works correctly in 4.2.
     * **dictionaries** - Where dictionary related encode/decode helper methods are located
-    * **Notes** When working with Bools stored in Any, on Linux Swift versions 4.0-4.0.3 when decoding they convert to Int.  This is an issue with the JSONDecoder.  It works correctly in 4.2.
+       * **Notes** 
+            * When working with numeric values with, if the decimal portion is Zero, the encoder will cut it down to an Int, and the decoder will then read it as an Int
+            * When working with Bools stored in Any, on Linux Swift versions 4.0-4.0.3 when decoding they convert to Int.  This is an issue with the JSONDecoder.  It works correctly in 4.2.
 
 
 ### Protocols
