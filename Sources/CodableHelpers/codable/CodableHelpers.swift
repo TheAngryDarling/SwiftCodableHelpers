@@ -261,9 +261,11 @@ public struct CodableHelpers {
     ///
     /// - Parameters:
     ///   - container: The decoding container to decode from
+    ///   - excludingKeys: Any keys to exclude from the top level
     ///   - customDecoding: Custom decoder function for custom decoding of complex objects
     /// - Returns: Returns either SCArrayOrderedDictionary<String, Any> or SCArrayOrderedDictionary<Int, Any> depending on the CodableKey type
     private static func _decode(_ container: inout KeyedDecodingContainer<CodableKey>,
+                                excludingKeys: [CodableKey],
                                 customDecoding: (_ decoder: Decoder) throws -> Any?) throws -> Any {
         
         let keys = container.allKeys
@@ -271,6 +273,9 @@ public struct CodableHelpers {
             let rtn = SCArrayOrderedDictionary<Int, Any>()
             
             for key in keys {
+                guard !excludingKeys.contains(where: { $0.stringValue == key.stringValue }) else {
+                    continue
+                }
                 if let v = try? container.decodeNil(forKey: key), v {
                     rtn[key.intValue!] = AnyNil //(nil as Any)
                 } else if let v = try? container.decode(Int.self, forKey: key) {
@@ -294,7 +299,7 @@ public struct CodableHelpers {
                     if let r = try customDecoding(WrappedKeyedDecoder(v)) {
                         rtn[key.intValue!] = r
                     } else {
-                        rtn[key.intValue!] = try _decode(&v, customDecoding: customDecoding)
+                        rtn[key.intValue!] = try _decode(&v, excludingKeys: [], customDecoding: customDecoding)
                     }
                     
                     
@@ -318,6 +323,10 @@ public struct CodableHelpers {
             let rtn = SCArrayOrderedDictionary<String, Any>()
             
             for key in keys {
+                guard !excludingKeys.contains(where: { $0.stringValue == key.stringValue }) else {
+                    continue
+                }
+                
                 if let v = try? container.decodeNil(forKey: key), v {
                     rtn[key.stringValue] = AnyNil //(nil as Any)
                 } else if let v = try? container.decode(Int.self, forKey: key) {
@@ -341,7 +350,7 @@ public struct CodableHelpers {
                     if let r = try customDecoding(WrappedKeyedDecoder(v)) {
                         rtn[key.stringValue] = r
                     } else {
-                        rtn[key.stringValue] = try _decode(&v, customDecoding: customDecoding)
+                        rtn[key.stringValue] = try _decode(&v, excludingKeys: [], customDecoding: customDecoding)
                     }
                     
                 } else if var v = try? container.nestedUnkeyedContainer(forKey: key) {
@@ -751,8 +760,8 @@ extension CodableHelpers {
             
             public init(from decoder: Decoder) throws {
                 let a: Array<Any>!
-                let key = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
-                if let f = decoder.userInfo[key], let customDecoding = f as? ((_ decoder: Decoder) throws -> Any?) {
+                let customDecodingKey = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
+                if let f = decoder.userInfo[customDecodingKey], let customDecoding = f as? ((_ decoder: Decoder) throws -> Any?) {
                     a = try CodableHelpers.arrays.decode(from: decoder, customDecoding: customDecoding)
                 } else {
                     a = try CodableHelpers.arrays.decode(from: decoder)
@@ -820,7 +829,7 @@ extension CodableHelpers {
                     if let r = try customDecoding(WrappedKeyedDecoder(v)) {
                         rtn.append(r)
                     } else {
-                        rtn.append(try _decode(&v, customDecoding: customDecoding))
+                        rtn.append(try _decode(&v, excludingKeys: [], customDecoding: customDecoding))
                     }
                 } else if var v = try? container.nestedUnkeyedContainer() {
                     if let r = try customDecoding(WrappedUnkeyedDecoder(v)) {
@@ -1240,12 +1249,19 @@ extension CodableHelpers {
             public init(from decoder: Decoder) throws {
                 var customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }
                 
-                let key = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
-                if let f = decoder.userInfo[key], let cF = f as? ((_ decoder: Decoder) throws -> Any?) {
+                let customDecodingKey = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
+                if let f = decoder.userInfo[customDecodingKey], let cF = f as? ((_ decoder: Decoder) throws -> Any?) {
                     customDecoding = cF
                 }
+                var excludingKeys: [D.Key] = []
+                let excludingKeysKey = CodingUserInfoKey(rawValue: "CodableHelper.decoder.excludingKeys")!
+                if let f = decoder.userInfo[excludingKeysKey], let cF = f as? [D.Key] {
+                    excludingKeys = cF
+                }
                 
-                let d: SCArrayOrderedDictionary<D.Key, D.Value> = try CodableHelpers.dictionaries.decode(from: decoder, customDecoding: customDecoding)
+                let d: SCArrayOrderedDictionary<D.Key, D.Value> = try CodableHelpers.dictionaries.decode(from: decoder,
+                                                                                                         excludingKeys: excludingKeys,
+                                                                                                         customDecoding: customDecoding)
                 self.dictionary = d.reencapsulatable(dictionariesTo: D.ReEncapsulatableType, arraysTo: .array) as! D
             }
             
@@ -1270,12 +1286,18 @@ extension CodableHelpers {
         ///
         /// - Parameters:
         ///   - container: The container to decode the dictionary from
+        ///   - excludingKeys: Any keys to exclude from the top level
         ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
         /// - Returns: Return a dictionary type based on return from the given container
         public static func decode<D>(_ container: inout KeyedDecodingContainer<CodableKey>,
+                                     excludingKeys: [D.Key] = [],
                                      customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             
-            let rtnD = try _decode(&container, customDecoding: customDecoding)
+            
+            
+            let rtnD = try _decode(&container,
+                                   excludingKeys: excludingKeys.map({ $0.dynamicCodingKey }),
+                                   customDecoding: customDecoding)
             
             
             /*if let iRtnD = rtnD as? SCArrayOrderedDictionary<Int, Any> {
@@ -1356,13 +1378,15 @@ extension CodableHelpers {
         ///
         /// - Parameters:
         ///   - decoder: The decoder to decode dictionary from
+        ///   - excludingKeys: Any keys to exclude from the top level
         ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
         ///
         /// - Returns: Return a dictionary type based on return
         public static func decode<D>(from decoder: Decoder,
+                                     excludingKeys: [D.Key] = [],
                                      customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             var container = try decoder.container(keyedBy: CodableKey.self)
-            return try decode(&container, customDecoding: customDecoding)
+            return try decode(&container, excludingKeys: excludingKeys, customDecoding: customDecoding)
         }
         
         /// Decode a Dictionary type based on return from the given container
@@ -1370,16 +1394,23 @@ extension CodableHelpers {
         /// - Parameters:
         ///   - data: The data to decode from
         ///   - decoder: The decoder to use with the data to decode the dictionary from
+        ///   - excludingKeys: Any keys to exclude from the top level
         ///   - customDecoding: Function to try and do custom decoding of complex objects or nil if no custom decoded required
         ///
         /// - Returns: Return a dictionary type based on return
         public static func decode<D, DC>(_ data: DC.EncodedData,
                                          from decoder: DC,
+                                         excludingKeys: [D.Key] = [],
                                          customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any, DC: DecodingType {
             
-            let key = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
-            decoder.userInfo[key] = customDecoding
-            defer { decoder.userInfo.removeValue(forKey: key) }
+            let customDecodingKey = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
+            decoder.userInfo[customDecodingKey] = customDecoding
+            let excludingKeysKey = CodingUserInfoKey(rawValue: "CodableHelper.decoder.excludingKeys")!
+            decoder.userInfo[excludingKeysKey] = excludingKeys
+            defer {
+                decoder.userInfo.removeValue(forKey: customDecodingKey)
+                decoder.userInfo.removeValue(forKey: excludingKeysKey)
+            }
             let dc: ContainedCodableDictionary<D> = try decoder.decode(ContainedCodableDictionary<D>.self, from: data)
             return dc.dictionary
         }
