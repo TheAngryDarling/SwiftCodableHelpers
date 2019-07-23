@@ -197,8 +197,14 @@ final class CodableHelpersTests: XCTestCase {
             print(decodedDict)
             #endif
             
-            return originalDictionary.equals(decodedDict)
+            let rtn = originalDictionary.equals(decodedDict)
             
+            if !rtn {
+                print("originalDictionary: \n\(originalDictionary)")
+                print("decodedDict: \n\(decodedDict)")
+            }
+            
+            return rtn
         }
         
         do {
@@ -207,12 +213,38 @@ final class CodableHelpersTests: XCTestCase {
             originalDictionary["Person A"] = "Name A"
             originalDictionary["Person B"] = "Name B"
             originalDictionary["Person C"] = ["First Name", "Last Name"]
-            originalDictionary["Person D"] = Optional<Float>(3.0)
-            originalDictionary["Person D"] = 1
+            originalDictionary["Person D"] = Optional<Float>(3.2)
+            originalDictionary["Person E"] = 1
             
             let eq = try testDictionaryCoding(originalDictionary)
             
             XCTAssert(eq, "\(type(of: originalDictionary)) Dictionaries don't match")
+            
+            
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            
+            
+            
+            let d = try CodableHelpers.dictionaries.encode(originalDictionary, to: encoder)  //try encoder.encode(origionalStringDictionary)
+            
+            #if verbose
+            let s = String(data: d, encoding: .utf8)!
+            print(s)
+            #endif
+            
+            let decoder = JSONDecoder()
+            
+            let decodedDict: Dictionary<String, Any> = try CodableHelpers.dictionaries.decode(d,
+                                                                                              from: decoder,
+                                                                                              excludingKeys: [originalDictionary.keys.first!])
+            XCTAssert(!decodedDict.keys.contains(originalDictionary.keys.first!), "Excluding key '\(originalDictionary.keys.first!)' was found in decoded dictionary")
+            
+            #if verbose
+            print(decodedDict)
+            #endif
+            
+            
             
         } catch {
              XCTFail("\(error)")
