@@ -8,7 +8,7 @@
 import Foundation
 
 /// Delayed unkeyed encoding container used to encode elements in memory until initializeContainer is called
-public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedEncodingContainer {
+public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer {
     
     private typealias CacheCall = (_ container: inout UnkeyedEncodingContainer) throws -> Void
     
@@ -261,7 +261,7 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedE
             cache.append({ (container: inout UnkeyedEncodingContainer) throws -> Void in
                 try rtn.initializeContainer(from: &container)
             })
-            return rtn
+            return rtn.codableObject()
         }
         return c.nestedUnkeyedContainer()
     }
@@ -277,3 +277,9 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer, UnkeyedE
         return c.superEncoder()
     }
 }
+
+#if !swift(>=4.0.4) || swift(>=4.2)
+extension DelayedUnkeyedEncodingContainer: UnkeyedEncodingContainer { }
+#else
+extension DelayedUnkeyedEncodingContainer: ClassUnkeyedEncodingContainer { }
+#endif

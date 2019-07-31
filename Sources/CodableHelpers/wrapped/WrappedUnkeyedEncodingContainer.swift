@@ -8,7 +8,7 @@
 import Foundation
 
 /// A container that wraps a WrappedUnkeyedEncodingContainer allowing to override the coding path
-open class WrappedUnkeyedEncodingContainer: UnkeyedEncodingContainer {
+open class WrappedUnkeyedEncodingContainer {
     
     private var container: UnkeyedEncodingContainer
     public let codingPath: [CodingKey]
@@ -150,7 +150,7 @@ open class WrappedUnkeyedEncodingContainer: UnkeyedEncodingContainer {
     
     open func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
         return WrappedUnkeyedEncodingContainer(self.container.nestedUnkeyedContainer(),
-                                               customCodingPath: self.codingPath.appending(index: self.count))
+                                               customCodingPath: self.codingPath.appending(index: self.count)).codableObject()
     }
     
     open func superEncoder() -> Encoder {
@@ -158,3 +158,9 @@ open class WrappedUnkeyedEncodingContainer: UnkeyedEncodingContainer {
                               customCodingPath: self.codingPath.appending(stringValue: "super"))
     }
 }
+
+#if !swift(>=4.0.4) || swift(>=4.2)
+extension WrappedUnkeyedEncodingContainer: UnkeyedEncodingContainer { }
+#else
+extension WrappedUnkeyedEncodingContainer: ClassUnkeyedEncodingContainer { }
+#endif

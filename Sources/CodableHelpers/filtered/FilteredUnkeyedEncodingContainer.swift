@@ -11,7 +11,7 @@ import Foundation
 /// Filtered unkeyed encoding container.
 ///
 /// Allows coder to fileter out specific keyed objecs when encoding
-public class FilteredUnkeyedEncodingContainer: FilteredEncodingContainer, UnkeyedEncodingContainer {
+public class FilteredUnkeyedEncodingContainer: FilteredEncodingContainer {
     
     private var container: UnkeyedEncodingContainer
     
@@ -127,10 +127,16 @@ public class FilteredUnkeyedEncodingContainer: FilteredEncodingContainer, Unkeye
     public func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
         let n = self.container.nestedUnkeyedContainer()
         let rtn = FilteredUnkeyedEncodingContainer(n, rootContainer: self.rootContainer ?? self, filter: self.filterEncoding)
-        return rtn
+        return rtn.codableObject()
     }
     
     public func superEncoder() -> Encoder {
         return self.container.superEncoder()
     }
 }
+
+#if !swift(>=4.0.4) || swift(>=4.2)
+extension FilteredUnkeyedEncodingContainer: UnkeyedEncodingContainer { }
+#else
+extension FilteredUnkeyedEncodingContainer: ClassUnkeyedEncodingContainer { }
+#endif

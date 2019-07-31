@@ -22,7 +22,7 @@ public class FilteredDelayedUnkeyedEncodingContainer: FilteredUnkeyedEncodingCon
                 rootContainer: FilteredEncodingContainer? = nil,
                 filter: @escaping FilterEncoding) {
         self.delayedContainer = container
-        super.init(container, rootContainer: rootContainer, filter: filter)
+        super.init(container.codableObject(), rootContainer: rootContainer, filter: filter)
     }
     /// Creates a new instance of FilteredDelayedUnkeyedEncodingContainer
     ///
@@ -77,7 +77,7 @@ public class FilteredDelayedUnkeyedEncodingContainer: FilteredUnkeyedEncodingCon
         let rtn = FilteredDelayedUnkeyedEncodingContainer(n as! DelayedUnkeyedEncodingContainer,
                                                           rootContainer: self.rootContainer ?? self,
                                                           filter: self.filterEncoding)
-        return rtn
+        return rtn.codableObject()
     }
     
 }
