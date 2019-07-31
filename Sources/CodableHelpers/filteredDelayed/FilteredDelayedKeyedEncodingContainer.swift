@@ -70,7 +70,7 @@ public class FilteredDelayedKeyedEncodingContainer<K>: FilteredKeyedEncodingCont
     public override func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
         let n = self.delayedContainer.nestedUnkeyedContainer(forKey: key)
         let rtn = FilteredDelayedUnkeyedEncodingContainer(n as! DelayedUnkeyedEncodingContainer, rootContainer: self.rootContainer ?? self, filter: self.filterEncoding)
-        return rtn
+        return rtn.codableObject()
     }
     
 }

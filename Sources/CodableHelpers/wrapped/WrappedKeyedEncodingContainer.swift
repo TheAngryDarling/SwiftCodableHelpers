@@ -138,7 +138,7 @@ open class WrappedKeyedEncodingContainer<Key>: KeyedEncodingContainerProtocol wh
     open func nestedUnkeyedContainer(forKey key: Key) -> UnkeyedEncodingContainer {
         
         return WrappedUnkeyedEncodingContainer(self.container.nestedUnkeyedContainer(forKey: key),
-                                               customCodingPath: self.codingPath.appending(key))
+                                               customCodingPath: self.codingPath.appending(key)).codableObject()
 
     }
     

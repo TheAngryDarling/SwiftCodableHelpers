@@ -114,7 +114,7 @@ public class DelayedEncoder: Encoder {
                 var c = encoder.unkeyedContainer()
                 try rtn.initializeContainer(from: &c)
             })
-            return rtn
+            return rtn.codableObject()
         }
         return e.unkeyedContainer()
     }

@@ -284,7 +284,7 @@ public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEn
             cache.append({ ( container: inout KeyedEncodingContainer<Key>) throws -> Void in
                 try rtn.initializeContainer(fromParent: &container, forKey: key)
             })
-            return rtn
+            return rtn.codableObject()
         }
         return c.nestedUnkeyedContainer(forKey: key)
     }

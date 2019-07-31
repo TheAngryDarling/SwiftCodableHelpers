@@ -49,7 +49,7 @@ public class FilteredDelayedEncoder: Encoder {
         let container = self.delayedEncoder.delayedUnkeyedContainer()
         return FilteredDelayedUnkeyedEncodingContainer(container,
                                                        rootContainer: self.rootContainer,
-                                                       filter: self.filter)
+                                                       filter: self.filter).codableObject()
     }
     
     public func singleValueContainer() -> SingleValueEncodingContainer {

@@ -39,7 +39,7 @@ open class WrappedEncoder: Encoder {
     
     open func unkeyedContainer() -> UnkeyedEncodingContainer {
         return WrappedUnkeyedEncodingContainer(self.encoder.unkeyedContainer(),
-                                               customCodingPath: self.codingPath)
+                                               customCodingPath: self.codingPath).codableObject()
     }
     
     open func singleValueContainer() -> SingleValueEncodingContainer {

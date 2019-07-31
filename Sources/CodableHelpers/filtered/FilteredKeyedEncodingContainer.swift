@@ -134,7 +134,7 @@ public class FilteredKeyedEncodingContainer<K>: FilteredEncodingContainer, Keyed
     public func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
         let n = self.container.nestedUnkeyedContainer(forKey: key)
         let rtn = FilteredUnkeyedEncodingContainer(n, rootContainer: self.rootContainer ?? self, filter: self.filterEncoding)
-        return rtn
+        return rtn.codableObject()
     }
     
     public func superEncoder() -> Encoder {
