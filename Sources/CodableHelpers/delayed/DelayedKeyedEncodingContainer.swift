@@ -240,51 +240,49 @@ public class DelayedKeyedEncodingContainer<K>: DelayedEncodingContainer, KeyedEn
         try c.encode(value, forKey: key)
     }
     
-    public func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type,
-                                           forKey key: K) -> KeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
-        guard var c = self.container else  {
-            var subPath: [CodingKey] = []
-            subPath.append(contentsOf: self.codingPath)
-            subPath.append(key)
-            let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
+    public func nestedDelayedContainer<NestedKey>(keyedBy keyType: NestedKey.Type,
+                                                    forKey key: K) -> DelayedKeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
+        var subPath: [CodingKey] = []
+        subPath.append(contentsOf: self.codingPath)
+        subPath.append(key)
+         let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
+        if var c = self.container  {
+           try! rtn.initializeContainer(fromParent: &c, forKey: key)
+        } else {
             cache.append({ ( container: inout KeyedEncodingContainer<Key>) throws -> Void in
                 try rtn.initializeContainer(fromParent: &container, forKey: key)
             })
-            return KeyedEncodingContainer<NestedKey>(rtn)
+        }
+        return rtn
+    }
+    
+    public func nestedDelayedUnkeyedContainer(forKey key: K) -> DelayedUnkeyedEncodingContainer {
+        var subPath: [CodingKey] = []
+        subPath.append(contentsOf: self.codingPath)
+        let rtn = DelayedUnkeyedEncodingContainer(codingPath: subPath)
+        if var c = self.container { try! rtn.initializeContainer(fromParent: &c, forKey: key) }
+        else {
+            cache.append({ ( container: inout KeyedEncodingContainer<Key>) throws -> Void in
+                try rtn.initializeContainer(fromParent: &container, forKey: key)
+            })
+        }
+        return rtn
+    }
+    
+    
+    
+    public func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type,
+                                           forKey key: K) -> KeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
+        guard var c = self.container else  {
+            return self.nestedDelayedContainer(keyedBy: keyType, forKey: key).toKeyedContainer()
         }
         return c.nestedContainer(keyedBy: keyType, forKey: key)
         
     }
     
-    internal func nestedDelayedContainer<NestedKey>(keyedBy keyType: NestedKey.Type,
-                                                    forKey key: K) -> DelayedKeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
-        var subPath: [CodingKey] = []
-        subPath.append(contentsOf: self.codingPath)
-        subPath.append(key)
-        
-        guard var c = self.container else  {
-            let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
-            cache.append({ ( container: inout KeyedEncodingContainer<Key>) throws -> Void in
-                try rtn.initializeContainer(fromParent: &container, forKey: key)
-            })
-            return rtn
-        }
-        
-        let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
-        try! rtn.initializeContainer(fromParent: &c, forKey: key)
-        return rtn
-    }
-    
     public func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
         guard var c = self.container else  {
-            var subPath: [CodingKey] = []
-            subPath.append(contentsOf: self.codingPath)
-            subPath.append(key)
-            let rtn = DelayedUnkeyedEncodingContainer(codingPath: subPath)
-            cache.append({ ( container: inout KeyedEncodingContainer<Key>) throws -> Void in
-                try rtn.initializeContainer(fromParent: &container, forKey: key)
-            })
-            return rtn.codableObject()
+            return self.nestedDelayedUnkeyedContainer(forKey: key).codableObject()
         }
         return c.nestedUnkeyedContainer(forKey: key)
     }

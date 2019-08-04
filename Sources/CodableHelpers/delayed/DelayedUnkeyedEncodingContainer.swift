@@ -219,19 +219,6 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer {
         try c.encode(value)
     }
     
-    public func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
-        guard var c = self.container else  {
-            var subPath: [CodingKey] = []
-            subPath.append(contentsOf: self.codingPath)
-            let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
-            cache.append({ (container: inout UnkeyedEncodingContainer) throws -> Void in
-                try rtn.initializeContainer(fromParent: &container)
-            })
-            return KeyedEncodingContainer<NestedKey>(rtn)
-        }
-        return c.nestedContainer(keyedBy: keyType)
-    }
-    
     /// Encodes a nested delayed container keyed by the given type and returns it.
     ///
     /// - Parameter keyType: The key type to use for the container.
@@ -239,29 +226,41 @@ public class DelayedUnkeyedEncodingContainer: DelayedEncodingContainer {
     public func nestedDelayedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> DelayedKeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
         var subPath: [CodingKey] = []
         subPath.append(contentsOf: self.codingPath)
-        
-        guard var c = self.container else  {
-            let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
+        let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
+        if var c = self.container  {
+             try! rtn.initializeContainer(fromParent: &c)
+        } else {
             cache.append({ (container: inout UnkeyedEncodingContainer) throws -> Void in
                 try rtn.initializeContainer(fromParent: &container)
             })
-            return rtn
         }
-        let rtn = DelayedKeyedEncodingContainer<NestedKey>(codingPath: subPath)
-        try! rtn.initializeContainer(fromParent: &c)
         return rtn
         
     }
     
-    public func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        guard var c = self.container else  {
-            var subPath: [CodingKey] = []
-            subPath.append(contentsOf: self.codingPath)
-            let rtn = DelayedUnkeyedEncodingContainer(codingPath: subPath)
+    public func nestedDelayedUnkeyedContainer() -> DelayedUnkeyedEncodingContainer {
+        var subPath: [CodingKey] = []
+        subPath.append(contentsOf: self.codingPath)
+        let rtn = DelayedUnkeyedEncodingContainer(codingPath: subPath)
+        if var c = self.container { try! rtn.initializeContainer(from: &c) }
+        else {
             cache.append({ (container: inout UnkeyedEncodingContainer) throws -> Void in
                 try rtn.initializeContainer(from: &container)
             })
-            return rtn.codableObject()
+        }
+        return rtn
+    }
+    
+    public func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
+        guard var c = self.container else  {
+            return self.nestedDelayedContainer(keyedBy: keyType).toKeyedContainer()
+        }
+        return c.nestedContainer(keyedBy: keyType)
+    }
+    
+    public func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
+        guard var c = self.container else  {
+            return nestedDelayedUnkeyedContainer().codableObject()
         }
         return c.nestedUnkeyedContainer()
     }

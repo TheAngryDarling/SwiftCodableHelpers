@@ -56,21 +56,35 @@ public class FilteredDelayedKeyedEncodingContainer<K>: FilteredKeyedEncodingCont
     /// - Parameters:
     ///   - parent: Initialize using an KeyedEncodingContainer parent
     ///   - key: Key to initialize with
-    public func initializeContainer<ParentKey>(fromParent parent: inout KeyedEncodingContainer<ParentKey>, forKey key: ParentKey) throws /* where ParentKey : CodingKey */ {
+    public func initializeContainer<ParentKey>(fromParent parent: inout KeyedEncodingContainer<ParentKey>,
+                                               forKey key: ParentKey) throws /* where ParentKey : CodingKey */ {
         try self.delayedContainer.initializeContainer(fromParent: &parent, forKey: key)
     }
     
-    public override func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type, forKey key: K) -> KeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
+    public override func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type,
+                                                    forKey key: K) -> KeyedEncodingContainer<NestedKey> /* where NestedKey : CodingKey */ {
         let n = self.delayedContainer.nestedDelayedContainer(keyedBy: keyType, forKey: key)
-        let rtn = FilteredDelayedKeyedEncodingContainer<NestedKey>(n, rootContainer: self.rootContainer ?? self, filter: self.filterEncoding)
+        let rtn = FilteredDelayedKeyedEncodingContainer<NestedKey>(n,
+                                                                   rootContainer: self.rootContainer ?? self,
+                                                                   filter: self.filterEncoding)
         return KeyedEncodingContainer<NestedKey>(rtn)
         
     }
     
     public override func nestedUnkeyedContainer(forKey key: K) -> UnkeyedEncodingContainer {
-        let n = self.delayedContainer.nestedUnkeyedContainer(forKey: key)
-        let rtn = FilteredDelayedUnkeyedEncodingContainer(n as! DelayedUnkeyedEncodingContainer, rootContainer: self.rootContainer ?? self, filter: self.filterEncoding)
+        let rtn = FilteredDelayedUnkeyedEncodingContainer(self.delayedContainer.nestedDelayedUnkeyedContainer(forKey: key),
+                                                          rootContainer: self.rootContainer ?? self,
+                                                          filter: self.filterEncoding)
         return rtn.codableObject()
+        /*
+        let n = self.delayedContainer.nestedUnkeyedContainer(forKey: key)
+        if let nB = n as? BoxedClassUnkeyedEncodingContainer {
+            let rtn = FilteredDelayedUnkeyedEncodingContainer(nB.box as! DelayedUnkeyedEncodingContainer, rootContainer: self.rootContainer ?? self, filter: self.filterEncoding)
+            return rtn.codableObject()
+        } else {
+            let rtn = FilteredDelayedUnkeyedEncodingContainer(n as! DelayedUnkeyedEncodingContainer, rootContainer: self.rootContainer ?? self, filter: self.filterEncoding)
+            return rtn.codableObject()
+        }*/
     }
     
 }

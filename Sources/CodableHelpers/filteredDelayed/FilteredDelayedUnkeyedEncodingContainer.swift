@@ -73,8 +73,8 @@ public class FilteredDelayedUnkeyedEncodingContainer: FilteredUnkeyedEncodingCon
     }
     
     public override func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        let n = self.delayedContainer.nestedUnkeyedContainer()
-        let rtn = FilteredDelayedUnkeyedEncodingContainer(n as! DelayedUnkeyedEncodingContainer,
+        
+        let rtn = FilteredDelayedUnkeyedEncodingContainer(self.delayedContainer.nestedDelayedUnkeyedContainer(),
                                                           rootContainer: self.rootContainer ?? self,
                                                           filter: self.filterEncoding)
         return rtn.codableObject()
