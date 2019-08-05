@@ -276,7 +276,15 @@ public struct CodableHelpers {
                 guard !excludingKeys.contains(where: { $0.stringValue == key.stringValue }) else {
                     continue
                 }
-                if let v = try? container.decodeNil(forKey: key), v {
+                
+                var customValue: Any? = nil
+                do {
+                    customValue = try customDecoding(WrappedPreKeyedDecoder(container, preKey: key))
+                } catch { }
+                
+                if let v = customValue {
+                    rtn[key.intValue!] = v
+                } else if let v = try? container.decodeNil(forKey: key), v {
                     rtn[key.intValue!] = AnyNil //(nil as Any)
                 } else if let v = try? container.decode(Int.self, forKey: key) {
                     rtn[key.intValue!] = v
@@ -295,26 +303,13 @@ public struct CodableHelpers {
                 } else if let v = try? container.decode(Data.self, forKey: key) {
                     rtn[key.intValue!] = v
                 } else if var v = try? container.nestedContainer(keyedBy: CodableKey.self, forKey: key) {
-                    
-                    if let r = try customDecoding(WrappedKeyedDecoder(v)) {
-                        rtn[key.intValue!] = r
-                    } else {
-                        rtn[key.intValue!] = try _decode(&v, excludingKeys: [], customDecoding: customDecoding)
-                    }
-                    
-                    
-    
+                    rtn[key.intValue!] = try _decode(&v, excludingKeys: [], customDecoding: customDecoding)
                 } else if var v = try? container.nestedUnkeyedContainer(forKey: key) {
-                    
-                    if let r = try customDecoding(WrappedUnkeyedDecoder(v)) {
-                        rtn[key.intValue!] = r
-                    } else {
-                        rtn[key.intValue!] = try CodableHelpers.arrays.decode(&v, customDecoding: customDecoding)
-                    }
-                    
+                    rtn[key.intValue!] = try CodableHelpers.arrays.decode(&v, customDecoding: customDecoding)
                 } else {
-                    throw DecodingError.typeMismatch(Any.self, DecodingError.Context(codingPath: container.codingPath.appending(key),
-                                                                                     debugDescription: "Unsupported type"))
+                    throw DecodingError.typeMismatch(Any.self,
+                                                     DecodingError.Context(codingPath: container.codingPath.appending(key),
+                                                                           debugDescription: "Unsupported type"))
                 }
             }
             
@@ -327,7 +322,14 @@ public struct CodableHelpers {
                     continue
                 }
                 
-                if let v = try? container.decodeNil(forKey: key), v {
+                var customValue: Any? = nil
+                do {
+                    customValue = try customDecoding(WrappedPreKeyedDecoder(container, preKey: key))
+                } catch { }
+                
+                if let v = customValue {
+                    rtn[key.stringValue] = v
+                } else if let v = try? container.decodeNil(forKey: key), v {
                     rtn[key.stringValue] = AnyNil //(nil as Any)
                 } else if let v = try? container.decode(Int.self, forKey: key) {
                     rtn[key.stringValue] = v
@@ -346,22 +348,13 @@ public struct CodableHelpers {
                 } else if let v = try? container.decode(Data.self, forKey: key) {
                     rtn[key.stringValue] = v
                 } else if var v = try? container.nestedContainer(keyedBy: CodableKey.self, forKey: key) {
-                    
-                    if let r = try customDecoding(WrappedKeyedDecoder(v)) {
-                        rtn[key.stringValue] = r
-                    } else {
-                        rtn[key.stringValue] = try _decode(&v, excludingKeys: [], customDecoding: customDecoding)
-                    }
-                    
+                    rtn[key.stringValue] = try _decode(&v, excludingKeys: [], customDecoding: customDecoding)
                 } else if var v = try? container.nestedUnkeyedContainer(forKey: key) {
-                    if let r = try customDecoding(WrappedUnkeyedDecoder(v)) {
-                        rtn[key.stringValue] = r
-                    } else {
-                        rtn[key.stringValue] = try CodableHelpers.arrays.decode(&v, customDecoding: customDecoding)
-                    }
+                    rtn[key.stringValue] = try CodableHelpers.arrays.decode(&v, customDecoding: customDecoding)
                 } else {
-                    throw DecodingError.typeMismatch(Any.self, DecodingError.Context(codingPath: container.codingPath.appending(key),
-                                                                                     debugDescription: "Unsupported type"))
+                    throw DecodingError.typeMismatch(Any.self,
+                                                     DecodingError.Context(codingPath: container.codingPath.appending(key),
+                                                                           debugDescription: "Unsupported type"))
                 }
             }
             
@@ -807,7 +800,15 @@ extension CodableHelpers {
                                   customDecoding: (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> Array<Any>  {
             var rtn: Array<Any> = Array<Any>()
             while !container.isAtEnd {
-                if let v = try? container.decodeNil(), v {
+                
+                var customValue: Any? = nil
+                do {
+                    customValue = try customDecoding(WrappedUnkeyedSingleValueDecoder(container))
+                } catch { }
+                
+                if let v = customValue {
+                    rtn.append(v)
+                } else if let v = try? container.decodeNil(), v {
                     rtn.append(AnyNil) //If array was an optional array.  We should add the nil in.
                 } else if let v = try? container.decode(Int.self) {
                     rtn.append(v)
@@ -826,20 +827,13 @@ extension CodableHelpers {
                 } else if let v = try? container.decode(Data.self) {
                     rtn.append(v)
                 } else if var v = try? container.nestedContainer(keyedBy: CodableKey.self) {
-                    if let r = try customDecoding(WrappedKeyedDecoder(v)) {
-                        rtn.append(r)
-                    } else {
-                        rtn.append(try _decode(&v, excludingKeys: [], customDecoding: customDecoding))
-                    }
+                    rtn.append(try _decode(&v, excludingKeys: [], customDecoding: customDecoding))
                 } else if var v = try? container.nestedUnkeyedContainer() {
-                    if let r = try customDecoding(WrappedUnkeyedDecoder(v)) {
-                        rtn.append(r)
-                    } else {
-                        rtn.append(try decode(&v, customDecoding: customDecoding))
-                    }
+                    rtn.append(try decode(&v, customDecoding: customDecoding))
                 } else {
                     throw DecodingError.typeMismatch(Any.self,
-                                                     DecodingError.Context(codingPath: container.codingPath.appending(index: container.currentIndex), debugDescription: "Unsupported type"))
+                                                     DecodingError.Context(codingPath: container.codingPath.appending(index: container.currentIndex),
+                                                                           debugDescription: "Unsupported type"))
                 }
             }
             return rtn
