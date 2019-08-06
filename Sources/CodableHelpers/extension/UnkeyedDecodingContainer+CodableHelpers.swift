@@ -243,6 +243,23 @@ public extension UnkeyedDecodingContainer {
         guard let v = try self.decodeIfPresent(type) else { return value }
         return v
     }
+    /// Decodes a value of the given type for the given key, if present, otherwise returns the default value
+    ///
+    /// This method returns a default value if the container does not have a value
+    /// associated with `key`, or if the value is null. The difference between
+    /// these states can be distinguished with a `contains(_:)` call.
+    ///
+    /// - parameter type: The type of value to decode.
+    /// - parameter value: The default value to return if key does not exist
+    /// - returns: A decoded value of the requested type, or default value if the
+    ///   `Decoder` does not have an entry associated with the given key, or if
+    ///   the value is a null value.
+    /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
+    ///   is not convertible to the requested type.
+    mutating func decodeIfPresent(_ type: String.Type, withDefaultValue value: String) throws -> String {
+        guard let v = try self.decodeIfPresent(type) else { return value }
+        return v
+    }
     
     /// Decodes a value of the given type for the given key, if present, otherwise returns the default value
     ///
