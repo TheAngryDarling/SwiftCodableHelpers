@@ -408,6 +408,8 @@ public struct CodableHelpers {
                         var workingValue = v
                         if let eV = workingValue as? Encodable, type(of: workingValue) != String.self {
                             let simpleEncoder = _SimpleEncoder()
+                            // propogate user info from parent encoder to simple encoder
+                            simpleEncoder.userInfo = encoder.userInfo
                             simpleEncoder.codingPath = c.codingPath
                             try eV.encode(to: simpleEncoder)
                             guard let sV = simpleEncoder.value else {
