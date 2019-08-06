@@ -26,7 +26,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Int8.Type, forKey key: Self.Key, withDefaulValue value: Int8) throws -> Int8 {
+    func decodeIfPresent(_ type: Int8.Type, forKey key: Self.Key, withDefaultValue value: Int8) throws -> Int8 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -44,7 +44,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Int16.Type, forKey key: Self.Key, withDefaulValue value: Int16) throws -> Int16 {
+    func decodeIfPresent(_ type: Int16.Type, forKey key: Self.Key, withDefaultValue value: Int16) throws -> Int16 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -62,7 +62,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Int32.Type, forKey key: Self.Key, withDefaulValue value: Int32) throws -> Int32 {
+    func decodeIfPresent(_ type: Int32.Type, forKey key: Self.Key, withDefaultValue value: Int32) throws -> Int32 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -80,7 +80,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Int64.Type, forKey key: Self.Key, withDefaulValue value: Int64) throws -> Int64 {
+    func decodeIfPresent(_ type: Int64.Type, forKey key: Self.Key, withDefaultValue value: Int64) throws -> Int64 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -99,7 +99,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Int.Type, forKey key: Self.Key, withDefaulValue value: Int) throws -> Int {
+    func decodeIfPresent(_ type: Int.Type, forKey key: Self.Key, withDefaultValue value: Int) throws -> Int {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -122,7 +122,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: UInt8.Type, forKey key: Self.Key, withDefaulValue value: UInt8) throws -> UInt8 {
+    func decodeIfPresent(_ type: UInt8.Type, forKey key: Self.Key, withDefaultValue value: UInt8) throws -> UInt8 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -140,7 +140,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: UInt16.Type, forKey key: Self.Key, withDefaulValue value: UInt16) throws -> UInt16 {
+    func decodeIfPresent(_ type: UInt16.Type, forKey key: Self.Key, withDefaultValue value: UInt16) throws -> UInt16 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -158,7 +158,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: UInt32.Type, forKey key: Self.Key, withDefaulValue value: UInt32) throws -> UInt32 {
+    func decodeIfPresent(_ type: UInt32.Type, forKey key: Self.Key, withDefaultValue value: UInt32) throws -> UInt32 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -176,7 +176,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: UInt64.Type, forKey key: Self.Key, withDefaulValue value: UInt64) throws -> UInt64 {
+    func decodeIfPresent(_ type: UInt64.Type, forKey key: Self.Key, withDefaultValue value: UInt64) throws -> UInt64 {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -195,7 +195,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: UInt.Type, forKey key: Self.Key, withDefaulValue value: UInt) throws -> UInt {
+    func decodeIfPresent(_ type: UInt.Type, forKey key: Self.Key, withDefaultValue value: UInt) throws -> UInt {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -218,7 +218,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Bool.Type, forKey key: Self.Key, withDefaulValue value: Bool) throws -> Bool {
+    func decodeIfPresent(_ type: Bool.Type, forKey key: Self.Key, withDefaultValue value: Bool) throws -> Bool {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -237,7 +237,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Float.Type, forKey key: Self.Key, withDefaulValue value: Float) throws -> Float {
+    func decodeIfPresent(_ type: Float.Type, forKey key: Self.Key, withDefaultValue value: Float) throws -> Float {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -255,7 +255,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent(_ type: Double.Type, forKey key: Self.Key, withDefaulValue value: Double) throws -> Double {
+    func decodeIfPresent(_ type: Double.Type, forKey key: Self.Key, withDefaultValue value: Double) throws -> Double {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
@@ -274,7 +274,7 @@ public extension KeyedDecodingContainerProtocol {
     ///   the value is a null value.
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value
     ///   is not convertible to the requested type.
-    func decodeIfPresent<T>(_ type: T.Type, forKey key: Self.Key, withDefaulValue value: T) throws -> T where T : Decodable {
+    func decodeIfPresent<T>(_ type: T.Type, forKey key: Self.Key, withDefaultValue value: T) throws -> T where T : Decodable {
         guard let v = try self.decodeIfPresent(type, forKey: key) else { return value }
         return v
     }
