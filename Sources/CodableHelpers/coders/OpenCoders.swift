@@ -10,9 +10,10 @@ import Foundation
 import CoreFoundation
 import SwiftClassCollections
 import Nillable
+import BasicCodableHelpers
 
 /// Open Encoder base used for creating custom encoders that return specific results
-open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
+open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncoderType {
     public typealias TranformationMethod = (BasicOpenEncoder<EncodingResults>, Any) throws -> EncodingResults
     
     private var _transformation: TranformationMethod
@@ -74,20 +75,26 @@ open class BasicOpenEncoder<EncodingResults>: BaseEncoder, EncodingType {
 }
 
 #if swift(>=4.1)
-extension BasicOpenEncoder: EncodingToDataType where EncodingResults == Data { }
+extension BasicOpenEncoder: DataEncoderType, StandardEncoderType where EncodingResults == Data { }
 #endif
 
 /// Open Decoder base used for creating custom encoders that use specific input
-open class BasicOpenDecoder<DecodingInput>: BaseDecoder, DecodingType {
+open class BasicOpenDecoder<DecodingInput>: BaseDecoder, DecoderType {
     public typealias TranformationMethod = (BasicOpenDecoder<DecodingInput>, DecodingInput) throws -> Any
     
     private var _transformation: TranformationMethod
     
     // MARK: - Constructing a Basic Encoder
     /// Initializes `self` with default strategies.
-    public init(unboxer: BaseDecoderTypeUnboxing? = nil, transformation: @escaping TranformationMethod) {
+    public init(unboxing: BaseDecoderTypeUnboxing? = nil, transformation: @escaping TranformationMethod) {
         self._transformation = transformation
-        super.init(unboxer: unboxer)
+        super.init(unboxing: unboxing)
+    }
+    
+    @available(*, deprecated, renamed: "init(unboxing:)")
+    public init(unboxer: BaseDecoderTypeUnboxing?, _ transformation: @escaping TranformationMethod) {
+        self._transformation = transformation
+        super.init(unboxing: unboxer)
     }
     
     // MARK: - Decoding Values
@@ -116,5 +123,5 @@ open class BasicOpenDecoder<DecodingInput>: BaseDecoder, DecodingType {
 }
 
 #if swift(>=4.1)
-extension BasicOpenDecoder: DecodingFromDataType where DecodingInput == Data { }
+extension BasicOpenDecoder: DataDecoderType, StandardDecoderType where DecodingInput == Data { }
 #endif

@@ -1219,7 +1219,7 @@ open class BaseDecoder {
         case convertFromString(positiveInfinity: String, negativeInfinity: String, nan: String)
     }
     
-    fileprivate let unboxer: BaseDecoderTypeUnboxing
+    fileprivate let unboxing: BaseDecoderTypeUnboxing
     
     /// The strategy to use in decoding dates. Defaults to `.deferredToDate`.
     open var dateDecodingStrategy: DateDecodingStrategy = .deferredToDate
@@ -1250,12 +1250,13 @@ open class BaseDecoder {
     }
     
     // MARK: - Constructing a Base Decoder
-    /// Initializes `self` with default strategies.
-    /*public init(_ transformation: @escaping TranformationMethod) {
-        self._transformation = transformation
-    }*/
+    public init(unboxing: BaseDecoderTypeUnboxing? = nil) {
+        self.unboxing = unboxing ?? DefaultUnboxing()
+    }
+    
+    @available(*, deprecated, renamed: "init(unboxing:)")
     public init(unboxer: BaseDecoderTypeUnboxing?) {
-        self.unboxer = unboxer ?? DefaultUnboxing()
+        self.unboxing = unboxer ?? DefaultUnboxing()
     }
     
     // MARK: - Decoding Values
@@ -2193,9 +2194,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Bool.Type) throws -> Bool? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Bool { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Bool.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Bool.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         #if DEPLOYMENT_RUNTIME_SWIFT
         // Bridging differences require us to split implementations here
@@ -2232,9 +2234,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Int.Type) throws -> Int? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Int { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Int.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2252,9 +2255,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Int8.Type) throws -> Int8? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Int8 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Int8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2272,9 +2276,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Int16.Type) throws -> Int16? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Int16 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Int16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2292,9 +2297,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Int32.Type) throws -> Int32? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Int32 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Int32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2312,9 +2318,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Int64.Type) throws -> Int64? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Int64 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Int64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Int64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2332,9 +2339,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: UInt.Type) throws -> UInt? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? UInt { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: UInt.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2352,9 +2360,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: UInt8.Type) throws -> UInt8? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? UInt8 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: UInt8.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2372,9 +2381,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: UInt16.Type) throws -> UInt16? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? UInt16 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: UInt16.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2392,9 +2402,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: UInt32.Type) throws -> UInt32? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? UInt32 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: UInt32.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2412,9 +2423,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: UInt64.Type) throws -> UInt64? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? UInt64 { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: UInt64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: UInt64.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         guard let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
             //guard let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse else {
@@ -2432,9 +2444,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Float.Type) throws -> Float? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Float { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Float.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Float.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         if let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
             //if let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
@@ -2481,9 +2494,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Double.Type) throws -> Double? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Double { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Double.self, atPath: self.codingPath) { value = NSNumber(value: v) }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Double.self, atPath: self.codingPath) { value = NSNumber(value: v) }
         
         if let number = store(value) as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
             //if let number = value as? NSNumber, number !== kCFBooleanTrue, number !== kCFBooleanFalse {
@@ -2520,9 +2534,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: String.Type) throws -> String? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? String { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: String.self, atPath: self.codingPath) { value = v }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: String.self, atPath: self.codingPath) { value = v }
         
         guard let string = value as? String else {
             throw DecodingError._typeMismatch(at: self.codingPath, expectation: type, reality: value)
@@ -2533,6 +2548,7 @@ extension BaseDecoder._BaseDecoder {
     
     internal func unbox(_ value: Any, as type: Date.Type) throws -> Date? {
         guard !(value is NSNull) else { return nil }
+        if let v = value as? Date { return v }
         
         switch self.options.dateDecodingStrategy {
         case .deferredToDate:
@@ -2578,6 +2594,7 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Data.Type) throws -> Data? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Data { return v }
         
         switch self.options.dataDecodingStrategy {
         case .deferredToData:
@@ -2606,9 +2623,10 @@ extension BaseDecoder._BaseDecoder {
     internal func unbox(_ value: Any, as type: Decimal.Type) throws -> Decimal? {
         //guard !(value is NSNull) else { return nil }
         guard !isNil(value) else { return nil }
+        if let v = value as? Decimal { return v }
         
         var value = value
-        if let v = try self.baseDecoder.unboxer.unbox(value, as: Decimal.self, atPath: self.codingPath) { value = v }
+        if let v = try self.baseDecoder.unboxing.unbox(value, as: Decimal.self, atPath: self.codingPath) { value = v }
         
         #if DEPLOYMENT_RUNTIME_SWIFT
         // Bridging differences require us to split implementations here

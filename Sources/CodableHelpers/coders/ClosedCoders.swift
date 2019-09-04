@@ -81,9 +81,15 @@ open class BasicClosedDecoder<DecodingType, DecodingInput>: BaseDecoder where De
     
     // MARK: - Constructing a Basic Decoder
     /// Initializes `self` with default strategies.
-    public init(unboxer: BaseDecoderTypeUnboxing? = nil, _ transformation: @escaping TranformationMethod) {
+    public init(unboxing: BaseDecoderTypeUnboxing? = nil, _ transformation: @escaping TranformationMethod) {
         self._transformation = transformation
-        super.init(unboxer: unboxer)
+        super.init(unboxing: unboxing)
+    }
+    
+    @available(*, deprecated, renamed: "init(unboxing:)")
+    public init(unboxer: BaseDecoderTypeUnboxing?, _ transformation: @escaping TranformationMethod) {
+        self._transformation = transformation
+        super.init(unboxing: unboxer)
     }
     
     // MARK: - Decoding Values
