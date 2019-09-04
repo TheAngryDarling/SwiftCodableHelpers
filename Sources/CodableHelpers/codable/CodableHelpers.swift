@@ -8,6 +8,7 @@
 import Foundation
 import SwiftClassCollections
 import Nillable
+import BasicCodableHelpers
 
 
 
@@ -493,7 +494,7 @@ public struct CodableHelpers {
         ///   - elementKey: The CodingKey within the Element to encode to
         public static func dynamicElementEncoding<S, E>(_ s: S,
                                                      to encoder: E,
-                                                     usingKey elementKey: String) throws -> E.EncodedData where S: Sequence, S.Element: Encodable, E: EncodingType {
+                                                     usingKey elementKey: String) throws -> E.EncodedData where S: Sequence, S.Element: Encodable, E: EncoderType {
             
             
             return try encoder.encode(EncodableObject(objects: s, elementKey: elementKey))
@@ -612,7 +613,7 @@ public struct CodableHelpers {
         public static func dynamicElementDecoding<D, Element>(from decoder: D,
                                                               withData data: D.EncodedData,
                                                               usingKey elementKey: String,
-                                                              decodingFunc: (_ decoder: Decoder) throws -> Element) throws -> Array<Element> where D: DecodingType {
+                                                              decodingFunc: (_ decoder: Decoder) throws -> Element) throws -> Array<Element> where D: DecoderType {
             let dc = try decoder.decode(DecoderCatcher.self, from: data)
             
             return try dynamicElementDecoding(from: dc.decoder, usingKey: elementKey, decodingFunc: decodingFunc)
@@ -648,7 +649,7 @@ public struct CodableHelpers {
         public static func dynamicElementDecoding<D, Element>(from decoder: D,
                                                               withData data: D.EncodedData,
                                                               usingKey elementKey: String,
-                                                              ofType: Element.Type) throws -> Array<Element> where D: DecodingType, Element: Decodable {
+                                                              ofType: Element.Type) throws -> Array<Element> where D: DecoderType, Element: Decodable {
             
             return try dynamicElementDecoding(from: decoder, withData: data, usingKey: elementKey) { (decoder: Decoder) throws -> Element in
                 return try Element(from: decoder)
@@ -781,7 +782,7 @@ extension CodableHelpers {
         ///   - array: The array of objects to encode
         ///   - encoder: The encoder to encode the array to
         /// - Throws: EncodingError.invalidValue if the object can not encoded
-        public static func encode<S, E>(_ array: S, to encoder: E) throws -> E.EncodedData  where E: EncodingType, S: SArray, S.Element == Any {
+        public static func encode<S, E>(_ array: S, to encoder: E) throws -> E.EncodedData  where E: EncoderType, S: SArray, S.Element == Any {
             let c = ContainedCodableArray(array)
             return try encoder.encode(c)
             
@@ -885,7 +886,7 @@ extension CodableHelpers {
         /// - Returns: Returns an array of decoded objects
         public static func decode<D>(_ data: D.EncodedData,
                                      from decoder: D,
-                                     customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> [Any]  where D: DecodingType {
+                                     customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> [Any]  where D: DecoderType {
     
             let key = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
             decoder.userInfo[key] = customDecoding
@@ -1272,7 +1273,7 @@ extension CodableHelpers {
         /// - Parameters:
         ///   - dictionary: Any dictionary type where the Key is DictionaryKeyCodable and Value is Any where can cast to Encodable
         ///   - encoder: The encoder to encode the dictionary to
-        public static func encode<D, E>(_ dictionary: D, to encoder: E) throws -> E.EncodedData  where E: EncodingType, D: SDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
+        public static func encode<D, E>(_ dictionary: D, to encoder: E) throws -> E.EncodedData  where E: EncoderType, D: SDictionary, D.Key: DictionaryKeyCodable, D.Value == Any {
             let c = ContainedCodableDictionary(dictionary)
             return try encoder.encode(c)
             
@@ -1397,7 +1398,7 @@ extension CodableHelpers {
         public static func decode<D, DC>(_ data: DC.EncodedData,
                                          from decoder: DC,
                                          excludingKeys: [D.Key] = [],
-                                         customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any, DC: DecodingType {
+                                         customDecoding: @escaping (_ decoder: Decoder) throws -> Any? = { _ in return nil }) throws -> D where D: SMutableDictionary, D.Key: DictionaryKeyCodable, D.Value == Any, DC: DecoderType {
             
             let customDecodingKey = CodingUserInfoKey(rawValue: "CodableHelper.customDecoding")!
             decoder.userInfo[customDecodingKey] = customDecoding
