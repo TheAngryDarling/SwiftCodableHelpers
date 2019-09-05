@@ -283,12 +283,112 @@ final class CodableHelpersTests: XCTestCase {
         }*/
  
     }
+    
+    func testPList() {
+        do {
+            let xmlEncodedData = """
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+\t<key>age</key>
+\t<integer>36</integer>
+\t<key>gender</key>
+\t<string>m</string>
+\t<key>name</key>
+\t<string>Person A</string>
+\t<key>subItems</key>
+\t<dict>
+\t\t<key>valA</key>
+\t\t<true/>
+\t\t<key>valB</key>
+\t\t<string>Test 1</string>
+\t\t<key>valC</key>
+\t\t<integer>1</integer>
+\t</dict>
+</dict>
+</plist>
+
+"""
+            let p1 = Person(name: "Person A",
+                            age: 36,
+                            gender: .male,
+                            subItems: SubPersonObject(valA: true, valB: "Test 1", valC: 1))
+            
+            let plistEncoder = PListEncoder()
+            plistEncoder.outputFormat = .xml
+            let plistData = try plistEncoder.encode(p1)
+            
+            let plistString = String(data: plistData, encoding: .utf8)!
+            
+            XCTAssertEqual(xmlEncodedData, plistString)
+            
+            let plistDecoder = PListDecoder()
+            let decodedP1 = try plistDecoder.decode(Person.self, from: plistData)
+            
+            XCTAssertEqual(p1, decodedP1)
+        } catch {
+            XCTFail("\(error)")
+        }
+        
+        do {
+            let base64EncodedString = "YnBsaXN0MDDUAQIDBAUGBwhTYWdlVmdlbmRlclRuYW1lWHN1Ykl0ZW1zECRRbVhQZXJzb24gQdMJCgsMDQ5UdmFsQlR2YWxBVHZhbENWVGVzdCAxCRABCBEVHCEqLC43PkNITVRVAAAAAAAAAQEAAAAAAAAADwAAAAAAAAAAAAAAAAAAAFc="
+            let p1 = Person(name: "Person A",
+                            age: 36,
+                            gender: .male,
+                            subItems: SubPersonObject(valA: true, valB: "Test 1", valC: 1))
+            
+            let plistEncoder = PListEncoder()
+            plistEncoder.outputFormat = .binary
+            let plistData = try plistEncoder.encode(p1)
+            
+            //let plistBase64String = plistData.base64EncodedString()
+            
+            //XCTAssertEqual(base64EncodedString, plistBase64String)
+            
+            let plistDecoder = PListDecoder()
+            let decodedP1 = try plistDecoder.decode(Person.self, from: plistData)
+            
+            XCTAssertEqual(p1, decodedP1)
+            
+            let base64Data = Data(base64Encoded: base64EncodedString)!
+            let decodedP2 = try plistDecoder.decode(Person.self, from: base64Data)
+            
+            XCTAssertEqual(p1, decodedP2)
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testPList2() {
+        do {
+            let p1 = Person(name: "Person A",
+                        age: 36,
+                        gender: .male,
+                        subItems: SubPersonObject(valA: true, valB: "Test 1", valC: 1))
+            let propertyListEncoder = PropertyListEncoder()
+            
+            propertyListEncoder.outputFormat = .binary
+           
+            let propertyListData = try propertyListEncoder.encode(p1)
+            
+            let base64String = propertyListData.base64EncodedString()
+            print(base64String)
+            
+           
+        } catch {
+            XCTFail("\(error)")
+        }
+        
+    }
 
 
     static var allTests = [
         ("testCodingCustomSequence", testCodingCustomSequence),
         ("testCodingArray", testCodingArray),
-        ("testSwiftDictionaryCoding", testSwiftDictionaryCoding)
+        ("testSwiftDictionaryCoding", testSwiftDictionaryCoding),
+        ("testPList", testPList)
     ]
 }
 
