@@ -14,6 +14,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/TheAngryDarling/SwiftBasicCodableHelpers.git", from: "1.0.0"),
         .package(url: "https://github.com/TheAngryDarling/SwiftClassCollections.git", from: "1.0.0"),
         .package(url: "https://github.com/TheAngryDarling/SwiftNillable.git", from: "1.0.0")
     ],
@@ -22,7 +23,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "CodableHelpers",
-            dependencies: ["Nillable", "SwiftClassCollections"]),
+            dependencies: ["BasicCodableHelpers", "Nillable", "SwiftClassCollections"]),
         .testTarget(
             name: "CodableHelpersTests",
             dependencies: ["CodableHelpers"]),
