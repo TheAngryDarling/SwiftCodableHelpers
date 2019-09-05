@@ -89,6 +89,7 @@ Catches either the Encoder or Decoder for use outside the normal coding process
 * **BasicClosedEncoder** - The base class for closed custom encoders.  This requires the the inherited class provide a method that takes in the in-memory encoding (single value, array, dictionary) that as been done and transforms it into the wanted results.  The encode method takes in a specific object type
 * **BasicClosedDecoder** - The base class for closed custom decoders. This requires that the inherited class provides a method that takes in the encoded input and returns the in-memory results (single value, array, dictionary).  The decode method return a specific object type
 * **SimpleEncoder** - A simple class that allows for a developer to convert and object into its in-memory equivalent
+* **PListEncoder/PListDecoder** - Custom Encoder/Decoder for Property Lists.  When not building on an ObjectC runtime (Non Apple device) type aliases are setup for PropertyListEncoder/PropertyListDecoder to the equivilant PList object
 
 ### Helpers
 
@@ -115,14 +116,22 @@ Catches either the Encoder or Decoder for use outside the normal coding process
 
 ### Protocols
 
-* **EncodingType** - A protocol used when defining functions that can take any type of encoding system like JSONEncoder, PropertyListEncoder or one inherited from BasicOpenEncoder
-    * **EncodingToDataType** - A protocol that inherits EncodingType that requires the resulting type to be of Data.  JSONEncoder, PropertyListEncoder implement this.
-* **DecodingType** - A protocol used when defining functions that can take any type of decoding system like JSONDecoder, PropertyListDecoder or one inherited from BasicOpenDecoder
-    * **DecodingToDataType** - A protocol that inherits DecodingType that requires the resulting type to be of Data.  JSONDecoder, PropertyListDecoder implement this.
 * **CodableSequenceDynamicKeyHelper** - A protocol used on types that implement Sequence that provide the necessary logic to encode into dictionaries based on a specific property name and decode back into an sequence.  This protocol relies on the dynamicElementEncoding and dynamicElementDecoding methods
 * **BaseEncoderTypeBoxing** - A protocol for defining the type boxing methods used by the encoders.  Allows for overriding the value being encoding
 * **BaseDecoderTypeUnboxing** - A protocol for defining the type unboxing methods used by decoders.  Allows for overriding the value being decoded
 
+### Choice Enums
+
+* **EncoderChoice** - Provides a programmatic way of choosing which encoder to use. This is nice when providing end users with the choice of what type file to encode to
+  * **xmlPList** - Use PropertyListEncoder or PListEncoder for xml depending on platform
+  * **binaryPList** - Use PropertyListEncoder or PListEncoder for binary depending on platform
+  * **json** - Use the standard JSONEncoder
+  * **other** - You can specify your own instance of an encoder
+
+* **DecoderChoice** - Provides a programmatic way of choosing which decoder to use.
+  * **plist** -  Use PropertyListDecoder or PListDecoder depending on platform
+  * **json** - If swift < 4.2 and BasicDecoderChoice.usePatchedJSONDecoder enabled, will use BasicCodableHelperPatchedJSONDecoder otherwise will use standard JSONDecoder
+  * **other** - You can specify your own instance of a decoder
 
 ## Usage
 
@@ -198,6 +207,7 @@ print(r)
 
 ## Dependencies
 
+* **[Basic Codable Helpers](https://github.com/TheAngryDarling/SwiftBasicCodableHelpers.git)** - Package that provides basic helper methods on Encoder and Decoder containers
 * **[Nillable](https://github.com/TheAngryDarling/SwiftNillable.git)** - Package used to identify nil/NSNull objects when stored in Any format
 * **[SwiftClassCollection](https://github.com/TheAngryDarling/SwiftClassCollections.git)** - Package used to work with swift class based collections that are equivalent to Array and Dictionary
 
