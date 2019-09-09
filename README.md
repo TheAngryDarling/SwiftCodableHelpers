@@ -4,6 +4,8 @@
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
 ![Swift](https://img.shields.io/badge/Swift->=4.0-green.svg?style=flat)
 
+NOTE: This package is no longer being updated.  Its been broken out into three separate smaller packages, [Basic Codable Helpers](https://github.com/TheAngryDarling/SwiftBasicCodableHelpers), [Advanced Codable Helpers](https://github.com/TheAngryDarling/SwiftAdvancedCodableHelpers), and [Custom Coders](https://github.com/TheAngryDarling/SwiftCustomCoders), so that developers only need to include the package of the code they really need and not add a bunch of extra code that would not be used.
+
 Helper classes, protocols and functions designed to make more complex encoding/decoding easier.
 
 ### Helper Containers
