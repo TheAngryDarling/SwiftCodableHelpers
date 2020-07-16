@@ -8,7 +8,7 @@
 import Foundation
 import BasicCodableHelpers
 
-#if !_runtime(_ObjC)
+#if !swift(>=5.1) && !_runtime(_ObjC)
 public typealias PropertyListEncoder = PListEncoder
 public typealias PropertyListDecoder = PListDecoder
 #endif
