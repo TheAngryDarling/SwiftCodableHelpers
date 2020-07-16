@@ -1,5 +1,6 @@
 import XCTest
 import Nillable
+import Foundation
 @testable import CodableHelpers
 
 extension String: Error { }
@@ -360,29 +361,6 @@ final class CodableHelpersTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
-    func testPList2() {
-        do {
-            let p1 = Person(name: "Person A",
-                        age: 36,
-                        gender: .male,
-                        subItems: SubPersonObject(valA: true, valB: "Test 1", valC: 1))
-            let propertyListEncoder = PropertyListEncoder()
-            
-            propertyListEncoder.outputFormat = .binary
-           
-            let propertyListData = try propertyListEncoder.encode(p1)
-            
-            let base64String = propertyListData.base64EncodedString()
-            print(base64String)
-            
-           
-        } catch {
-            XCTFail("\(error)")
-        }
-        
-    }
-
 
     static var allTests = [
         ("testCodingCustomSequence", testCodingCustomSequence),
